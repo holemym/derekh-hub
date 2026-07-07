@@ -29,7 +29,7 @@ Stand the project up as its own deployable app.
 - ✅ Next.js + TS + Tailwind scaffold, monoline design system, PWA shell
 - ✅ Hebcal zmanim lib (Vienna), EN/DE i18n
 - ✅ Supabase project created (**EU — Ireland/`eu-west-1`**, GDPR-fine) + env wiring + schema applied & verified (13 tables, 51 RLS policies, 2 private buckets, permit template seeded)
-- ⬜ Auth: email magic link (Motty + named staff); bootstrap first owner row
+- ✅ Auth: email magic-link (SSR, proxy gate, /login, /auth/callback, /no-access, sign-out); owners bootstrapped (David + Motty) + Supabase redirect URLs configured
 - ⬜ Hub as its own Vercel project (separate repo — **never over the live tool**)
 - **Done when:** the empty app deploys, an authorized user can log in, DB reachable.
 
@@ -41,7 +41,7 @@ The core loop. This is where the current tool's capabilities move in.
 - ✅ **"Generate permit" for real** — engine wired into case detail, client-side/offline; downloads the filled PDF. Render-verified (both pages) from the app pipeline; build passes.
 - ✅ `place_of_birth` migration (0004) written (+ `last_address`, pending reconciliation below)
 - ✅ Migrations applied to the real Supabase (via `app/scripts/apply-migrations.mjs`)
-- ⬜ 🔗 M0-auth Wire repo to live data (replace mock) — needs auth+RLS, or a server-side admin-client stopgap for dev
+- ✅ Wire repo to live data (RLS-scoped server client; DB row → Case mapper; seed case renders after login)
 - ⬜ 🔗 M0 Document vault: upload / list / download per case (private bucket + signed URLs) — save generated permit to Storage
 - ⬜ 🔗 M0 **Public intake → DB** (replaces the JSON-file handoff): family form writes a case + uploads to `intake/`
 - **Reconcile before migrations run:** (a) DB now has both `address` (0001) and `last_address` (0004) — standardize the permit binding on one (`case.address`) and drop the redundant column; (b) the app `Case` type lags the DB schema (missing `cause_of_death`/`icd_code`/`place_of_birth` — currently passed via mapper `opts`) — sync the type when the repo goes live.
