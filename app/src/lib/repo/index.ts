@@ -20,7 +20,11 @@ import {
   openCasesByUrgency as sbOpenCasesByUrgency,
   listOpenTasks as sbListOpenTasks,
   tasksForCase as sbTasksForCase,
+  activityForCase as sbActivityForCase,
+  type ActivityEntry,
 } from "./supabase";
+
+export type { ActivityEntry };
 
 /** All cases (unsorted). */
 export function listCases(): Promise<Case[]> {
@@ -55,4 +59,12 @@ export function listOpenTasks(): Promise<Task[]> {
 /** Tasks for one case (open + done), due-sorted. */
 export function tasksForCase(caseId: string): Promise<Task[]> {
   return sbTasksForCase(caseId);
+}
+
+/** Most-recent activity_log entries for one case (newest first). */
+export function activityForCase(
+  caseId: string,
+  limit?: number,
+): Promise<ActivityEntry[]> {
+  return sbActivityForCase(caseId, limit);
 }

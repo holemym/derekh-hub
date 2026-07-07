@@ -153,6 +153,15 @@
     "details": "Details",
     "notFound": "Case not found",
     "advanceStage": "Advance stage",
+    "advanceTo": "Advance to {stage}",
+    "advancing": "Advancing…",
+    "completed": "Buried — case complete",
+    "advanceError": "Could not advance the stage. Please try again.",
+    "jumpTo": "Jump to {stage}",
+    "jumpConfirm": "Jump this case straight to {stage}? This skips the stages in between and is logged.",
+    "activity": {
+      "stageChanged": "Stage moved from {from} to {to}"
+    },
     "fields": {
       "hebrewName": "Hebrew name",
       "secularName": "Secular name",

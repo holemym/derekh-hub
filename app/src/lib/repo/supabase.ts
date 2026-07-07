@@ -23,6 +23,7 @@ import type {
   DocumentRow,
   CaseContactRow,
   TaskRow,
+  ActivityLogRow,
 } from "../../../../db/types";
 
 /** Columns we read for list views — the full case row is fine (RLS-guarded). */
@@ -113,6 +114,42 @@ export async function listOpenTasks(): Promise<Task[]> {
     .order("due", { ascending: true, nullsFirst: false });
   if (error) throw new Error(`tasks read failed: ${error.message}`);
   return ((data ?? []) as TaskRow[]).map(mapTask);
+}
+
+/* ── Activity log (append-only audit; ROADMAP M3) ──────────────────────── */
+
+/** A single audit entry, projected for the case-detail "Recent activity" list. */
+export interface ActivityEntry {
+  id: string;
+  action: string;
+  actorLabel?: string;
+  detail?: Record<string, unknown>;
+  at: string;
+}
+
+/**
+ * Most-recent activity_log rows for one case (staff SELECT, RLS-scoped),
+ * newest first. Small by design — the case detail shows only the latest few.
+ */
+export async function activityForCase(
+  caseId: string,
+  limit = 5,
+): Promise<ActivityEntry[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("activity_log")
+    .select("id, action, actor_label, detail, at")
+    .eq("case_id", caseId)
+    .order("at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`activity read failed: ${error.message}`);
+  return ((data ?? []) as ActivityLogRow[]).map((r) => ({
+    id: r.id,
+    action: r.action,
+    actorLabel: r.actor_label ?? undefined,
+    detail: (r.detail ?? undefined) as Record<string, unknown> | undefined,
+    at: r.at,
+  }));
 }
 
 /** Open + done tasks for one case, due-sorted (for the case-detail Tasks list). */

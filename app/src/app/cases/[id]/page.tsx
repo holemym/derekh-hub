@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getCase } from "@/lib/repo";
+import { getCase, activityForCase } from "@/lib/repo";
 import { formatDate, formatDateTime } from "@/lib/format";
 import PipelineStepper from "@/components/PipelineStepper";
 import CaseActions from "@/components/CaseActions";
@@ -30,6 +30,7 @@ export default async function CaseDetailPage({
 
   const t = await getTranslations();
   const locale = await getLocale();
+  const activity = await activityForCase(c.id);
 
   const fields: Array<[string, string | undefined]> = [
     [t("caseDetail.fields.dob"), c.dob ? formatDate(c.dob, locale) : undefined],
@@ -161,15 +162,55 @@ export default async function CaseDetailPage({
         body={t("caseDetail.empty.contacts")}
       />
 
-      {/* Activity */}
+      {/* Activity — the append-only audit trail (activity_log, RLS-scoped). */}
       <h2 className="mb-2 mt-6 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">
         {t("caseDetail.sections.activity")}
       </h2>
-      <EmptyState
-        icon={<IconActivity size={22} />}
-        title={t("caseDetail.sections.activity")}
-        body={t("caseDetail.empty.activity")}
-      />
+      {activity.length > 0 ? (
+        <ul className="overflow-hidden rounded-card border border-line bg-card">
+          {activity.map((entry, i) => {
+            const from = entry.detail?.from;
+            const to = entry.detail?.to;
+            const description =
+              entry.action === "stage_changed" &&
+              typeof from === "string" &&
+              typeof to === "string"
+                ? t("caseDetail.activity.stageChanged", {
+                    from: t(`stages.${from}`),
+                    to: t(`stages.${to}`),
+                  })
+                : entry.action;
+            return (
+              <li
+                key={entry.id}
+                className={`flex items-baseline justify-between gap-3 px-4 py-3 ${
+                  i > 0 ? "border-t border-line" : ""
+                }`}
+              >
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium">
+                    {description}
+                  </span>
+                  {entry.actorLabel ? (
+                    <span className="mt-0.5 block text-[12px] text-muted">
+                      {entry.actorLabel}
+                    </span>
+                  ) : null}
+                </span>
+                <span className="shrink-0 text-xs text-muted">
+                  {formatDateTime(entry.at, locale)}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <EmptyState
+          icon={<IconActivity size={22} />}
+          title={t("caseDetail.sections.activity")}
+          body={t("caseDetail.empty.activity")}
+        />
+      )}
     </div>
   );
 }

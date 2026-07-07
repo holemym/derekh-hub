@@ -153,6 +153,15 @@
     "details": "Details",
     "notFound": "Fall nicht gefunden",
     "advanceStage": "Nächste Stufe",
+    "advanceTo": "Weiter zu {stage}",
+    "advancing": "Wird verschoben…",
+    "completed": "Beerdigt — Fall abgeschlossen",
+    "advanceError": "Die Stufe konnte nicht geändert werden. Bitte erneut versuchen.",
+    "jumpTo": "Zu {stage} springen",
+    "jumpConfirm": "Diesen Fall direkt zu {stage} springen? Dabei werden die dazwischenliegenden Stufen übersprungen und protokolliert.",
+    "activity": {
+      "stageChanged": "Stufe von {from} zu {to} geändert"
+    },
     "fields": {
       "hebrewName": "Hebräischer Name",
       "secularName": "Bürgerlicher Name",
