@@ -134,10 +134,10 @@ export interface BuildPermitContextOpts {
   documents?: PermitDocumentChecks;
   /** Declaration date (defaults to today, Vienna). Accepts ISO. */
   declarationDate?: string;
-  /** Cause of death / ICD code — not on the Case yet; pass through if known. */
+  /** Cause of death / ICD code — override the Case's own values if passed. */
   causeOfDeath?: string;
   icdCode?: string;
-  /** Place of birth / last permanent address — not on the Case yet. */
+  /** Place of birth / last permanent address — override the Case's values. */
   placeOfBirth?: string;
   lastAddress?: string;
 }
@@ -192,14 +192,16 @@ export function buildPermitContext(
       secular_last: last,
       secular_first: first,
       dob: formatPermitDate(caseRow.dob),
-      place_of_birth: opts.placeOfBirth ?? "",
-      last_address: opts.lastAddress ?? "",
+      // Real case fields now carry these (reconciled with the DB schema);
+      // opts remain as an override for callers that pass explicit values.
+      place_of_birth: opts.placeOfBirth ?? caseRow.placeOfBirth ?? "",
+      last_address: opts.lastAddress ?? caseRow.lastAddress ?? "",
       nationality: caseRow.nationality ?? "",
       id_number: idForGrid(caseRow.idOrPassport),
       dod: formatPermitDate(caseRow.dod),
       place_of_death: caseRow.placeOfDeath ?? "",
-      cause_of_death: opts.causeOfDeath ?? "",
-      icd_code: opts.icdCode ?? "",
+      cause_of_death: opts.causeOfDeath ?? caseRow.causeOfDeath ?? "",
+      icd_code: opts.icdCode ?? caseRow.icdCode ?? "",
       // Burial place: the specific plot if known, else the cemetery.
       burial_place: caseRow.burialPlace ?? caseRow.cemetery ?? "",
     },

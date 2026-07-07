@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import Header from "@/components/Header";
 import TabNav from "@/components/TabNav";
+import AppChrome from "@/components/AppChrome";
 import SWRegister from "@/components/SWRegister";
 import "./globals.css";
 
@@ -47,10 +48,14 @@ export default async function RootLayout({
       <body className="min-h-full">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <div className="mx-auto flex min-h-dvh w-full max-w-[680px] flex-col">
-            <Header />
+            <AppChrome>
+              <Header />
+            </AppChrome>
             <main className="flex-1 px-4 pb-28 pt-5">{children}</main>
           </div>
-          <TabNav />
+          <AppChrome>
+            <TabNav />
+          </AppChrome>
           <SWRegister />
         </NextIntlClientProvider>
       </body>

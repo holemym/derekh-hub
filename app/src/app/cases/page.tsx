@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 /** All cases, grouped by pipeline stage. */
 export default async function CasesPage() {
   const t = await getTranslations();
-  const grouped = casesByStage();
+  const grouped = await casesByStage();
 
   return (
     <div>

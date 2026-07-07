@@ -93,5 +93,26 @@
     "urgent": "Dringend",
     "inTransit": "Unterwegs",
     "done": "Erledigt"
+  },
+  "auth": {
+    "appName": "Derech",
+    "tagline": "Bestattung & Überführung",
+    "signInTitle": "Anmelden",
+    "signInBody": "Gib deine E-Mail-Adresse ein — wir senden dir einen einmaligen Anmeldelink.",
+    "emailLabel": "E-Mail",
+    "emailPlaceholder": "du@beispiel.org",
+    "sendLink": "Anmeldelink senden",
+    "sending": "Senden…",
+    "checkEmailTitle": "Prüfe deine E-Mails",
+    "checkEmailBody": "Wir haben einen Anmeldelink an {email} gesendet. Öffne ihn auf diesem Gerät, um fortzufahren.",
+    "useDifferentEmail": "Andere E-Mail verwenden",
+    "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "footnote": "Der Zugang ist auf autorisiertes Personal beschränkt. Dieser Hub enthält sensible personenbezogene Daten — jede Anmeldung wird protokolliert.",
+    "noAccessTitle": "Konto nicht autorisiert",
+    "noAccessBody": "Du bist angemeldet, aber dieses Konto ist nicht für Derech autorisiert. Bitte einen Owner, dich hinzuzufügen, oder melde dich mit einem autorisierten Konto an.",
+    "signOutTryAnother": "Abmelden & anderes Konto verwenden",
+    "account": "Konto",
+    "signOut": "Abmelden",
+    "signingOut": "Abmelden…"
   }
 }

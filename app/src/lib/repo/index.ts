@@ -1,45 +1,40 @@
 /**
  * Data-access seam.
  *
- * Everything that reads/writes cases goes through this module. Today it is
- * backed by the local mock (PLANNING §Phase 0). When the Supabase project
- * exists (M0 / db-workstream CONNECT.md), a `supabase.ts` implementation
- * slots in behind the SAME function signatures and this file re-exports it —
- * callers (pages, components) never change.
+ * Everything that reads/writes cases goes through this module. It is now backed
+ * by LIVE Supabase data (./supabase), read through the RLS-scoped server client
+ * so every query respects the logged-in staff session. Callers (pages,
+ * components) import only from here and receive the app `Case` shape — they
+ * never see DB rows or Supabase.
  *
- * Keep this the ONLY place the app imports from `@/lib/mock`.
+ * All reads are async (they hit the network / DB). The pure urgency + next-
+ * action helpers remain in @/lib/mock (they operate on mapped `Case` objects).
  */
 
 import type { Case, PipelineStage } from "@/lib/types";
 import {
-  MOCK_CASES,
-  casesByStage as mockCasesByStage,
-  casesByUrgency as mockCasesByUrgency,
-  getCase as mockGetCase,
-} from "@/lib/mock";
-
-// TODO(M0): swap the mock-backed impls below for a Supabase-backed repo.
-//   e.g. `import * as impl from "./supabase";` guarded by an env flag:
-//     const useSupabase = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
-//   The Supabase impl must return the same `Case` shape (map DB rows → Case).
-//   Until a project exists (see db/CONNECT.md) we stay on the mock.
+  listCases as sbListCases,
+  getCase as sbGetCase,
+  casesByStage as sbCasesByStage,
+  casesByUrgency as sbCasesByUrgency,
+} from "./supabase";
 
 /** All cases (unsorted). */
-export function listCases(): Case[] {
-  return MOCK_CASES;
+export function listCases(): Promise<Case[]> {
+  return sbListCases();
 }
 
 /** One case by id, or undefined. */
-export function getCase(id: string): Case | undefined {
-  return mockGetCase(id);
+export function getCase(id: string): Promise<Case | undefined> {
+  return sbGetCase(id);
 }
 
 /** Cases grouped by pipeline stage (for the Cases list). */
-export function casesByStage(): Map<PipelineStage, Case[]> {
-  return mockCasesByStage();
+export function casesByStage(): Promise<Map<PipelineStage, Case[]>> {
+  return sbCasesByStage();
 }
 
 /** Cases sorted by real urgency (for the Today screen). */
-export function casesByUrgency(nowDate: Date = new Date()): Case[] {
-  return mockCasesByUrgency(nowDate);
+export function casesByUrgency(nowDate: Date = new Date()): Promise<Case[]> {
+  return sbCasesByUrgency(nowDate);
 }

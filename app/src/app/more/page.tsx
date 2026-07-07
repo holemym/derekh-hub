@@ -1,12 +1,29 @@
 import { getTranslations } from "next-intl/server";
 import LanguageSwitch from "@/components/LanguageSwitch";
+import SignOutButton from "@/components/SignOutButton";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { IconDoc, IconContacts, IconMore } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
-/** More — language switch + placeholders for later phases. */
+/** More — signed-in identity, language switch + placeholders for later phases. */
 export default async function MorePage() {
   const t = await getTranslations("more");
+  const tAuth = await getTranslations("auth");
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  let staffName: string | null = null;
+  if (user) {
+    const { data: staff } = await supabase
+      .from("staff")
+      .select("name")
+      .eq("id", user.id)
+      .maybeSingle();
+    staffName = (staff as { name: string } | null)?.name ?? null;
+  }
 
   const placeholders = [
     { key: "settings", Icon: IconMore },
@@ -20,7 +37,23 @@ export default async function MorePage() {
         {t("title")}
       </h1>
 
+      {/* Signed-in identity + sign out */}
       <h2 className="mb-2 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">
+        {tAuth("account")}
+      </h2>
+      <div className="rounded-card border border-line bg-card p-4">
+        {user ? (
+          <div className="mb-3">
+            {staffName ? (
+              <p className="text-sm font-semibold">{staffName}</p>
+            ) : null}
+            <p className="truncate text-[13px] text-muted">{user.email}</p>
+          </div>
+        ) : null}
+        <SignOutButton />
+      </div>
+
+      <h2 className="mb-2 mt-6 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">
         {t("language")}
       </h2>
       <div className="rounded-card border border-line bg-card p-3">

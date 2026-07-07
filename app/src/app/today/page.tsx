@@ -17,7 +17,9 @@ export default async function TodayPage() {
 
   const now = new Date();
   const win = shabbosWindow(now);
-  const cases = casesByUrgency(now).filter((c) => c.status !== "buried");
+  const cases = (await casesByUrgency(now)).filter(
+    (c) => c.status !== "buried",
+  );
 
   const showCountdown = win !== null && win.withinWindow;
   const hoursWhole = win ? Math.floor(win.hoursUntil) : 0;

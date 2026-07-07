@@ -110,12 +110,21 @@ export interface Task {
 export interface Case {
   id: string;
   hebrewName: string;
+  /** Combined "First Last" for display; derived from secular_first/last. */
   secularName: string;
   dob?: string; // ISO date
   dod: string; // ISO datetime — petira
   placeOfDeath: string;
+  /** Where the niftar was born — permit field `pob` (DB place_of_birth). */
+  placeOfBirth?: string;
+  /** Last permanent address — permit field `address` (DB last_address ?? address). */
+  lastAddress?: string;
   idOrPassport?: string;
   nationality: string;
+  /** GDPR: medical data. Permit field `cause_of_death` (DB cause_of_death). */
+  causeOfDeath?: string;
+  /** ICD-10 code for cause of death (DB icd_code). */
+  icdCode?: string;
   status: PipelineStage;
   /** Truly time-critical right now (drives the single red accent). */
   urgent: boolean;

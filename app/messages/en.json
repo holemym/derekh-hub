@@ -93,5 +93,26 @@
     "urgent": "Urgent",
     "inTransit": "In transit",
     "done": "Done"
+  },
+  "auth": {
+    "appName": "Derech",
+    "tagline": "Burial & transport operations",
+    "signInTitle": "Sign in",
+    "signInBody": "Enter your email and we'll send you a one-time sign-in link.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.org",
+    "sendLink": "Send sign-in link",
+    "sending": "Sending…",
+    "checkEmailTitle": "Check your email",
+    "checkEmailBody": "We sent a sign-in link to {email}. Open it on this device to continue.",
+    "useDifferentEmail": "Use a different email",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "footnote": "Access is limited to authorized staff. This hub holds sensitive personal data — every sign-in is logged.",
+    "noAccessTitle": "Account not authorized",
+    "noAccessBody": "You're signed in, but this account isn't authorized for Derech. Ask an owner to add you, or sign in with an authorized account.",
+    "signOutTryAnother": "Sign out & try another account",
+    "account": "Account",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…"
   }
 }
