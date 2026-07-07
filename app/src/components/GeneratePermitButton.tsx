@@ -16,6 +16,8 @@
  */
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { generate, validate } from "@derech/doc-engine";
 import type { FormTemplate, ValidationIssue } from "@derech/doc-engine";
 import type { Case } from "@/lib/types";
@@ -25,9 +27,22 @@ import {
   coercePermitForm,
 } from "@/lib/documents/form";
 import template from "@/lib/documents/templates/il-mfa-transfer-permit.json";
+import { savePermitToCase } from "@/app/cases/[id]/documents/actions";
 import { IconDoc, IconCheck } from "@/components/icons";
 
 const FORM_URL = "/forms/il-mfa-transfer-permit.pdf";
+
+const TEMPLATE_KEY = "il-mfa-transfer-permit";
+
+/** Uint8Array → base64 (chunked to avoid arg-length limits on large PDFs). */
+function bytesToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
 
 function filenameFor(c: Case): string {
   const last =
@@ -38,38 +53,46 @@ function filenameFor(c: Case): string {
 }
 
 export default function GeneratePermitButton({ c }: { c: Case }) {
+  const t = useTranslations();
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [issues, setIssues] = useState<ValidationIssue[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  /** Build + fill the permit PDF for this case; returns the bytes. */
+  async function buildPermitBytes(): Promise<Uint8Array> {
+    const tpl = template as unknown as FormTemplate;
+    // Prefer the verbatim New-permit snapshot when the case was created via
+    // the form — it carries funeral-service No., licence expiry and the 9
+    // document checkboxes that have no normalized columns. Fall back to the
+    // Case→context mapper for cases created any other way.
+    const data = (
+      c.permitData
+        ? buildPermitContextFromForm(coercePermitForm(c.permitData))
+        : buildPermitContext(c)
+    ) as unknown as Record<string, unknown>;
+
+    // Validate first; show issues but don't block (mirror the live tool).
+    const result = validate(tpl, data);
+    setIssues(result.issues);
+
+    // generate() throws on ENCODING issues (non-WinAnsi text) before drawing.
+    // Everything else (missing/overflow) is non-fatal.
+    const res = await fetch(FORM_URL);
+    if (!res.ok) throw new Error(`Could not load blank form (${res.status})`);
+    const pdfBytes = new Uint8Array(await res.arrayBuffer());
+    return generate(tpl, pdfBytes, data);
+  }
 
   async function run() {
     setBusy(true);
     setError(null);
     setDone(false);
     try {
-      const tpl = template as unknown as FormTemplate;
-      // Prefer the verbatim New-permit snapshot when the case was created via
-      // the form — it carries funeral-service No., licence expiry and the 9
-      // document checkboxes that have no normalized columns. Fall back to the
-      // Case→context mapper for cases created any other way.
-      const data = (
-        c.permitData
-          ? buildPermitContextFromForm(coercePermitForm(c.permitData))
-          : buildPermitContext(c)
-      ) as unknown as Record<string, unknown>;
-
-      // Validate first; show issues but don't block (mirror the live tool).
-      const result = validate(tpl, data);
-      setIssues(result.issues);
-
-      // generateDetailed/generate throws on ENCODING issues (non-WinAnsi text)
-      // before drawing. Everything else (missing/overflow) is non-fatal.
-      const res = await fetch(FORM_URL);
-      if (!res.ok) throw new Error(`Could not load blank form (${res.status})`);
-      const pdfBytes = new Uint8Array(await res.arrayBuffer());
-
-      const filled = await generate(tpl, pdfBytes, data);
+      const filled = await buildPermitBytes();
 
       const blob = new Blob([filled as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
@@ -92,6 +115,35 @@ export default function GeneratePermitButton({ c }: { c: Case }) {
     }
   }
 
+  /**
+   * Save the just-generated permit to the case: generate the same bytes
+   * server-side does not have the blank PDF, so we produce them here and hand
+   * base64 to a server action that writes to case-docs + inserts a row.
+   */
+  async function save() {
+    setSaving(true);
+    setSaved(false);
+    setError(null);
+    try {
+      const filled = await buildPermitBytes();
+      const res = await savePermitToCase({
+        caseId: c.id,
+        fileName: filenameFor(c),
+        base64: bytesToBase64(filled),
+        templateKey: TEMPLATE_KEY,
+      });
+      if (!res.ok) throw new Error(res.error || "Save failed");
+      setSaved(true);
+      router.refresh();
+    } catch (e) {
+      const err = e as Error & { issues?: ValidationIssue[] };
+      if (err.issues?.length) setIssues(err.issues);
+      setError(err.message || "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   const encodingIssues = issues.filter((i) => i.kind === "encoding");
   const otherIssues = issues.filter((i) => i.kind !== "encoding");
 
@@ -104,15 +156,34 @@ export default function GeneratePermitButton({ c }: { c: Case }) {
             IL MFA transfer permit
           </span>
         </span>
-        <button
-          type="button"
-          onClick={run}
-          disabled={busy}
-          className="pressable flex min-h-9 shrink-0 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg disabled:opacity-60"
-        >
-          {done ? <IconCheck size={15} /> : null}
-          {busy ? "Generating…" : done ? "Generated" : "Generate permit"}
-        </button>
+        <span className="flex shrink-0 items-center gap-1.5">
+          <button
+            type="button"
+            onClick={save}
+            disabled={saving || busy}
+            className="pressable flex min-h-9 items-center gap-1 rounded-xl border border-line px-3 text-[13px] font-medium text-ink disabled:opacity-60"
+          >
+            {saved ? <IconCheck size={14} /> : null}
+            {saving
+              ? t("documents.permit.saving")
+              : saved
+                ? t("documents.permit.saved")
+                : t("documents.permit.save")}
+          </button>
+          <button
+            type="button"
+            onClick={run}
+            disabled={busy}
+            className="pressable flex min-h-9 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg disabled:opacity-60"
+          >
+            {done ? <IconCheck size={15} /> : null}
+            {busy
+              ? t("documents.permit.generating")
+              : done
+                ? t("documents.permit.generated")
+                : t("documents.permit.generate")}
+          </button>
+        </span>
       </div>
 
       {error ? (

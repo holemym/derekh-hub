@@ -154,6 +154,41 @@
       "activity": "No activity recorded yet. Every change to this case will be logged here."
     }
   },
+  "documents": {
+    "upload": "Upload",
+    "uploading": "Uploading…",
+    "download": "Download",
+    "opening": "Opening…",
+    "delete": "Delete",
+    "confirmDelete": "Remove this document from the case? The file will be deleted.",
+    "errorUpload": "Upload failed. Please try again.",
+    "errorDownload": "Could not open the document.",
+    "errorDelete": "Could not remove the document.",
+    "status": {
+      "needed": "Needed",
+      "requested": "Requested",
+      "received": "Received",
+      "generated": "Generated"
+    },
+    "permit": {
+      "generate": "Generate permit",
+      "generating": "Generating…",
+      "generated": "Generated",
+      "save": "Save to case",
+      "saving": "Saving…",
+      "saved": "Saved"
+    }
+  },
+  "docTypes": {
+    "death_certificate": "Death certificate",
+    "id_copy": "Copy of the deceased's ID",
+    "doctor_certificate": "Doctor's certificate (cause of death)",
+    "local_transfer_permit": "Local transfer permit",
+    "sealing_permit": "Sealing permit",
+    "funeral_acceptance": "Funeral-service acceptance",
+    "other": "Other document",
+    "il-mfa-transfer-permit": "IL MFA transfer permit"
+  },
   "transportPage": {
     "title": "Transport",
     "emptyTitle": "No transport board yet",

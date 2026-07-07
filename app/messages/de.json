@@ -154,6 +154,41 @@
       "activity": "Noch kein Verlauf. Jede Änderung an diesem Fall wird hier protokolliert."
     }
   },
+  "documents": {
+    "upload": "Hochladen",
+    "uploading": "Wird hochgeladen…",
+    "download": "Herunterladen",
+    "opening": "Wird geöffnet…",
+    "delete": "Löschen",
+    "confirmDelete": "Dieses Dokument aus dem Fall entfernen? Die Datei wird gelöscht.",
+    "errorUpload": "Hochladen fehlgeschlagen. Bitte erneut versuchen.",
+    "errorDownload": "Dokument konnte nicht geöffnet werden.",
+    "errorDelete": "Dokument konnte nicht entfernt werden.",
+    "status": {
+      "needed": "Benötigt",
+      "requested": "Angefordert",
+      "received": "Erhalten",
+      "generated": "Erstellt"
+    },
+    "permit": {
+      "generate": "Genehmigung erstellen",
+      "generating": "Wird erstellt…",
+      "generated": "Erstellt",
+      "save": "Im Fall speichern",
+      "saving": "Wird gespeichert…",
+      "saved": "Gespeichert"
+    }
+  },
+  "docTypes": {
+    "death_certificate": "Sterbeurkunde",
+    "id_copy": "Kopie des Ausweises der/des Verstorbenen",
+    "doctor_certificate": "Ärztliche Bescheinigung (Todesursache)",
+    "local_transfer_permit": "Örtliche Überführungsgenehmigung",
+    "sealing_permit": "Versiegelungsbescheinigung",
+    "funeral_acceptance": "Aufnahmebestätigung der Bestattungsstelle",
+    "other": "Sonstiges Dokument",
+    "il-mfa-transfer-permit": "IL-Außenministerium-Überführungsgenehmigung"
+  },
   "transportPage": {
     "title": "Transport",
     "emptyTitle": "Noch keine Transportübersicht",

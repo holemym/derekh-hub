@@ -6,11 +6,11 @@ import { formatDate, formatDateTime } from "@/lib/format";
 import PipelineStepper from "@/components/PipelineStepper";
 import CaseActions from "@/components/CaseActions";
 import GeneratePermitButton from "@/components/GeneratePermitButton";
+import CaseDocuments from "@/components/CaseDocuments";
 import TransitLine from "@/components/TransitLine";
 import EmptyState from "@/components/EmptyState";
 import {
   IconChevronRight,
-  IconDoc,
   IconPlane,
   IconContacts,
   IconActivity,
@@ -106,35 +106,13 @@ export default async function CaseDetailPage({
         {t("caseDetail.sections.documents")}
       </h2>
       <div className="flex flex-col gap-2.5">
-        {/* The Israeli MFA transfer permit generates on-device from this case. */}
+        {/* The Israeli MFA transfer permit generates on-device from this case
+            (download) and can be saved into the case-docs vault. */}
         <GeneratePermitButton c={c} />
 
-        {/* Any other documents already tracked for this case. */}
-        {c.documents.filter((d) => d.type !== "il-mfa-transfer-permit").length >
-        0 ? (
-          <div className="overflow-hidden rounded-card border border-line bg-card">
-            {c.documents
-              .filter((d) => d.type !== "il-mfa-transfer-permit")
-              .map((d, i) => (
-                <div
-                  key={d.id}
-                  className={`flex min-h-[52px] items-center justify-between gap-3 px-4 py-3 ${
-                    i > 0 ? "border-t border-line" : ""
-                  }`}
-                >
-                  <span className="flex min-w-0 items-center gap-2.5">
-                    <IconDoc size={18} className="shrink-0 text-muted" />
-                    <span className="truncate text-sm font-medium">
-                      {d.title}
-                    </span>
-                  </span>
-                  <span className="shrink-0 rounded-chip border border-line px-2 py-0.5 text-[11px] uppercase tracking-wide text-muted">
-                    {d.status}
-                  </span>
-                </div>
-              ))}
-          </div>
-        ) : null}
+        {/* The document vault: uploaded scans + saved permits, with signed-URL
+            download and delete. Private `case-docs` bucket, RLS-scoped. */}
+        <CaseDocuments caseId={c.id} documents={c.documents} />
       </div>
 
       {/* Transport */}
