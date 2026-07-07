@@ -133,6 +133,13 @@ export interface Case {
   cemetery?: string;
   burialPlace?: string;
   assignedTo?: string;
+  /**
+   * Raw New-permit form snapshot (DB cases.permit_data). When present, the
+   * permit regenerates VERBATIM from this — including funeral-service No.,
+   * licence expiry and the 9 document checkboxes that have no normalized
+   * columns. Shape = PermitForm (src/lib/documents/form.ts).
+   */
+  permitData?: Record<string, unknown>;
   /** When each stage was entered. */
   stageTimestamps: Partial<Record<PipelineStage, string>>;
   contacts: CaseContact[];

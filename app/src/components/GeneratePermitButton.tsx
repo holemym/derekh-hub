@@ -20,6 +20,10 @@ import { generate, validate } from "@derech/doc-engine";
 import type { FormTemplate, ValidationIssue } from "@derech/doc-engine";
 import type { Case } from "@/lib/types";
 import { buildPermitContext } from "@/lib/documents/context";
+import {
+  buildPermitContextFromForm,
+  coercePermitForm,
+} from "@/lib/documents/form";
 import template from "@/lib/documents/templates/il-mfa-transfer-permit.json";
 import { IconDoc, IconCheck } from "@/components/icons";
 
@@ -45,7 +49,15 @@ export default function GeneratePermitButton({ c }: { c: Case }) {
     setDone(false);
     try {
       const tpl = template as unknown as FormTemplate;
-      const data = buildPermitContext(c) as unknown as Record<string, unknown>;
+      // Prefer the verbatim New-permit snapshot when the case was created via
+      // the form — it carries funeral-service No., licence expiry and the 9
+      // document checkboxes that have no normalized columns. Fall back to the
+      // Case→context mapper for cases created any other way.
+      const data = (
+        c.permitData
+          ? buildPermitContextFromForm(coercePermitForm(c.permitData))
+          : buildPermitContext(c)
+      ) as unknown as Record<string, unknown>;
 
       // Validate first; show issues but don't block (mirror the live tool).
       const result = validate(tpl, data);
@@ -67,7 +79,9 @@ export default function GeneratePermitButton({ c }: { c: Case }) {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      URL.revokeObjectURL(url);
+      // Delay revoke — revoking immediately can cancel the download in some
+      // browsers before it starts (matches the standalone tool's behaviour).
+      setTimeout(() => URL.revokeObjectURL(url), 15000);
       setDone(true);
     } catch (e) {
       const err = e as Error & { issues?: ValidationIssue[] };

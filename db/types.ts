@@ -181,6 +181,7 @@ export interface CaseRow {
   assigned_to: Uuid | null;
   stage_timestamps: StageTimestamps;
   notes: string | null;
+  permit_data: Record<string, unknown> | null; // 0005: raw New-permit form snapshot for verbatim regeneration
   deleted_at: IsoTimestamp | null;
   created_at: IsoTimestamp;
   updated_at: IsoTimestamp;

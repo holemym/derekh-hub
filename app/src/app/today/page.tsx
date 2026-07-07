@@ -2,8 +2,9 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { casesByUrgency } from "@/lib/repo";
 import { hebrewDate, shabbosWindow } from "@/lib/zmanim";
 import { formatWeekdayTime } from "@/lib/format";
+import Link from "next/link";
 import CaseCard from "@/components/CaseCard";
-import { IconCandles } from "@/components/icons";
+import { IconCandles, IconPlus } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -57,9 +58,18 @@ export default async function TodayPage() {
         )}
       </div>
 
-      <p className="mb-3 text-sm text-muted">
-        {t("openCases", { count: cases.length })}
-      </p>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="text-sm text-muted">
+          {t("openCases", { count: cases.length })}
+        </p>
+        <Link
+          href="/cases/new"
+          className="pressable flex min-h-10 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg"
+        >
+          <IconPlus size={16} />
+          {t("newPermit")}
+        </Link>
+      </div>
 
       {cases.length === 0 ? (
         <p className="py-16 text-center text-sm text-muted">{t("allQuiet")}</p>

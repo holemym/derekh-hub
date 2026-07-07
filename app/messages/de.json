@@ -11,6 +11,7 @@
   },
   "today": {
     "title": "Heute",
+    "newPermit": "Neue Genehmigung",
     "openCases": "{count, plural, =0 {Keine offenen Fälle} one {# offener Fall} other {# offene Fälle}}",
     "shabbosIn": "Schabbat in {hours}h {minutes}m",
     "candleLighting": "Kerzenzünden {time}",
@@ -39,6 +40,88 @@
     "title": "Fälle",
     "empty": "Noch keine Fälle",
     "openCase": "Fall öffnen"
+  },
+  "newPermit": {
+    "new": "Neue Genehmigung",
+    "back": "Fälle",
+    "title": "Neue Genehmigung",
+    "subtitle": "Angaben eingeben, die offizielle israelische Genehmigung erstellen und als Fall speichern.",
+    "generate": "Genehmigung erstellen",
+    "generating": "Wird erstellt…",
+    "generated": "Erstellt",
+    "save": "Im Hub speichern",
+    "saving": "Wird gespeichert…",
+    "declNote": "Firmenname, Funktion und Unterzeichner (IKG Wien · Bestattungsleiter · Mordechai Hammer) sind auf dem Formular vorgedruckt. Die Unterschrift wird nach dem Ausdruck handschriftlich ergänzt.",
+    "s": {
+      "deceased": "Die verstorbene Person",
+      "death": "Todesfall",
+      "transfer": "Überführung nach Israel",
+      "funeral": "Bestattungsunternehmen in Israel",
+      "documents": "Beigefügte Dokumente",
+      "declaration": "Erklärung"
+    },
+    "seg": {
+      "citizen": "Israel. Staatsbürger/in — ID-Nr.",
+      "foreigner": "Ausländer/in — Passnummer"
+    },
+    "hint": {
+      "id": "Ein Zeichen pro Kästchen gedruckt — max. 10 Zeichen.",
+      "fs": "Eine Ziffer pro Kästchen gedruckt — max. 9 Ziffern."
+    },
+    "f": {
+      "surname": "Nachname",
+      "firstname": "Vorname",
+      "hebrewName": "Hebräischer Name",
+      "dob": "Geburtsdatum",
+      "pob": "Geburtsort",
+      "address": "Letzte ständige Adresse",
+      "nationality": "Staatsangehörigkeit",
+      "idIsraeli": "Israelische ID-Nummer",
+      "idPassport": "Passnummer",
+      "dod": "Sterbedatum",
+      "pod": "Sterbeort",
+      "cause": "Todesursache",
+      "icd": "ICD-Code",
+      "burial": "Begräbnisort in Israel",
+      "flight": "Flugnummer",
+      "airline": "Fluggesellschaft",
+      "disembark": "Ankunftsort in Israel",
+      "transfer": "Datum der Überführung",
+      "fsName": "Name & Adresse",
+      "fsNo": "Nummer des Bestattungsunternehmens",
+      "license": "Ablaufdatum der Lizenz",
+      "decl": "Datum der Erklärung"
+    },
+    "doc": {
+      "death_certificate": "Sterbeurkunde",
+      "id_copy": "Kopie des Ausweises der verstorbenen Person",
+      "doctor_certificate": "Ärztliche Bescheinigung zur Todesursache",
+      "local_transfer_permit": "Genehmigung der örtlichen Behörden zur Überführung nach Israel",
+      "sealing_permit": "Offizielle Bescheinigung über die Art der Versiegelung des Leichnams",
+      "c19_sealing": "Bei C19: Leichnam in zwei Plastikhüllen, in einem Metallsarg oder zwei Holzsärgen versiegelt",
+      "funeral_acceptance": "Bescheinigung des Bestattungsunternehmens über die Bereitschaft zur Übernahme des Leichnams zur Bestattung in Israel",
+      "preservation_certificate": "Konservierungsbescheinigung (Trockeneis / Formalin, nicht erforderlich)",
+      "moh_permit": "Offizielle Genehmigung des Gesundheitsministeriums (Sonderfälle)"
+    },
+    "docHe": {
+      "death_certificate": "תעודת פטירה",
+      "id_copy": "צילום תעודת זיהוי הנפטר",
+      "doctor_certificate": "תעודת רופא על סיבת המוות",
+      "local_transfer_permit": "אישור שלטונות המקום להעברת הגופה לישראל",
+      "sealing_permit": "תעודת אריזה רשמית המעידה על איטום הגופה",
+      "c19_sealing": "אישור אריזת הגופה בשתי אריזות פלסטיק והכנסתה לארון עם דפנות מתכת / שני ארונות עץ",
+      "funeral_acceptance": "אישור חברת הקבורה לקבלת הגופה בשדה התעופה",
+      "preservation_certificate": "אישור שימור הגופה בפורמלין / קרח יבש (לא חובה)",
+      "moh_permit": "אישור של משרד הבריאות בארץ (במקרים מיוחדים)"
+    },
+    "review": {
+      "title": "Bitte prüfen Sie die Angaben",
+      "confirm": "Passt — Genehmigung erstellen",
+      "back": "Zurück und bearbeiten",
+      "documents": "Dokumente",
+      "docCount": "{count, plural, =0 {keine markiert} one {# zum Beifügen markiert} other {# zum Beifügen markiert}}",
+      "missing": "Einige Pflichtfelder sind noch leer: {fields}. Sie können trotzdem erstellen."
+    }
   },
   "caseDetail": {
     "back": "Fälle",

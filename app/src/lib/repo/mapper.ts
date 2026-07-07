@@ -159,6 +159,7 @@ export function mapCase(bundle: CaseRowBundle): Case {
     cemetery: r.cemetery ?? undefined,
     burialPlace: r.burial_place ?? undefined,
     assignedTo: r.assigned_to ?? undefined,
+    permitData: r.permit_data ?? undefined,
     stageTimestamps: (r.stage_timestamps ?? {}) as Partial<
       Record<PipelineStage, string>
     >,

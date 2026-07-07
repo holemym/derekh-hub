@@ -77,6 +77,14 @@ export function IconChevronRight(p: P) {
   );
 }
 
+export function IconPlus(p: P) {
+  return (
+    <Base {...p}>
+      <path d="M12 5v14M5 12h14" />
+    </Base>
+  );
+}
+
 export function IconCheck(p: P) {
   return (
     <Base {...p}>

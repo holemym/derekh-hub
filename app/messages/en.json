@@ -11,6 +11,7 @@
   },
   "today": {
     "title": "Today",
+    "newPermit": "New permit",
     "openCases": "{count, plural, =0 {No open cases} one {# open case} other {# open cases}}",
     "shabbosIn": "Shabbos in {hours}h {minutes}m",
     "candleLighting": "Candle-lighting {time}",
@@ -39,6 +40,88 @@
     "title": "Cases",
     "empty": "No cases yet",
     "openCase": "Open case"
+  },
+  "newPermit": {
+    "new": "New permit",
+    "back": "Cases",
+    "title": "New permit",
+    "subtitle": "Type the details, generate the official Israeli permit, and save it as a case.",
+    "generate": "Generate permit",
+    "generating": "Generating…",
+    "generated": "Generated",
+    "save": "Save to hub",
+    "saving": "Saving…",
+    "declNote": "Company name, title and signatory (IKG Vienna · Funeral Director · Mordechai Hammer) are pre-printed on the form. Signature is added by hand after printing.",
+    "s": {
+      "deceased": "The deceased",
+      "death": "Death",
+      "transfer": "Transfer to Israel",
+      "funeral": "Funeral service in Israel",
+      "documents": "Attached documents",
+      "declaration": "Declaration"
+    },
+    "seg": {
+      "citizen": "Israeli citizen — ID No.",
+      "foreigner": "Foreigner — Passport No."
+    },
+    "hint": {
+      "id": "Printed one character per box — max 10 characters.",
+      "fs": "Printed one digit per box — max 9 digits."
+    },
+    "f": {
+      "surname": "Surname",
+      "firstname": "First name",
+      "hebrewName": "Hebrew name",
+      "dob": "Date of birth",
+      "pob": "Place of birth",
+      "address": "Last permanent address",
+      "nationality": "Nationality",
+      "idIsraeli": "Israeli ID number",
+      "idPassport": "Passport number",
+      "dod": "Date of death",
+      "pod": "Place of death",
+      "cause": "Cause of death",
+      "icd": "ICD code",
+      "burial": "Place of burial in Israel",
+      "flight": "Flight No.",
+      "airline": "Airline company",
+      "disembark": "Point of disembarkation",
+      "transfer": "Date of transfer",
+      "fsName": "Name & address",
+      "fsNo": "Funeral service No.",
+      "license": "License expiry date",
+      "decl": "Declaration date"
+    },
+    "doc": {
+      "death_certificate": "Death certificate",
+      "id_copy": "A copy of the deceased's ID",
+      "doctor_certificate": "Doctor's certificate on cause of death",
+      "local_transfer_permit": "Permit from local authorities for transfer of body to Israel",
+      "sealing_permit": "Official permit describing the means used to seal the body",
+      "c19_sealing": "During C19: body sealed in two plastic bags, inside a metal coffin or two wooden coffins",
+      "funeral_acceptance": "Certificate from the funeral service stating its willingness to receive the body for burial in Israel",
+      "preservation_certificate": "Preservation certificate in dry ice / formalin (not required)",
+      "moh_permit": "Ministry of Health official permit (special cases)"
+    },
+    "docHe": {
+      "death_certificate": "תעודת פטירה",
+      "id_copy": "צילום תעודת זיהוי הנפטר",
+      "doctor_certificate": "תעודת רופא על סיבת המוות",
+      "local_transfer_permit": "אישור שלטונות המקום להעברת הגופה לישראל",
+      "sealing_permit": "תעודת אריזה רשמית המעידה על איטום הגופה",
+      "c19_sealing": "אישור אריזת הגופה בשתי אריזות פלסטיק והכנסתה לארון עם דפנות מתכת / שני ארונות עץ",
+      "funeral_acceptance": "אישור חברת הקבורה לקבלת הגופה בשדה התעופה",
+      "preservation_certificate": "אישור שימור הגופה בפורמלין / קרח יבש (לא חובה)",
+      "moh_permit": "אישור של משרד הבריאות בארץ (במקרים מיוחדים)"
+    },
+    "review": {
+      "title": "Please check the details",
+      "confirm": "Looks right — create permit",
+      "back": "Go back and edit",
+      "documents": "Documents",
+      "docCount": "{count, plural, =0 {none marked} one {# marked to attach} other {# marked to attach}}",
+      "missing": "Some required fields are still empty: {fields}. You can still generate."
+    }
   },
   "caseDetail": {
     "back": "Cases",

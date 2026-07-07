@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { casesByStage } from "@/lib/repo";
 import { PIPELINE_STAGES } from "@/lib/types";
-import { IconChevronRight } from "@/components/icons";
+import { IconChevronRight, IconPlus } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -13,9 +13,18 @@ export default async function CasesPage() {
 
   return (
     <div>
-      <h1 className="mb-5 text-2xl font-semibold tracking-tight">
-        {t("cases.title")}
-      </h1>
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {t("cases.title")}
+        </h1>
+        <Link
+          href="/cases/new"
+          className="pressable flex min-h-10 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg"
+        >
+          <IconPlus size={16} />
+          {t("newPermit.new")}
+        </Link>
+      </div>
 
       <div className="flex flex-col gap-6">
         {PIPELINE_STAGES.map((stage) => {
