@@ -7,9 +7,9 @@ Magic-link sign-in (M0) is wired in the app, but two settings live in the
 
 Supabase → **Authentication → URL Configuration**:
 
-- **Site URL:** `http://localhost:3000`
+- **Site URL:** `http://localhost:3210`
 - **Redirect URLs** — add:
-  - `http://localhost:3000/auth/callback`
+  - `http://localhost:3210/auth/callback`
   - Later, the production URL too, e.g. `https://<your-domain>/auth/callback`
 
 The magic-link email sends the user to `/auth/callback?code=…`; if that exact URL
