@@ -16,7 +16,31 @@
     "shabbosIn": "Schabbat in {hours}h {minutes}m",
     "candleLighting": "Kerzenzünden {time}",
     "allQuiet": "Alles ruhig. Kein Fall braucht eine Aktion.",
+    "allQuietTitle": "Zurzeit ist nichts zu tun",
+    "allQuietBody": "Keine offenen Fälle und keine fälligen Aufgaben. Sobald etwas Ihre Aufmerksamkeit braucht, erscheint es hier — nach echter Dringlichkeit sortiert.",
+    "noCases": "Keine offenen Fälle.",
     "urgent": "Dringend"
+  },
+  "tasks": {
+    "title": "Aufgaben",
+    "subtitle": "Alles Offene — Fallarbeit und eigenständige Erinnerungen.",
+    "dueSoon": "Bald fällig",
+    "addTask": "Aufgabe hinzufügen",
+    "add": "Hinzufügen",
+    "adding": "Wird hinzugefügt…",
+    "done": "Erledigt",
+    "complete": "Als erledigt markieren",
+    "cancel": "Abbrechen",
+    "confirmCancel": "Diese Aufgabe abbrechen? Sie wird aus der Liste entfernt.",
+    "titlePlaceholder": "Was ist zu tun?",
+    "due": "Fällig",
+    "overdue": "Überfällig",
+    "empty": "Keine offenen Aufgaben. Oben oder in einem Fall hinzufügen.",
+    "onShabbos": "fällt auf Schabbat",
+    "onShabbosHint": "Dieses Fälligkeitsdatum fällt auf Schabbat oder Jom Tov — eine frühere Frist ist womöglich sinnvoll.",
+    "openCase": "Fall öffnen",
+    "errorCreate": "Aufgabe konnte nicht erstellt werden. Bitte erneut versuchen.",
+    "errorUpdate": "Aufgabe konnte nicht aktualisiert werden. Bitte erneut versuchen."
   },
   "stages": {
     "notified": "Gemeldet",
@@ -143,6 +167,7 @@
     },
     "sections": {
       "documents": "Dokumente",
+      "tasks": "Aufgaben",
       "transport": "Transport",
       "contacts": "Kontakte",
       "activity": "Verlauf"
@@ -203,6 +228,7 @@
     "settings": "Einstellungen",
     "templates": "Formularvorlagen",
     "contacts": "Kontaktbuch",
+    "tasks": "Aufgaben",
     "intake": "Angaben der Familie",
     "intakeLinkTitle": "Öffentlicher Erfassungslink",
     "intakeLinkBody": "Teilen Sie diesen Link mit einer Familie. Sie kann die Angaben eintragen und Dokumente anhängen — die Übermittlung erscheint im Eingang „Angaben der Familie“.",

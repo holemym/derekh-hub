@@ -13,9 +13,10 @@
 import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Case, PipelineStage } from "@/lib/types";
+import type { Task } from "@/lib/types";
 import { PIPELINE_STAGES } from "@/lib/types";
-import { urgencyScore } from "@/lib/mock";
-import { mapCase } from "./mapper";
+import { urgencyScore } from "@/lib/planning";
+import { mapCase, mapTask } from "./mapper";
 import type {
   CaseRow,
   TransportLegRow,
@@ -83,4 +84,46 @@ export async function casesByUrgency(
   return cases.sort(
     (a, b) => urgencyScore(b, nowDate) - urgencyScore(a, nowDate),
   );
+}
+
+/**
+ * Open cases only (status != 'buried', not deleted), urgency-sorted. This is
+ * the Today feed — the daily command surface (ROADMAP M2).
+ */
+export async function openCasesByUrgency(
+  nowDate: Date = new Date(),
+): Promise<Case[]> {
+  const cases = await casesByUrgency(nowDate);
+  return cases.filter((c) => c.status !== "buried");
+}
+
+/* ── Tasks (ROADMAP M2 planning layer) ─────────────────────────────────── */
+
+/**
+ * All OPEN tasks across every case + standalone, due-sorted (earliest first,
+ * undated last). RLS-scoped. Used by the Today "Due soon" section and /tasks.
+ */
+export async function listOpenTasks(): Promise<Task[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("status", "open")
+    .is("deleted_at", null)
+    .order("due", { ascending: true, nullsFirst: false });
+  if (error) throw new Error(`tasks read failed: ${error.message}`);
+  return ((data ?? []) as TaskRow[]).map(mapTask);
+}
+
+/** Open + done tasks for one case, due-sorted (for the case-detail Tasks list). */
+export async function tasksForCase(caseId: string): Promise<Task[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("case_id", caseId)
+    .is("deleted_at", null)
+    .order("due", { ascending: true, nullsFirst: false });
+  if (error) throw new Error(`case tasks read failed: ${error.message}`);
+  return ((data ?? []) as TaskRow[]).map(mapTask);
 }

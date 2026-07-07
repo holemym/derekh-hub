@@ -11,12 +11,15 @@
  * action helpers remain in @/lib/mock (they operate on mapped `Case` objects).
  */
 
-import type { Case, PipelineStage } from "@/lib/types";
+import type { Case, PipelineStage, Task } from "@/lib/types";
 import {
   listCases as sbListCases,
   getCase as sbGetCase,
   casesByStage as sbCasesByStage,
   casesByUrgency as sbCasesByUrgency,
+  openCasesByUrgency as sbOpenCasesByUrgency,
+  listOpenTasks as sbListOpenTasks,
+  tasksForCase as sbTasksForCase,
 } from "./supabase";
 
 /** All cases (unsorted). */
@@ -37,4 +40,19 @@ export function casesByStage(): Promise<Map<PipelineStage, Case[]>> {
 /** Cases sorted by real urgency (for the Today screen). */
 export function casesByUrgency(nowDate: Date = new Date()): Promise<Case[]> {
   return sbCasesByUrgency(nowDate);
+}
+
+/** Open cases only (status != 'buried'), urgency-sorted — the Today feed. */
+export function openCasesByUrgency(nowDate: Date = new Date()): Promise<Case[]> {
+  return sbOpenCasesByUrgency(nowDate);
+}
+
+/** All open tasks (case + standalone), due-sorted — the Today "Due soon" list. */
+export function listOpenTasks(): Promise<Task[]> {
+  return sbListOpenTasks();
+}
+
+/** Tasks for one case (open + done), due-sorted. */
+export function tasksForCase(caseId: string): Promise<Task[]> {
+  return sbTasksForCase(caseId);
 }

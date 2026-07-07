@@ -8,16 +8,28 @@ import TransitLine from "./TransitLine";
 
 /**
  * One case = one card = one next action (PLANNING §2.3, §9).
- * Red styling appears ONLY when the case is truly time-critical.
+ * The red accent appears ONLY when the case is truly time-critical — i.e.
+ * `critical` (computed by the Today page from isTimeCritical: open work due
+ * before candle-lighting, or a manual urgent flag). `critical` defaults to the
+ * manual flag so the Cases list still reflects urgency without zmanim context.
  */
-export default function CaseCard({ c, index }: { c: Case; index: number }) {
+export default function CaseCard({
+  c,
+  index,
+  critical,
+}: {
+  c: Case;
+  index: number;
+  critical?: boolean;
+}) {
   const t = useTranslations();
   const activeLeg = c.transportLegs.find((l) => l.status === "in_transit");
+  const hot = critical ?? c.urgent;
 
   return (
     <article
       className={`rise-in relative rounded-card border bg-card p-4 ${
-        c.urgent ? "border-urgent/50" : "border-line"
+        hot ? "border-urgent/50" : "border-line"
       }`}
       style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}
     >
@@ -36,7 +48,7 @@ export default function CaseCard({ c, index }: { c: Case; index: number }) {
           <p className="mt-0.5 truncate text-sm text-muted">{c.secularName}</p>
         </div>
 
-        {c.urgent ? (
+        {hot ? (
           <span className="flex shrink-0 items-center gap-1.5 rounded-chip border border-urgent/40 px-2.5 py-1 text-xs font-medium text-urgent">
             <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-urgent" />
             {t("common.urgent")}
@@ -48,11 +60,20 @@ export default function CaseCard({ c, index }: { c: Case; index: number }) {
         )}
       </div>
 
-      {c.urgent && c.urgencyNote ? (
+      {hot && c.urgencyNote ? (
         <p className="mt-2 text-[13px] font-medium text-urgent">
           {c.urgencyNote}
         </p>
       ) : null}
+
+      {/* The ONE next action — "do the next thing" (PLANNING §2.3). */}
+      <p
+        className={`mt-2 text-[13px] font-medium ${
+          hot ? "text-urgent" : "text-ink"
+        }`}
+      >
+        {t(`actions.${c.status}`)}
+      </p>
 
       <div className="mt-3">
         <PipelineBar stage={c.status} />
@@ -63,21 +84,6 @@ export default function CaseCard({ c, index }: { c: Case; index: number }) {
           <TransitLine leg={activeLeg} />
         </div>
       ) : null}
-
-      <button
-        type="button"
-        onClick={() =>
-          // Stub — wired to real mutations in a later phase.
-          console.log("[derech] next action", c.id, c.status)
-        }
-        className={`pressable relative z-10 mt-3 flex min-h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-semibold ${
-          c.urgent
-            ? "bg-urgent text-white"
-            : "border border-ink/80 text-ink"
-        }`}
-      >
-        {t(`actions.${c.status}`)}
-      </button>
     </article>
   );
 }

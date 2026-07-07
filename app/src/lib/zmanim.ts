@@ -57,7 +57,7 @@ export function hoursUntilShabbos(now: Date = new Date()): number | null {
 }
 
 /** Same civil day in Vienna? (compares YYYY-MM-DD in Europe/Vienna) */
-function sameViennaDay(a: Date, b: Date): boolean {
+export function sameViennaDay(a: Date, b: Date): boolean {
   const fmt = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Vienna",
     year: "numeric",

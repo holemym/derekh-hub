@@ -8,6 +8,7 @@ import {
   IconContacts,
   IconMore,
   IconInbox,
+  IconCheck,
   IconChevronRight,
 } from "@/components/icons";
 
@@ -67,10 +68,22 @@ export default async function MorePage() {
         <LanguageSwitch />
       </div>
 
+      {/* Tasks — the all-tasks planning view (ROADMAP M2). */}
+      <Link
+        href="/tasks"
+        className="pressable mt-6 flex min-h-[52px] items-center justify-between gap-3 rounded-card border border-line bg-card px-4 py-3"
+      >
+        <span className="flex items-center gap-2.5 text-sm font-medium">
+          <IconCheck size={18} className="text-muted" />
+          {t("tasks")}
+        </span>
+        <IconChevronRight size={18} className="text-muted" />
+      </Link>
+
       {/* Family intake — the public intake inbox (staff review + import). */}
       <Link
         href="/intake-inbox"
-        className="pressable mt-6 flex min-h-[52px] items-center justify-between gap-3 rounded-card border border-line bg-card px-4 py-3"
+        className="pressable mt-3 flex min-h-[52px] items-center justify-between gap-3 rounded-card border border-line bg-card px-4 py-3"
       >
         <span className="flex items-center gap-2.5 text-sm font-medium">
           <IconInbox size={18} className="text-muted" />

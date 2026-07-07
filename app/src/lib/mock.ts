@@ -3,14 +3,12 @@
  * Dates are generated relative to "now" so the Today screen always looks alive.
  */
 
-import {
-  Case,
-  NextAction,
-  PipelineStage,
-  stageIndex,
-  PIPELINE_STAGES,
-} from "./types";
-import { hoursUntilShabbos } from "./zmanim";
+import { Case, PipelineStage, PIPELINE_STAGES } from "./types";
+// The pure planning brain (next action + urgency) now lives in @/lib/planning
+// as the single source of truth (ROADMAP M2). Re-export it here so existing
+// importers of @/lib/mock keep working.
+import { urgencyScore, nextActionFor } from "./planning";
+export { urgencyScore, nextActionFor };
 
 const H = 3_600_000;
 const now = () => Date.now();
@@ -205,47 +203,8 @@ export const MOCK_CASES: Case[] = [
   },
 ];
 
-/* ── Computed next action — "do the next thing" (PLANNING §2.3) ────────── */
-
-/** Rough due-pressure per stage, in hours from now (mock heuristic). */
-const STAGE_DUE_HOURS: Record<PipelineStage, number | undefined> = {
-  notified: 4, // kevod hames — collect fast
-  collected: 12,
-  prepared: 24,
-  documents: 8, // offices/consulate hours are the constraint
-  transport: 6,
-  arrived: 24,
-  buried: undefined,
-};
-
-export function nextActionFor(c: Case): NextAction {
-  const dueHours = STAGE_DUE_HOURS[c.status];
-  return {
-    key: c.status,
-    due: dueHours === undefined ? undefined : iso(dueHours),
-  };
-}
-
 /* ── Urgency sorting — real urgency, not creation date (PLANNING §6) ───── */
-
-export function urgencyScore(c: Case, nowDate: Date = new Date()): number {
-  let score = 0;
-  if (c.urgent) score += 1000;
-  // Active transport keeps a case near the top.
-  if (c.status === "transport") score += 400;
-  // Fresh notifications demand collection (kevod hames).
-  if (c.status === "notified") score += 350;
-  // Documents stage feels Shabbos pressure: the closer candle-lighting, the hotter.
-  const h = hoursUntilShabbos(nowDate);
-  if (h !== null && h <= 48 && (c.status === "documents" || c.status === "prepared")) {
-    score += Math.round((48 - h) * 10);
-  }
-  // Earlier pipeline = generally more open work.
-  score += (PIPELINE_STAGES.length - stageIndex(c.status)) * 10;
-  // Buried cases sink.
-  if (c.status === "buried") score -= 2000;
-  return score;
-}
+/* nextActionFor / urgencyScore now live in @/lib/planning (re-exported above). */
 
 export function casesByUrgency(nowDate: Date = new Date()): Case[] {
   return [...MOCK_CASES].sort(

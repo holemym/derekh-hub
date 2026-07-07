@@ -7,6 +7,7 @@ import PipelineStepper from "@/components/PipelineStepper";
 import CaseActions from "@/components/CaseActions";
 import GeneratePermitButton from "@/components/GeneratePermitButton";
 import CaseDocuments from "@/components/CaseDocuments";
+import CaseTasks from "@/components/CaseTasks";
 import TransitLine from "@/components/TransitLine";
 import EmptyState from "@/components/EmptyState";
 import {
@@ -114,6 +115,12 @@ export default async function CaseDetailPage({
             download and delete. Private `case-docs` bucket, RLS-scoped. */}
         <CaseDocuments caseId={c.id} documents={c.documents} />
       </div>
+
+      {/* Tasks — per-case planning layer (ROADMAP M2) */}
+      <h2 className="mb-2 mt-6 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">
+        {t("caseDetail.sections.tasks")}
+      </h2>
+      <CaseTasks caseId={c.id} tasks={c.tasks} />
 
       {/* Transport */}
       <h2 className="mb-2 mt-6 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">

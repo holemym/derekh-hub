@@ -16,7 +16,31 @@
     "shabbosIn": "Shabbos in {hours}h {minutes}m",
     "candleLighting": "Candle-lighting {time}",
     "allQuiet": "All quiet. No cases need action.",
+    "allQuietTitle": "Nothing needs action right now",
+    "allQuietBody": "No open cases and no tasks due. When something needs your attention, it will appear here — sorted by real urgency.",
+    "noCases": "No open cases.",
     "urgent": "Urgent"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "subtitle": "Everything open — case work and standalone reminders.",
+    "dueSoon": "Due soon",
+    "addTask": "Add a task",
+    "add": "Add",
+    "adding": "Adding…",
+    "done": "Done",
+    "complete": "Mark done",
+    "cancel": "Cancel",
+    "confirmCancel": "Cancel this task? It will be removed from the list.",
+    "titlePlaceholder": "What needs doing?",
+    "due": "Due",
+    "overdue": "Overdue",
+    "empty": "No open tasks. Add one above, or from a case.",
+    "onShabbos": "falls on Shabbos",
+    "onShabbosHint": "This due date falls on Shabbos or Yom Tov — you may want an earlier deadline.",
+    "openCase": "Open case",
+    "errorCreate": "Could not create the task. Please try again.",
+    "errorUpdate": "Could not update the task. Please try again."
   },
   "stages": {
     "notified": "Notified",
@@ -143,6 +167,7 @@
     },
     "sections": {
       "documents": "Documents",
+      "tasks": "Tasks",
       "transport": "Transport",
       "contacts": "Contacts",
       "activity": "Activity"
@@ -203,6 +228,7 @@
     "settings": "Settings",
     "templates": "Form templates",
     "contacts": "Contact book",
+    "tasks": "Tasks",
     "intake": "Family intake",
     "intakeLinkTitle": "Public intake link",
     "intakeLinkBody": "Share this link with a family. They can fill in the details and attach documents — their submission arrives in the Intake inbox.",
