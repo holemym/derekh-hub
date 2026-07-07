@@ -48,10 +48,11 @@ The core loop. This is where the current tool's capabilities move in.
 - **Reconcile before migrations run:** (a) DB now has both `address` (0001) and `last_address` (0004) — standardize the permit binding on one (`case.address`) and drop the redundant column; (b) the app `Case` type lags the DB schema (missing `cause_of_death`/`icd_code`/`place_of_birth` — currently passed via mapper `opts`) — sync the type when the repo goes live.
 - **Done when:** Motty creates a case → generates the real permit → attaches docs; a family submits intake that lands as a case. *(≈ feature-parity with the live tool, plus persistence.)*
 
-### M2 · Planning brain ⬜ 🔗 M1
-- Today dashboard on real data (urgency-sorted, before-Shabbos countdown)
-- Tasks + reminders; zmanim/chag-aware scheduling that blocks Shabbos
-- **Done when:** the daily view aggregates real open cases and surfaces the next action per case.
+### M2 · Planning brain ✅ COMPLETE 🔗 M1
+- ✅ Today dashboard on live data (urgency-sorted; red only pre-candle-lighting; Shabbos/chag countdown chip)
+- ✅ Tasks (create/complete/cancel, per-case + /tasks; "falls on Shabbos" flag); Due-soon on Today
+- ✅ `planning.ts` urgency model (stage + kevod-hames time pressure + Shabbos proximity); unit-tested (23 assertions)
+- Note: case-detail "Advance stage" buttons still M1 stubs (stage transitions → a later pass).
 
 ### M3 · Transport & repatriation ⬜ 🔗 M1
 - Transport legs (ground / air-cargo / domestic), chain-of-custody timeline
