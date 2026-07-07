@@ -137,3 +137,13 @@ export function IconActivity(p: P) {
     </Base>
   );
 }
+
+export function IconInbox(p: P) {
+  return (
+    <Base {...p}>
+      <path d="M3.5 13.5 6 5.5a2 2 0 0 1 1.9-1.5h8.2A2 2 0 0 1 18 5.5l2.5 8" />
+      <path d="M3.5 13.5H8a1 1 0 0 1 1 1 2 2 0 0 0 2 2h2a2 2 0 0 0 2-2 1 1 0 0 1 1-1h4.5" />
+      <path d="M3.5 13.5v3a3 3 0 0 0 3 3h11a3 3 0 0 0 3-3v-3" />
+    </Base>
+  );
+}

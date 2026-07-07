@@ -1,8 +1,15 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import LanguageSwitch from "@/components/LanguageSwitch";
 import SignOutButton from "@/components/SignOutButton";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { IconDoc, IconContacts, IconMore } from "@/components/icons";
+import {
+  IconDoc,
+  IconContacts,
+  IconMore,
+  IconInbox,
+  IconChevronRight,
+} from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +67,19 @@ export default async function MorePage() {
         <LanguageSwitch />
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-card border border-line bg-card">
+      {/* Family intake — the public intake inbox (staff review + import). */}
+      <Link
+        href="/intake-inbox"
+        className="pressable mt-6 flex min-h-[52px] items-center justify-between gap-3 rounded-card border border-line bg-card px-4 py-3"
+      >
+        <span className="flex items-center gap-2.5 text-sm font-medium">
+          <IconInbox size={18} className="text-muted" />
+          {t("intake")}
+        </span>
+        <IconChevronRight size={18} className="text-muted" />
+      </Link>
+
+      <div className="mt-4 overflow-hidden rounded-card border border-line bg-card">
         {placeholders.map(({ key, Icon }, i) => (
           <div
             key={key}

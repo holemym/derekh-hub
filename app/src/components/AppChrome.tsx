@@ -4,10 +4,11 @@ import { usePathname } from "next/navigation";
 
 /**
  * Chrome gate — hides the app shell (sticky Header + bottom TabNav) on the
- * standalone auth screens (/login, /no-access, /auth/*), which are shown to
- * users who aren't inside the app yet. Everywhere else, renders children.
+ * standalone auth screens (/login, /no-access, /auth/*) and the PUBLIC family
+ * intake page (/intake, /intake/thanks), which are shown to users who aren't
+ * inside the staff app. Everywhere else, renders children.
  */
-const BARE_PREFIXES = ["/login", "/no-access", "/auth"];
+const BARE_PREFIXES = ["/login", "/no-access", "/auth", "/intake"];
 
 export default function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

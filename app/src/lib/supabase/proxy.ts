@@ -10,13 +10,16 @@ import type { Database } from '../../../../db/types';
  * the browser.
  *
  * Access rules layered on top:
- *   - Public routes (/login, /auth/callback, /no-access) are always allowed.
+ *   - Public routes (/login, /auth/callback, /no-access, /intake) are always
+ *     allowed. /intake is the PUBLIC family-intake page (no login): it writes
+ *     to intake_submissions under anon RLS. The startsWith('/intake/') branch
+ *     also covers /intake/thanks.
  *   - No session  -> redirect to /login?next=<path>.
  *   - Session but not an active staff row -> redirect to /no-access.
  *   - Active staff -> pass through.
  */
 
-const PUBLIC_PATHS = ['/login', '/auth/callback', '/no-access'];
+const PUBLIC_PATHS = ['/login', '/auth/callback', '/no-access', '/intake'];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
