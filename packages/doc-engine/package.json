@@ -1,0 +1,29 @@
+{
+  "name": "@derech/doc-engine",
+  "version": "0.1.0",
+  "description": "Generic overlay-data-onto-official-PDF-form engine (browser + Node, framework-free). Harvested from the field-tested IKG Vienna burial-transfer permit tool.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./templates/*.json": "./templates/*.json"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node test/generate.test.mjs"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

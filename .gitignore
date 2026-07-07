@@ -1,0 +1,24 @@
+# dependencies
+**/node_modules/
+
+# next.js
+app/.next/
+app/out/
+app/next-env.d.ts
+
+# test artifacts (render PNGs, sample PDFs)
+**/test-output/
+# NOTE: packages/doc-engine/dist IS committed on purpose so the app builds
+# after a fresh clone without a monorepo build step (revisit at Vercel setup).
+
+# secrets — NEVER commit
+**/.env
+**/.env.local
+**/.env*.local
+!**/.env.example
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+.vercel

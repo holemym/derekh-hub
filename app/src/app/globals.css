@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ── Derech design tokens — monoline / monochrome (PLANNING §9) ─────────── */
+:root {
+  --bg: #f6f6f6;
+  --card: #ffffff;
+  --ink: #111111;
+  --muted: #8a8a8a;
+  --line: #e6e6e6;
+  /* ONE semantic accent, reserved for urgency. Nothing else is colored. */
+  --urgent: #c0392b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0c0c;
+    --card: #161616;
+    --ink: #f2f2f2;
+    --muted: #9a9a9a;
+    --line: #292929;
+    --urgent: #ff6b6b;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-urgent: var(--urgent);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --radius-card: 14px;
+  --radius-chip: 12px;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  /* All times, dates and numbers align: tabular figures everywhere. */
+  font-variant-numeric: tabular-nums;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Motion — CSS only, restrained ──────────────────────────────────────── */
+
+/* Cards rise in on mount (stagger via inline animation-delay). */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise-in {
+  animation: rise-in 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Active press: a barely-there settle. */
+.pressable {
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pressable:active {
+  transform: scale(0.985);
+}
+
+/* Pulsing dot — ONLY on urgent items. */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+/* Monoline stroke-draw checkmark for completions. */
+@keyframes stroke-draw {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.stroke-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: stroke-draw 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+/* Full reduced-motion support: kill everything. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .stroke-draw {
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+  .rise-in {
+    animation: none !important;
+  }
+}

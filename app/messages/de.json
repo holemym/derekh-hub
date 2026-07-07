@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "Derech",
+    "tagline": "Bestattung & Überführung"
+  },
+  "nav": {
+    "today": "Heute",
+    "cases": "Fälle",
+    "transport": "Transport",
+    "more": "Mehr"
+  },
+  "today": {
+    "title": "Heute",
+    "openCases": "{count, plural, =0 {Keine offenen Fälle} one {# offener Fall} other {# offene Fälle}}",
+    "shabbosIn": "Schabbat in {hours}h {minutes}m",
+    "candleLighting": "Kerzenzünden {time}",
+    "allQuiet": "Alles ruhig. Kein Fall braucht eine Aktion.",
+    "urgent": "Dringend"
+  },
+  "stages": {
+    "notified": "Gemeldet",
+    "collected": "Abgeholt",
+    "prepared": "Vorbereitet",
+    "documents": "Dokumente & Genehmigungen",
+    "transport": "Transport",
+    "arrived": "Angekommen",
+    "buried": "Beerdigt"
+  },
+  "actions": {
+    "notified": "Abholung organisieren",
+    "collected": "Tahara planen",
+    "prepared": "Dokumentenmappe beginnen",
+    "documents": "Überführungsgenehmigung erstellen",
+    "transport": "Cargo-Check-in bestätigen",
+    "arrived": "Beerdigung koordinieren",
+    "buried": "Fall abschließen"
+  },
+  "cases": {
+    "title": "Fälle",
+    "empty": "Noch keine Fälle",
+    "openCase": "Fall öffnen"
+  },
+  "caseDetail": {
+    "back": "Fälle",
+    "pipeline": "Ablauf",
+    "details": "Details",
+    "notFound": "Fall nicht gefunden",
+    "advanceStage": "Nächste Stufe",
+    "fields": {
+      "hebrewName": "Hebräischer Name",
+      "secularName": "Bürgerlicher Name",
+      "dob": "Geboren",
+      "dod": "Niftar",
+      "placeOfDeath": "Sterbeort",
+      "passport": "Pass / Ausweis",
+      "nationality": "Staatsangehörigkeit",
+      "cemetery": "Friedhof",
+      "burialPlace": "Grabstelle",
+      "assignedTo": "Zuständig"
+    },
+    "sections": {
+      "documents": "Dokumente",
+      "transport": "Transport",
+      "contacts": "Kontakte",
+      "activity": "Verlauf"
+    },
+    "empty": {
+      "documents": "Noch keine Dokumente. Die Dokumentenmappe für diese Stufe erscheint hier.",
+      "transport": "Keine Transportabschnitte gebucht. Boden- und Luftfracht-Abschnitte erscheinen hier.",
+      "contacts": "Keine Kontakte verknüpft. Familie, Chewra Kadischa, Konsulat und Fluglinien erscheinen hier.",
+      "activity": "Noch kein Verlauf. Jede Änderung an diesem Fall wird hier protokolliert."
+    }
+  },
+  "transportPage": {
+    "title": "Transport",
+    "emptyTitle": "Noch keine Transportübersicht",
+    "emptyBody": "Bodenabschnitte, Luftfracht-Buchungen und Übergabekette folgen in einer späteren Phase."
+  },
+  "more": {
+    "title": "Mehr",
+    "language": "Sprache",
+    "english": "English",
+    "german": "Deutsch",
+    "comingSoon": "Bald verfügbar",
+    "settings": "Einstellungen",
+    "templates": "Formularvorlagen",
+    "contacts": "Kontaktbuch",
+    "about": "Offline-first Einsatzzentrale für Bestattung und Überführung. Phase 0 — nur lokale Mock-Daten.",
+    "version": "Phase 0 · App-Shell"
+  },
+  "common": {
+    "nextAction": "Nächste Aktion",
+    "urgent": "Dringend",
+    "inTransit": "Unterwegs",
+    "done": "Erledigt"
+  }
+}

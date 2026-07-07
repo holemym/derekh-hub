@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "Derech",
+    "tagline": "Burial & transport operations"
+  },
+  "nav": {
+    "today": "Today",
+    "cases": "Cases",
+    "transport": "Transport",
+    "more": "More"
+  },
+  "today": {
+    "title": "Today",
+    "openCases": "{count, plural, =0 {No open cases} one {# open case} other {# open cases}}",
+    "shabbosIn": "Shabbos in {hours}h {minutes}m",
+    "candleLighting": "Candle-lighting {time}",
+    "allQuiet": "All quiet. No cases need action.",
+    "urgent": "Urgent"
+  },
+  "stages": {
+    "notified": "Notified",
+    "collected": "Collected",
+    "prepared": "Prepared",
+    "documents": "Documents & permits",
+    "transport": "Transport",
+    "arrived": "Arrived",
+    "buried": "Buried"
+  },
+  "actions": {
+    "notified": "Arrange collection",
+    "collected": "Schedule tahara",
+    "prepared": "Begin document packet",
+    "documents": "Generate transfer permit",
+    "transport": "Confirm cargo check-in",
+    "arrived": "Coordinate burial",
+    "buried": "Close case"
+  },
+  "cases": {
+    "title": "Cases",
+    "empty": "No cases yet",
+    "openCase": "Open case"
+  },
+  "caseDetail": {
+    "back": "Cases",
+    "pipeline": "Pipeline",
+    "details": "Details",
+    "notFound": "Case not found",
+    "advanceStage": "Advance stage",
+    "fields": {
+      "hebrewName": "Hebrew name",
+      "secularName": "Secular name",
+      "dob": "Born",
+      "dod": "Niftar",
+      "placeOfDeath": "Place of death",
+      "passport": "Passport / ID",
+      "nationality": "Nationality",
+      "cemetery": "Cemetery",
+      "burialPlace": "Burial place",
+      "assignedTo": "Assigned to"
+    },
+    "sections": {
+      "documents": "Documents",
+      "transport": "Transport",
+      "contacts": "Contacts",
+      "activity": "Activity"
+    },
+    "empty": {
+      "documents": "No documents yet. The document packet for this stage will appear here.",
+      "transport": "No transport legs booked. Ground and air-cargo legs will appear here.",
+      "contacts": "No contacts linked. Family, chevra kadisha, consulate and carriers will appear here.",
+      "activity": "No activity recorded yet. Every change to this case will be logged here."
+    }
+  },
+  "transportPage": {
+    "title": "Transport",
+    "emptyTitle": "No transport board yet",
+    "emptyBody": "Ground legs, air-cargo bookings and chain-of-custody tracking will live here in a later phase."
+  },
+  "more": {
+    "title": "More",
+    "language": "Language",
+    "english": "English",
+    "german": "Deutsch",
+    "comingSoon": "Coming soon",
+    "settings": "Settings",
+    "templates": "Form templates",
+    "contacts": "Contact book",
+    "about": "Offline-first operations hub for burial and repatriation. Phase 0 shell — local mock data only.",
+    "version": "Phase 0 · app shell"
+  },
+  "common": {
+    "nextAction": "Next action",
+    "urgent": "Urgent",
+    "inTransit": "In transit",
+    "done": "Done"
+  }
+}
