@@ -18,8 +18,8 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { generate, validate } from "@derech/doc-engine";
-import type { FormTemplate, ValidationIssue } from "@derech/doc-engine";
+import { generate, validate } from "@/lib/doc-engine";
+import type { FormTemplate, ValidationIssue } from "@/lib/doc-engine";
 import type { Case } from "@/lib/types";
 import { buildPermitContext } from "@/lib/documents/context";
 import {

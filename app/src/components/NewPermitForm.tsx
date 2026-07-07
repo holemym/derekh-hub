@@ -20,8 +20,8 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { generate, validate } from "@derech/doc-engine";
-import type { FormTemplate } from "@derech/doc-engine";
+import { generate, validate } from "@/lib/doc-engine";
+import type { FormTemplate } from "@/lib/doc-engine";
 import template from "@/lib/documents/templates/il-mfa-transfer-permit.json";
 import {
   emptyPermitForm,

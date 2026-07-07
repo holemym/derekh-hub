@@ -14,7 +14,7 @@
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { generate, validate } from "@derech/doc-engine";
+import { generate, validate } from "../../packages/doc-engine/dist/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.join(__dirname, "..");
