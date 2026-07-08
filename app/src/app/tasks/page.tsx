@@ -16,19 +16,17 @@ export default async function TasksPage() {
   const tasks = sortTasksByDue(await listOpenTasks());
 
   return (
-    <div>
+    <div className="mx-auto max-w-[720px]">
       <Link
         href="/more"
-        className="mb-4 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-muted"
+        className="mb-4 inline-flex min-h-11 items-center gap-1 t-meta font-medium text-muted lg:hidden"
       >
         <IconChevronRight size={16} className="rotate-180" />
         {t("more.title")}
       </Link>
 
-      <h1 className="mb-1 text-2xl font-semibold tracking-tight">
-        {t("tasks.title")}
-      </h1>
-      <p className="mb-5 text-sm text-muted">{t("tasks.subtitle")}</p>
+      <h1 className="mb-1 t-display lg:hidden">{t("tasks.title")}</h1>
+      <p className="mb-6 t-meta text-muted">{t("tasks.subtitle")}</p>
 
       <TasksList tasks={tasks} />
     </div>

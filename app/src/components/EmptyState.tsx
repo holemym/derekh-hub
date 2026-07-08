@@ -11,15 +11,13 @@ export default function EmptyState({
   body?: string;
 }) {
   return (
-    <div className="rounded-card border border-line bg-card px-5 py-8 text-center">
+    <div className="surface px-5 py-8 text-center">
       {icon ? (
         <div className="mb-3 flex justify-center text-muted">{icon}</div>
       ) : null}
-      <p className="text-sm font-medium">{title}</p>
+      <p className="t-heading">{title}</p>
       {body ? (
-        <p className="mx-auto mt-1.5 max-w-[42ch] text-[13px] leading-relaxed text-muted">
-          {body}
-        </p>
+        <p className="mx-auto mt-1.5 max-w-[42ch] t-meta text-muted">{body}</p>
       ) : null}
     </div>
   );

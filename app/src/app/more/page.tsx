@@ -40,40 +40,34 @@ export default async function MorePage() {
   ] as const;
 
   return (
-    <div>
-      <h1 className="mb-5 text-2xl font-semibold tracking-tight">
-        {t("title")}
-      </h1>
+    <div className="mx-auto max-w-[720px]">
+      <h1 className="mb-5 t-display lg:hidden">{t("title")}</h1>
 
       {/* Signed-in identity + sign out */}
-      <h2 className="mb-2 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">
-        {tAuth("account")}
-      </h2>
-      <div className="rounded-card border border-line bg-card p-4">
+      <h2 className="t-label mb-2 px-1">{tAuth("account")}</h2>
+      <div className="surface p-4">
         {user ? (
           <div className="mb-3">
             {staffName ? (
-              <p className="text-sm font-semibold">{staffName}</p>
+              <p className="t-heading font-semibold">{staffName}</p>
             ) : null}
-            <p className="truncate text-[13px] text-muted">{user.email}</p>
+            <p className="truncate t-meta text-muted">{user.email}</p>
           </div>
         ) : null}
         <SignOutButton />
       </div>
 
-      <h2 className="mb-2 mt-6 px-1 text-[13px] font-semibold uppercase tracking-wider text-muted">
-        {t("language")}
-      </h2>
-      <div className="rounded-card border border-line bg-card p-3">
+      <h2 className="t-label mb-2 mt-6 px-1">{t("language")}</h2>
+      <div className="surface p-3">
         <LanguageSwitch />
       </div>
 
       {/* Tasks — the all-tasks planning view (ROADMAP M2). */}
       <Link
         href="/tasks"
-        className="pressable mt-6 flex min-h-[52px] items-center justify-between gap-3 rounded-card border border-line bg-card px-4 py-3"
+        className="pressable surface mt-6 flex min-h-[52px] items-center justify-between gap-3 px-4 py-3"
       >
-        <span className="flex items-center gap-2.5 text-sm font-medium">
+        <span className="flex items-center gap-2.5 t-body font-medium">
           <IconCheck size={18} className="text-muted" />
           {t("tasks")}
         </span>
@@ -83,38 +77,34 @@ export default async function MorePage() {
       {/* Family intake — the public intake inbox (staff review + import). */}
       <Link
         href="/intake-inbox"
-        className="pressable mt-3 flex min-h-[52px] items-center justify-between gap-3 rounded-card border border-line bg-card px-4 py-3"
+        className="pressable surface mt-3 flex min-h-[52px] items-center justify-between gap-3 px-4 py-3"
       >
-        <span className="flex items-center gap-2.5 text-sm font-medium">
+        <span className="flex items-center gap-2.5 t-body font-medium">
           <IconInbox size={18} className="text-muted" />
           {t("intake")}
         </span>
         <IconChevronRight size={18} className="text-muted" />
       </Link>
 
-      <div className="mt-4 overflow-hidden rounded-card border border-line bg-card">
-        {placeholders.map(({ key, Icon }, i) => (
+      <div className="surface mt-4 divide-y divide-line overflow-hidden">
+        {placeholders.map(({ key, Icon }) => (
           <div
             key={key}
-            className={`flex min-h-[52px] items-center justify-between gap-3 px-4 py-3 ${
-              i > 0 ? "border-t border-line" : ""
-            }`}
+            className="flex min-h-[52px] items-center justify-between gap-3 px-4 py-3"
           >
-            <span className="flex items-center gap-2.5 text-sm font-medium text-muted">
+            <span className="flex items-center gap-2.5 t-body font-medium text-muted">
               <Icon size={18} />
               {t(key)}
             </span>
-            <span className="rounded-chip border border-line px-2 py-0.5 text-[11px] text-muted">
+            <span className="t-label rounded-chip border border-line px-2 py-0.5">
               {t("comingSoon")}
             </span>
           </div>
         ))}
       </div>
 
-      <p className="mt-6 px-1 text-[13px] leading-relaxed text-muted">
-        {t("about")}
-      </p>
-      <p className="mt-2 px-1 text-xs text-muted">{t("version")}</p>
+      <p className="mt-6 px-1 t-meta text-muted">{t("about")}</p>
+      <p className="mt-2 px-1 t-meta text-muted">{t("version")}</p>
     </div>
   );
 }

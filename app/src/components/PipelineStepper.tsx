@@ -17,7 +17,7 @@ export default async function PipelineStepper({ c }: { c: Case }) {
   const current = stageIndex(c.status);
 
   return (
-    <ol className="rounded-card border border-line bg-card px-4 py-2">
+    <ol className="surface px-4 py-2">
       {PIPELINE_STAGES.map((stage, i) => {
         const done = i < current;
         const active = i === current;
@@ -48,7 +48,7 @@ export default async function PipelineStepper({ c }: { c: Case }) {
 
             <div className="flex min-w-0 flex-1 items-baseline justify-between gap-2">
               <span
-                className={`text-sm ${
+                className={`t-body ${
                   active
                     ? "font-semibold"
                     : done
@@ -59,7 +59,7 @@ export default async function PipelineStepper({ c }: { c: Case }) {
                 {t(stage)}
               </span>
               {ts ? (
-                <span className="shrink-0 text-xs text-muted">
+                <span className="shrink-0 t-meta text-muted">
                   {formatDateTime(ts, locale)}
                 </span>
               ) : null}

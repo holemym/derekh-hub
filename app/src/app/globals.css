@@ -1,24 +1,34 @@
 @import "tailwindcss";
 
-/* ── Derech design tokens — monoline / monochrome (PLANNING §9) ─────────── */
+/* ── Derech design tokens — v2 "Quiet & dignified" (DESIGN.md) ──────────────
+   Warm monochrome, one accent (--urgent), soft cards, 16px radius. */
 :root {
-  --bg: #f6f6f6;
+  --bg: #f7f6f4; /* warm off-white */
   --card: #ffffff;
-  --ink: #111111;
-  --muted: #8a8a8a;
-  --line: #e6e6e6;
-  /* ONE semantic accent, reserved for urgency. Nothing else is colored. */
-  --urgent: #c0392b;
+  --ink: #17160f;
+  --muted: #8b887f;
+  --line: #e9e7e2;
+  /* ONE semantic accent, reserved for time-critical urgency. Nothing else colored. */
+  --urgent: #b4432c;
+
+  /* Elevation — a whisper of shadow on cards. */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-float: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  /* Shared easing — everything settles gently, nothing bouncy. */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0c0c0c;
-    --card: #161616;
-    --ink: #f2f2f2;
-    --muted: #9a9a9a;
-    --line: #292929;
-    --urgent: #ff6b6b;
+    --bg: #0e0d0b;
+    --card: #171614;
+    --ink: #f3f1ec;
+    --muted: #9a978d;
+    --line: #2a2823;
+    --urgent: #e2705a;
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-float: 0 4px 18px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -29,10 +39,12 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-urgent: var(--urgent);
-  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI",
+  --font-sans: var(--font-sans-src), system-ui, -apple-system, "Segoe UI",
     sans-serif;
-  --radius-card: 14px;
+  --radius-card: 16px;
   --radius-chip: 12px;
+  --shadow-card: var(--shadow-card);
+  --shadow-float: var(--shadow-float);
 }
 
 html {
@@ -46,6 +58,52 @@ body {
   /* All times, dates and numbers align: tabular figures everywhere. */
   font-variant-numeric: tabular-nums;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Type scale — DESIGN.md. Use these, no ad-hoc text-[13px]. ──────────────
+   Line-heights are generous; sentence case everywhere except .t-label. */
+.t-display {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.t-title {
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.t-heading {
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 500;
+}
+.t-body {
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.t-meta {
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+.t-label {
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* Soft card surface — hairline + a whisper of shadow. */
+.surface {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 /* ── Motion — CSS only, restrained ──────────────────────────────────────── */
@@ -62,12 +120,27 @@ body {
   }
 }
 .rise-in {
-  animation: rise-in 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise-in 0.38s var(--ease-settle) both;
+}
+
+/* Page transition — subtle fade + 6px rise on route change (app/template.tsx). */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-enter {
+  animation: page-enter 0.2s var(--ease-settle) both;
 }
 
 /* Active press: a barely-there settle. */
 .pressable {
-  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.12s var(--ease-settle);
 }
 .pressable:active {
   transform: scale(0.985);
@@ -101,7 +174,70 @@ body {
 .stroke-draw {
   stroke-dasharray: 24;
   stroke-dashoffset: 24;
-  animation: stroke-draw 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  animation: stroke-draw 0.5s var(--ease-settle) 0.15s forwards;
+}
+
+/* Skeleton shimmer — calm sweep for loading placeholders (not spinners). */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+  border-radius: 8px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--card) 60%, transparent),
+    transparent
+  );
+  animation: shimmer 1.6s var(--ease-settle) infinite;
+}
+
+/* First-load splash — the monoline mark draws in, then the layer fades away. */
+@keyframes splash-draw {
+  from {
+    stroke-dashoffset: var(--dash, 120);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  animation: splash-out 0.5s var(--ease-settle) 0.9s forwards;
+}
+.splash-mark path {
+  stroke-dasharray: var(--dash, 120);
+  stroke-dashoffset: var(--dash, 120);
+  animation: splash-draw 0.85s var(--ease-settle) 0.1s forwards;
+}
+
+/* Nav active indicator — a soft settling pill behind the current item. */
+.nav-indicator {
+  transition:
+    opacity 0.2s var(--ease-settle),
+    transform 0.24s var(--ease-settle);
 }
 
 /* Full reduced-motion support: kill everything. */
@@ -114,11 +250,20 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .stroke-draw {
+  .stroke-draw,
+  .splash-mark path {
     stroke-dashoffset: 0;
     animation: none !important;
   }
-  .rise-in {
+  .rise-in,
+  .page-enter {
     animation: none !important;
+  }
+  .skeleton::after {
+    animation: none !important;
+  }
+  /* Splash still fades out so the app is never permanently covered. */
+  .splash {
+    animation: splash-out 0.001ms linear 0.4s forwards !important;
   }
 }

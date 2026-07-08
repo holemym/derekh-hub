@@ -24,13 +24,9 @@ export default function IntakeLink({ url }: { url: string }) {
   }
 
   return (
-    <div className="mb-5 rounded-card border border-line bg-card p-4">
-      <p className="text-[13px] font-semibold uppercase tracking-wider text-muted">
-        {t("linkTitle")}
-      </p>
-      <p className="mt-1 text-[12.5px] leading-relaxed text-muted">
-        {t("linkBody")}
-      </p>
+    <div className="surface mb-6 p-4">
+      <p className="t-label">{t("linkTitle")}</p>
+      <p className="mt-1.5 t-meta text-muted">{t("linkBody")}</p>
       <div className="mt-2.5 flex items-center gap-2">
         <code className="min-w-0 flex-1 truncate rounded-xl border border-line bg-bg px-3 py-2 text-[13px] text-ink">
           {url}

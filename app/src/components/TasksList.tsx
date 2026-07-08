@@ -71,10 +71,7 @@ export default function TasksList({ tasks }: { tasks: Task[] }) {
   return (
     <div className="flex flex-col gap-4">
       {/* Add a standalone task */}
-      <form
-        onSubmit={onAdd}
-        className="rounded-card border border-line bg-card px-4 py-3"
-      >
+      <form onSubmit={onAdd} className="surface px-4 py-3">
         <input
           type="text"
           value={title}
@@ -108,23 +105,21 @@ export default function TasksList({ tasks }: { tasks: Task[] }) {
       </form>
 
       {tasks.length === 0 ? (
-        <p className="py-10 text-center text-sm text-muted">
+        <p className="py-10 text-center t-body text-muted">
           {t("tasks.empty")}
         </p>
       ) : (
-        <div className="overflow-hidden rounded-card border border-line bg-card">
-          {tasks.map((tk, i) => {
+        <div className="surface divide-y divide-line overflow-hidden">
+          {tasks.map((tk) => {
             const overdue = isOverdue(tk, now);
             const onShabbos = fallsOnShabbosOrChag(tk.due);
             return (
               <div
                 key={tk.id}
-                className={`flex min-h-[52px] items-center justify-between gap-3 px-4 py-3 ${
-                  i > 0 ? "border-t border-line" : ""
-                }`}
+                className="flex min-h-[52px] items-center justify-between gap-3 px-4 py-3"
               >
                 <span className="min-w-0">
-                  <span className="block truncate text-sm font-medium">
+                  <span className="block truncate t-body font-medium">
                     {tk.title}
                   </span>
                   <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px]">

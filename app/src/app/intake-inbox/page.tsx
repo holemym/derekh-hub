@@ -54,17 +54,17 @@ export default async function IntakeInboxPage() {
   const intakeUrl = host ? `${proto}://${host}/intake` : "/intake";
 
   return (
-    <div>
+    <div className="mx-auto max-w-[720px]">
       <Link
         href="/more"
-        className="mb-4 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-muted"
+        className="mb-4 inline-flex min-h-11 items-center gap-1 t-meta font-medium text-muted lg:hidden"
       >
         <IconChevronRight size={16} className="rotate-180" />
         {t("back")}
       </Link>
 
-      <h1 className="mb-1 text-2xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="mb-5 text-sm text-muted">{t("subtitle")}</p>
+      <h1 className="mb-1 t-display lg:hidden">{t("title")}</h1>
+      <p className="mb-6 t-meta text-muted">{t("subtitle")}</p>
 
       <IntakeLink url={intakeUrl} />
 

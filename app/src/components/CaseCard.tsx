@@ -28,8 +28,8 @@ export default function CaseCard({
 
   return (
     <article
-      className={`rise-in relative rounded-card border bg-card p-4 ${
-        hot ? "border-urgent/50" : "border-line"
+      className={`rise-in surface relative p-5 ${
+        hot ? "border-urgent/50" : ""
       }`}
       style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}
     >
@@ -42,45 +42,41 @@ export default function CaseCard({
 
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 dir="rtl" lang="he" className="truncate text-left text-[17px] font-semibold">
+          <h3 dir="rtl" lang="he" className="t-heading truncate text-left font-semibold">
             {c.hebrewName}
           </h3>
-          <p className="mt-0.5 truncate text-sm text-muted">{c.secularName}</p>
+          <p className="mt-0.5 truncate t-meta text-muted">{c.secularName}</p>
         </div>
 
         {hot ? (
-          <span className="flex shrink-0 items-center gap-1.5 rounded-chip border border-urgent/40 px-2.5 py-1 text-xs font-medium text-urgent">
+          <span className="flex shrink-0 items-center gap-1.5 rounded-chip border border-urgent/40 px-2.5 py-1 t-meta font-medium text-urgent">
             <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-urgent" />
             {t("common.urgent")}
           </span>
         ) : (
-          <span className="shrink-0 rounded-chip border border-line px-2.5 py-1 text-xs text-muted">
+          <span className="shrink-0 rounded-chip border border-line px-2.5 py-1 t-meta text-muted">
             {t(`stages.${c.status}`)}
           </span>
         )}
       </div>
 
       {hot && c.urgencyNote ? (
-        <p className="mt-2 text-[13px] font-medium text-urgent">
-          {c.urgencyNote}
-        </p>
+        <p className="mt-2 t-meta font-medium text-urgent">{c.urgencyNote}</p>
       ) : null}
 
-      {/* The ONE next action — "do the next thing" (PLANNING §2.3). */}
+      {/* The ONE next action — "do the next thing". */}
       <p
-        className={`mt-2 text-[13px] font-medium ${
-          hot ? "text-urgent" : "text-ink"
-        }`}
+        className={`mt-3 t-meta font-medium ${hot ? "text-urgent" : "text-ink"}`}
       >
         {t(`actions.${c.status}`)}
       </p>
 
-      <div className="mt-3">
+      <div className="mt-4">
         <PipelineBar stage={c.status} />
       </div>
 
       {activeLeg ? (
-        <div className="mt-3 rounded-xl border border-line px-3 py-2.5">
+        <div className="mt-4 rounded-xl border border-line px-3 py-2.5">
           <TransitLine leg={activeLeg} />
         </div>
       ) : null}

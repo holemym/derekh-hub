@@ -7,6 +7,9 @@
     "today": "Today",
     "cases": "Cases",
     "transport": "Transport",
+    "money": "Money",
+    "tasks": "Tasks",
+    "intake": "Family intake",
     "more": "More"
   },
   "today": {
@@ -19,6 +22,7 @@
     "allQuietTitle": "Nothing needs action right now",
     "allQuietBody": "No open cases and no tasks due. When something needs your attention, it will appear here — sorted by real urgency.",
     "noCases": "No open cases.",
+    "openCasesLabel": "Open cases",
     "urgent": "Urgent"
   },
   "tasks": {

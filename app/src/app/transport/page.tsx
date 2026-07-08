@@ -9,10 +9,8 @@ export default async function TransportPage() {
   const t = await getTranslations("transportPage");
 
   return (
-    <div>
-      <h1 className="mb-5 text-2xl font-semibold tracking-tight">
-        {t("title")}
-      </h1>
+    <div className="mx-auto max-w-[720px]">
+      <h1 className="mb-5 t-display lg:hidden">{t("title")}</h1>
       <EmptyState
         icon={<IconPlane size={26} />}
         title={t("emptyTitle")}

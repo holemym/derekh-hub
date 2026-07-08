@@ -1,16 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Hanken_Grotesk } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import Header from "@/components/Header";
-import TabNav from "@/components/TabNav";
-import AppChrome from "@/components/AppChrome";
+import AppShell from "@/components/AppShell";
+import Splash from "@/components/Splash";
 import SWRegister from "@/components/SWRegister";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+// Hanken Grotesk — the app typeface (DESIGN.md §Typography). Only the three
+// weights the scale uses are loaded.
+const sans = Hanken_Grotesk({
+  variable: "--font-sans-src",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -30,8 +32,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f6f6" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c0c0c" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f6f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0d0b" },
   ],
 };
 
@@ -44,18 +46,11 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${inter.variable} h-full antialiased`}>
+    <html lang={locale} className={`${sans.variable} h-full antialiased`}>
       <body className="min-h-full">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <div className="mx-auto flex min-h-dvh w-full max-w-[680px] flex-col">
-            <AppChrome>
-              <Header />
-            </AppChrome>
-            <main className="flex-1 px-4 pb-28 pt-5">{children}</main>
-          </div>
-          <AppChrome>
-            <TabNav />
-          </AppChrome>
+          <AppShell>{children}</AppShell>
+          <Splash />
           <SWRegister />
         </NextIntlClientProvider>
       </body>

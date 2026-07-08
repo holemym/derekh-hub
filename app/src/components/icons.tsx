@@ -147,3 +147,37 @@ export function IconInbox(p: P) {
     </Base>
   );
 }
+
+/** Tasks — a check inside a soft square. */
+export function IconTasks(p: P) {
+  return (
+    <Base {...p}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+      <path d="m8 12 2.5 2.5L16 9" />
+    </Base>
+  );
+}
+
+/** Money — coin/ledger mark, monoline. */
+export function IconMoney(p: P) {
+  return (
+    <Base {...p}>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 7.5v9M14.5 9.5c-.5-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 1.9 0 2.5 5 1.3 5 3.9 0 1.1-1.1 1.9-2.5 1.9-1 0-2-.4-2.5-1.2" />
+    </Base>
+  );
+}
+
+/**
+ * Brand mark — a monoline "path" (derech = way): a gentle route that opens
+ * upward. Used in the sidebar and the first-load splash. The path uses the
+ * .splash-mark stroke-draw when placed inside a .splash layer.
+ */
+export function IconMark(p: P) {
+  return (
+    <Base viewBox="0 0 24 24" {...p}>
+      <path d="M5 19c0-5 3-8 7-8s7 3 7 8" />
+      <path d="M12 11V4M9.5 6.5 12 4l2.5 2.5" />
+    </Base>
+  );
+}

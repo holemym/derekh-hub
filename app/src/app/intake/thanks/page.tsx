@@ -17,13 +17,9 @@ export default async function IntakeThanksPage() {
       <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-bg">
         <IconCheckDraw size={28} />
       </div>
-      <h1 className="mb-2 text-2xl font-semibold tracking-tight">
-        {t("thanks.title")}
-      </h1>
-      <p className="max-w-[460px] text-[15px] leading-relaxed text-muted">
-        {t("thanks.body")}
-      </p>
-      <p className="mt-6 text-[13px] text-muted">{t("thanks.closeHint")}</p>
+      <h1 className="mb-2 t-display">{t("thanks.title")}</h1>
+      <p className="max-w-[460px] t-body text-muted">{t("thanks.body")}</p>
+      <p className="mt-6 t-meta text-muted">{t("thanks.closeHint")}</p>
     </div>
   );
 }

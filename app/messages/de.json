@@ -7,6 +7,9 @@
     "today": "Heute",
     "cases": "Fälle",
     "transport": "Transport",
+    "money": "Geld",
+    "tasks": "Aufgaben",
+    "intake": "Angaben der Familie",
     "more": "Mehr"
   },
   "today": {
@@ -19,6 +22,7 @@
     "allQuietTitle": "Zurzeit ist nichts zu tun",
     "allQuietBody": "Keine offenen Fälle und keine fälligen Aufgaben. Sobald etwas Ihre Aufmerksamkeit braucht, erscheint es hier — nach echter Dringlichkeit sortiert.",
     "noCases": "Keine offenen Fälle.",
+    "openCasesLabel": "Offene Fälle",
     "urgent": "Dringend"
   },
   "tasks": {

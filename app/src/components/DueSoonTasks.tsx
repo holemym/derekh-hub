@@ -34,19 +34,17 @@ export default function DueSoonTasks({ tasks }: { tasks: Task[] }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-card border border-line bg-card">
-      {tasks.map((tk, i) => {
+    <div className="surface divide-y divide-line overflow-hidden">
+      {tasks.map((tk) => {
         const overdue = isOverdue(tk, now);
         const onShabbos = fallsOnShabbosOrChag(tk.due);
         return (
           <div
             key={tk.id}
-            className={`flex min-h-[52px] items-center justify-between gap-3 px-4 py-3 ${
-              i > 0 ? "border-t border-line" : ""
-            }`}
+            className="flex min-h-[52px] items-center justify-between gap-3 px-4 py-3"
           >
             <span className="min-w-0">
-              <span className="block truncate text-sm font-medium">
+              <span className="block truncate t-body font-medium">
                 {tk.title}
               </span>
               <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px]">
