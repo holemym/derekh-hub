@@ -182,6 +182,8 @@
       "documents": "Documents",
       "tasks": "Tasks",
       "transport": "Transport",
+      "money": "Money",
+      "comms": "Family updates",
       "contacts": "Contacts",
       "activity": "Activity"
     },
@@ -190,6 +192,102 @@
       "transport": "No transport legs booked. Ground and air-cargo legs will appear here.",
       "contacts": "No contacts linked. Family, chevra kadisha, consulate and carriers will appear here.",
       "activity": "No activity recorded yet. Every change to this case will be logged here."
+    }
+  },
+  "money": {
+    "invoices": "Invoices",
+    "expenses": "Expenses",
+    "addInvoice": "Add an invoice",
+    "addExpense": "Add an expense",
+    "generateInvoice": "Generate PDF",
+    "generating": "Generating…",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "void": "Void",
+    "confirmVoid": "Void this invoice? It will no longer count toward the totals.",
+    "noNumber": "No number",
+    "issued": "Issued",
+    "paidOn": "Paid",
+    "errorInvoice": "Could not save the invoice. Please try again.",
+    "errorExpense": "Could not save the expense. Please try again.",
+    "errorGenerate": "Could not generate the invoice PDF.",
+    "totals": {
+      "invoiced": "Invoiced",
+      "paid": "Paid",
+      "outstanding": "Outstanding",
+      "expenses": "Expenses",
+      "net": "Net"
+    },
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "paid": "Paid",
+      "void": "Void"
+    },
+    "advanceTo": {
+      "sent": "Mark sent",
+      "paid": "Mark paid"
+    },
+    "field": {
+      "number": "Invoice number",
+      "amount": "Amount (EUR)",
+      "status": "Status",
+      "label": "Description",
+      "labelPlaceholder": "e.g. Air-cargo charge, coffin, consular fee",
+      "date": "Date"
+    }
+  },
+  "moneyPage": {
+    "title": "Money",
+    "subtitle": "{count, plural, =0 {No outstanding invoices} one {# outstanding invoice} other {# outstanding invoices}}",
+    "unnamed": "Unnamed case",
+    "emptyTitle": "No invoices yet",
+    "emptyBody": "Invoices from every case appear here — outstanding ones first, then paid. Add an invoice from a case to see it on the board.",
+    "groups": {
+      "outstanding": "Outstanding",
+      "paid": "Paid",
+      "draft": "Draft"
+    }
+  },
+  "comms": {
+    "to": "To",
+    "update": "Family update",
+    "noFamily": "No family contact is linked to this case yet. You can still compose an update and open it in WhatsApp or email, then choose the recipient there.",
+    "familyFallback": "the family",
+    "niftarFallback": "the deceased",
+    "openWhatsApp": "Open in WhatsApp",
+    "openEmail": "Open in email",
+    "markSent": "Mark sent",
+    "logging": "Logging…",
+    "logged": "Logged",
+    "handoffNote": "No message is sent automatically. The button opens WhatsApp or your email with the text ready — send it there, then mark it sent to log it here.",
+    "errorLog": "Could not log the message. Please try again.",
+    "subject": "Update regarding {niftar}",
+    "field": {
+      "template": "Message",
+      "channel": "Channel"
+    },
+    "channels": {
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "sms": "SMS"
+    },
+    "templateLabels": {
+      "received": "We received your request",
+      "documents_ready": "Documents ready",
+      "permit_issued": "Transfer permit issued",
+      "in_transit": "On the way to Israel",
+      "arrived": "Arrived in Israel",
+      "buried": "Laid to rest"
+    },
+    "templates": {
+      "received": "Dear {family}, this is the funeral service at IKG Vienna. We have received your request regarding {niftar} and have begun the arrangements. We will keep you updated at every step. May you be comforted.",
+      "documents_ready": "Dear {family}, the documents for {niftar} are now in order. We are preparing the transfer permit and coordinating the next steps. We will let you know as soon as the permit is issued.",
+      "permit_issued": "Dear {family}, the Israeli transfer permit for {niftar} has been issued. We are now arranging the flight and coordinating with the chevra kadisha in Israel.",
+      "in_transit": "Dear {family}, {niftar} is now on the way to Israel. We are in contact with the chevra kadisha there and will inform you once he/she has arrived.",
+      "arrived": "Dear {family}, {niftar} has arrived in Israel and has been received by the chevra kadisha. The burial is being arranged and we will send you the details shortly.",
+      "buried": "Dear {family}, {niftar} has been laid to rest. We share in your sorrow. May the family know no more sorrow, and may his/her memory be a blessing."
     }
   },
   "documents": {

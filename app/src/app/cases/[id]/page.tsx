@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getCase, activityForCase } from "@/lib/repo";
+import {
+  getCase,
+  activityForCase,
+  moneyForCase,
+  contactCardsForCase,
+  messagesForCase,
+} from "@/lib/repo";
 import { formatDate, formatDateTime } from "@/lib/format";
 import PipelineStepper from "@/components/PipelineStepper";
 import CaseActions from "@/components/CaseActions";
@@ -9,12 +15,10 @@ import GeneratePermitButton from "@/components/GeneratePermitButton";
 import CaseDocuments from "@/components/CaseDocuments";
 import CaseTasks from "@/components/CaseTasks";
 import CaseTransport from "@/components/CaseTransport";
+import CaseMoney from "@/components/CaseMoney";
+import CaseComms from "@/components/CaseComms";
 import EmptyState from "@/components/EmptyState";
-import {
-  IconChevronRight,
-  IconContacts,
-  IconActivity,
-} from "@/components/icons";
+import { IconChevronRight, IconActivity } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +33,13 @@ export default async function CaseDetailPage({
 
   const t = await getTranslations();
   const locale = await getLocale();
-  const activity = await activityForCase(c.id);
+  const [activity, money, contactCards, messages] = await Promise.all([
+    activityForCase(c.id),
+    moneyForCase(c.id),
+    contactCardsForCase(c.id),
+    messagesForCase(c.id),
+  ]);
+  const family = contactCards.find((cc) => cc.role === "family");
 
   const fields: Array<[string, string | undefined]> = [
     [t("caseDetail.fields.dob"), c.dob ? formatDate(c.dob, locale) : undefined],
@@ -132,12 +142,25 @@ export default async function CaseDetailPage({
 
           <section>
             <h2 className="t-label mb-2 px-1">
-              {t("caseDetail.sections.contacts")}
+              {t("caseDetail.sections.money")}
             </h2>
-            <EmptyState
-              icon={<IconContacts size={22} />}
-              title={t("caseDetail.sections.contacts")}
-              body={t("caseDetail.empty.contacts")}
+            <CaseMoney
+              caseId={c.id}
+              invoices={money.invoices}
+              expenses={money.expenses}
+              summary={money.summary}
+            />
+          </section>
+
+          <section>
+            <h2 className="t-label mb-2 px-1">
+              {t("caseDetail.sections.comms")}
+            </h2>
+            <CaseComms
+              caseId={c.id}
+              niftarName={c.secularName || c.hebrewName}
+              family={family}
+              messages={messages}
             />
           </section>
 

@@ -22,11 +22,25 @@ import {
   tasksForCase as sbTasksForCase,
   activityForCase as sbActivityForCase,
   listTransportLegs as sbListTransportLegs,
+  moneyForCase as sbMoneyForCase,
+  moneyOverview as sbMoneyOverview,
+  contactCardsForCase as sbContactCardsForCase,
+  messagesForCase as sbMessagesForCase,
   type ActivityEntry,
   type TransportLegWithCase,
+  type CaseMoney,
+  type MoneyOverview,
+  type InvoiceWithCase,
 } from "./supabase";
+import type { CaseContactCard, Message } from "@/lib/types";
 
-export type { ActivityEntry, TransportLegWithCase };
+export type {
+  ActivityEntry,
+  TransportLegWithCase,
+  CaseMoney,
+  MoneyOverview,
+  InvoiceWithCase,
+};
 
 /** All cases (unsorted). */
 export function listCases(): Promise<Case[]> {
@@ -74,4 +88,24 @@ export function activityForCase(
   limit?: number,
 ): Promise<ActivityEntry[]> {
   return sbActivityForCase(caseId, limit);
+}
+
+/** A case's invoices + expenses + roll-up (per-case Money section). */
+export function moneyForCase(caseId: string): Promise<CaseMoney> {
+  return sbMoneyForCase(caseId);
+}
+
+/** Every invoice across all cases + a summary (the /money overview). */
+export function moneyOverview(): Promise<MoneyOverview> {
+  return sbMoneyOverview();
+}
+
+/** Comms-ready contact cards for one case (family first). */
+export function contactCardsForCase(caseId: string): Promise<CaseContactCard[]> {
+  return sbContactCardsForCase(caseId);
+}
+
+/** Logged messages for one case, newest first (comms history). */
+export function messagesForCase(caseId: string): Promise<Message[]> {
+  return sbMessagesForCase(caseId);
 }

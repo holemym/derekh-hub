@@ -12,17 +12,25 @@ import type {
   TransportLegRow,
   DocumentRow,
   CaseContactRow,
+  ContactRow,
   TaskRow,
+  InvoiceRow,
+  ExpenseRow,
+  MessageRow,
 } from "../../../../db/types";
 import type {
   Case,
   CaseDocument,
   CaseContact,
+  CaseContactCard,
   TransportLeg,
   TransportLegType,
   CustodyEvent,
   CustodyEventKind,
   Task,
+  Invoice,
+  Expense,
+  Message,
   ContactRole,
   PipelineStage,
 } from "@/lib/types";
@@ -159,6 +167,63 @@ export function mapCaseContact(row: CaseContactRow): CaseContact | null {
   const role = mapContactRole(row.role);
   if (!role) return null;
   return { contactId: row.contact_id, role };
+}
+
+export function mapInvoice(row: InvoiceRow): Invoice {
+  return {
+    id: row.id,
+    caseId: row.case_id,
+    number: row.number ?? undefined,
+    amountCents: row.amount_cents ?? 0,
+    currency: row.currency ?? "EUR",
+    status: row.status,
+    issuedAt: row.issued_at ?? undefined,
+    paidAt: row.paid_at ?? undefined,
+  };
+}
+
+export function mapExpense(row: ExpenseRow): Expense {
+  return {
+    id: row.id,
+    caseId: row.case_id,
+    label: row.label,
+    amountCents: row.amount_cents ?? 0,
+    currency: row.currency ?? "EUR",
+    incurredAt: row.incurred_at ?? undefined,
+  };
+}
+
+export function mapMessage(row: MessageRow): Message {
+  return {
+    id: row.id,
+    caseId: row.case_id,
+    channel: row.channel,
+    templateKey: row.template_key ?? undefined,
+    recipient: row.recipient ?? undefined,
+    body: row.body ?? undefined,
+    sentAt: row.sent_at ?? undefined,
+  };
+}
+
+/**
+ * A case_contacts row joined to its contact — a comms-ready recipient card.
+ * Returns null for roles with no app-side mapping (e.g. 'other').
+ */
+export function mapCaseContactCard(
+  link: CaseContactRow,
+  contact: ContactRow | undefined,
+): CaseContactCard | null {
+  const role = mapContactRole(link.role);
+  if (!role || !contact) return null;
+  return {
+    contactId: contact.id,
+    role,
+    name: contact.name,
+    phone: contact.phone ?? undefined,
+    whatsapp: contact.whatsapp ?? undefined,
+    email: contact.email ?? undefined,
+    organization: contact.org ?? undefined,
+  };
 }
 
 /**

@@ -147,6 +147,94 @@ export interface Task {
   assignee?: string;
 }
 
+/* ── Money (ROADMAP M4) ─────────────────────────────────────────────────── */
+
+export type InvoiceStatus = "draft" | "sent" | "paid" | "void";
+
+/** The four ordered non-void invoice states, for advance UI + labels. */
+export const INVOICE_FLOW: readonly InvoiceStatus[] = [
+  "draft",
+  "sent",
+  "paid",
+] as const;
+
+export interface Invoice {
+  id: string;
+  caseId: string;
+  number?: string;
+  /** Amount in cents; display in EUR. */
+  amountCents: number;
+  currency: string;
+  status: InvoiceStatus;
+  issuedAt?: string;
+  paidAt?: string;
+}
+
+export interface Expense {
+  id: string;
+  caseId: string;
+  label: string;
+  amountCents: number;
+  currency: string;
+  incurredAt?: string;
+}
+
+/** Per-case money roll-up (all in cents). */
+export interface MoneySummary {
+  /** Sum of invoices that are sent or paid (i.e. actually billed). */
+  invoicedCents: number;
+  paidCents: number;
+  /** invoiced − paid (money still owed to us). */
+  outstandingCents: number;
+  expensesCents: number;
+  /** paid − expenses (cash net for the case). */
+  netCents: number;
+}
+
+/* ── Comms (ROADMAP M4) ─────────────────────────────────────────────────── */
+
+export type MessageChannel = "whatsapp" | "email" | "sms";
+
+/** Family status-update template keys (rendered per §5, EN/DE). */
+export type MessageTemplateKey =
+  | "received"
+  | "documents_ready"
+  | "permit_issued"
+  | "in_transit"
+  | "arrived"
+  | "buried";
+
+export const MESSAGE_TEMPLATE_KEYS: readonly MessageTemplateKey[] = [
+  "received",
+  "documents_ready",
+  "permit_issued",
+  "in_transit",
+  "arrived",
+  "buried",
+] as const;
+
+/** A logged outbound message (family status update). */
+export interface Message {
+  id: string;
+  caseId: string;
+  channel: MessageChannel;
+  templateKey?: string;
+  recipient?: string;
+  body?: string;
+  sentAt?: string;
+}
+
+/** A contact resolved for a case, in a role (comms recipient projection). */
+export interface CaseContactCard {
+  contactId: string;
+  role: ContactRole;
+  name: string;
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+  organization?: string;
+}
+
 /* ── Case (the niftar) ──────────────────────────────────────────────────── */
 
 export interface Case {

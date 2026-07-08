@@ -16,15 +16,35 @@ import type { Case, PipelineStage } from "@/lib/types";
 import type { Task } from "@/lib/types";
 import { PIPELINE_STAGES } from "@/lib/types";
 import { urgencyScore } from "@/lib/planning";
-import { mapCase, mapTask, mapTransportLeg } from "./mapper";
-import type { TransportLeg } from "@/lib/types";
+import {
+  mapCase,
+  mapTask,
+  mapTransportLeg,
+  mapInvoice,
+  mapExpense,
+  mapMessage,
+  mapCaseContactCard,
+} from "./mapper";
+import type {
+  TransportLeg,
+  Invoice,
+  Expense,
+  Message,
+  MoneySummary,
+  CaseContactCard,
+} from "@/lib/types";
+import { computeMoneySummary } from "@/lib/money";
 import type {
   CaseRow,
   TransportLegRow,
   DocumentRow,
   CaseContactRow,
+  ContactRow,
   TaskRow,
   ActivityLogRow,
+  InvoiceRow,
+  ExpenseRow,
+  MessageRow,
 } from "../../../../db/types";
 
 /** Columns we read for list views — the full case row is fine (RLS-guarded). */
@@ -221,6 +241,157 @@ export async function listTransportLegs(): Promise<TransportLegWithCase[]> {
     return 0;
   });
   return out;
+}
+
+/* ── Money (ROADMAP M4) ─────────────────────────────────────────────────── */
+
+/** A case's invoices + expenses + roll-up, for the per-case Money section. */
+export interface CaseMoney {
+  invoices: Invoice[];
+  expenses: Expense[];
+  summary: MoneySummary;
+}
+
+/**
+ * Invoices + expenses for one case (staff SELECT, RLS-scoped), newest first,
+ * with the computed roll-up. Non-deleted only.
+ */
+export async function moneyForCase(caseId: string): Promise<CaseMoney> {
+  const supabase = await createSupabaseServerClient();
+  const [invRes, expRes] = await Promise.all([
+    supabase
+      .from("invoices")
+      .select("*")
+      .eq("case_id", caseId)
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("expenses")
+      .select("*")
+      .eq("case_id", caseId)
+      .is("deleted_at", null)
+      .order("incurred_at", { ascending: false, nullsFirst: false }),
+  ]);
+  if (invRes.error) throw new Error(`invoices read failed: ${invRes.error.message}`);
+  if (expRes.error) throw new Error(`expenses read failed: ${expRes.error.message}`);
+
+  const invoices = ((invRes.data ?? []) as InvoiceRow[]).map(mapInvoice);
+  const expenses = ((expRes.data ?? []) as ExpenseRow[]).map(mapExpense);
+  return { invoices, expenses, summary: computeMoneySummary(invoices, expenses) };
+}
+
+/** An invoice joined to its case's niftar identity — the /money overview row. */
+export interface InvoiceWithCase {
+  invoice: Invoice;
+  caseId: string;
+  hebrewName: string;
+  secularName: string;
+}
+
+/** The cross-case money overview payload (ROADMAP M4 /money route). */
+export interface MoneyOverview {
+  invoices: InvoiceWithCase[];
+  summary: MoneySummary;
+}
+
+/**
+ * Every non-deleted invoice across all (non-deleted) cases, joined to the
+ * niftar's name — the /money overview. RLS-scoped. Also totals expenses so the
+ * overview can show a net. Non-void invoices only in the overview list (void is
+ * excluded from totals by computeMoneySummary anyway).
+ */
+export async function moneyOverview(): Promise<MoneyOverview> {
+  const supabase = await createSupabaseServerClient();
+
+  const [invRes, expRes, casesRes] = await Promise.all([
+    supabase.from("invoices").select("*").is("deleted_at", null),
+    supabase.from("expenses").select("*").is("deleted_at", null),
+    supabase
+      .from("cases")
+      .select("id, hebrew_name, secular_first, secular_last")
+      .is("deleted_at", null),
+  ]);
+  if (invRes.error) throw new Error(`invoices read failed: ${invRes.error.message}`);
+  if (expRes.error) throw new Error(`expenses read failed: ${expRes.error.message}`);
+  if (casesRes.error) throw new Error(`cases read failed: ${casesRes.error.message}`);
+
+  const cases = (casesRes.data ?? []) as unknown as Array<{
+    id: string;
+    hebrew_name: string | null;
+    secular_first: string | null;
+    secular_last: string | null;
+  }>;
+  const byId = new Map(cases.map((c) => [c.id, c]));
+
+  const invoices = ((invRes.data ?? []) as InvoiceRow[])
+    .map(mapInvoice)
+    .filter((inv) => byId.has(inv.caseId)); // drop orphans (soft-deleted case)
+  const expenses = ((expRes.data ?? []) as ExpenseRow[]).map(mapExpense);
+
+  const rows: InvoiceWithCase[] = invoices.map((invoice) => {
+    const c = byId.get(invoice.caseId)!;
+    return {
+      invoice,
+      caseId: invoice.caseId,
+      hebrewName: c.hebrew_name ?? "",
+      secularName: [c.secular_first, c.secular_last].filter(Boolean).join(" ").trim(),
+    };
+  });
+
+  return { invoices: rows, summary: computeMoneySummary(invoices, expenses) };
+}
+
+/* ── Comms (ROADMAP M4) ─────────────────────────────────────────────────── */
+
+/**
+ * Contact cards for one case (case_contacts joined to contacts), for the comms
+ * recipient picker. RLS-scoped. Ordered so 'family' comes first.
+ */
+export async function contactCardsForCase(
+  caseId: string,
+): Promise<CaseContactCard[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data: links, error: linkErr } = await supabase
+    .from("case_contacts")
+    .select("*")
+    .eq("case_id", caseId);
+  if (linkErr) throw new Error(`case_contacts read failed: ${linkErr.message}`);
+
+  const rows = (links ?? []) as CaseContactRow[];
+  if (rows.length === 0) return [];
+
+  const ids = [...new Set(rows.map((r) => r.contact_id))];
+  const { data: contacts, error: cErr } = await supabase
+    .from("contacts")
+    .select("*")
+    .in("id", ids)
+    .is("deleted_at", null);
+  if (cErr) throw new Error(`contacts read failed: ${cErr.message}`);
+
+  const byId = new Map(
+    ((contacts ?? []) as ContactRow[]).map((c) => [c.id, c]),
+  );
+  const cards = rows
+    .map((link) => mapCaseContactCard(link, byId.get(link.contact_id)))
+    .filter((c): c is CaseContactCard => c !== null);
+
+  // Family first, then the rest in place.
+  return cards.sort((a, b) =>
+    a.role === "family" ? -1 : b.role === "family" ? 1 : 0,
+  );
+}
+
+/** Logged messages for one case (newest first) — the comms history. */
+export async function messagesForCase(caseId: string): Promise<Message[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("messages")
+    .select("*")
+    .eq("case_id", caseId)
+    .is("deleted_at", null)
+    .order("sent_at", { ascending: false, nullsFirst: false });
+  if (error) throw new Error(`messages read failed: ${error.message}`);
+  return ((data ?? []) as MessageRow[]).map(mapMessage);
 }
 
 /** Open + done tasks for one case, due-sorted (for the case-detail Tasks list). */

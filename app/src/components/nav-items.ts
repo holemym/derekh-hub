@@ -25,7 +25,7 @@ export const SIDEBAR_ITEMS: NavItem[] = [
   { href: "/today", key: "today", Icon: IconToday },
   { href: "/cases", key: "cases", Icon: IconCases },
   { href: "/transport", key: "transport", Icon: IconPlane },
-  { href: "/money", key: "money", Icon: IconMoney, soon: true },
+  { href: "/money", key: "money", Icon: IconMoney },
   { href: "/tasks", key: "tasks", Icon: IconTasks },
   { href: "/intake-inbox", key: "intake", Icon: IconMore },
 ];

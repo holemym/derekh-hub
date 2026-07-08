@@ -182,6 +182,8 @@
       "documents": "Dokumente",
       "tasks": "Aufgaben",
       "transport": "Transport",
+      "money": "Finanzen",
+      "comms": "Familien-Updates",
       "contacts": "Kontakte",
       "activity": "Verlauf"
     },
@@ -190,6 +192,102 @@
       "transport": "Keine Transportabschnitte gebucht. Boden- und Luftfracht-Abschnitte erscheinen hier.",
       "contacts": "Keine Kontakte verknüpft. Familie, Chewra Kadischa, Konsulat und Fluglinien erscheinen hier.",
       "activity": "Noch kein Verlauf. Jede Änderung an diesem Fall wird hier protokolliert."
+    }
+  },
+  "money": {
+    "invoices": "Rechnungen",
+    "expenses": "Ausgaben",
+    "addInvoice": "Rechnung hinzufügen",
+    "addExpense": "Ausgabe hinzufügen",
+    "generateInvoice": "PDF erstellen",
+    "generating": "Wird erstellt…",
+    "save": "Speichern",
+    "saving": "Wird gespeichert…",
+    "cancel": "Abbrechen",
+    "void": "Stornieren",
+    "confirmVoid": "Diese Rechnung stornieren? Sie zählt dann nicht mehr zu den Summen.",
+    "noNumber": "Keine Nummer",
+    "issued": "Ausgestellt",
+    "paidOn": "Bezahlt",
+    "errorInvoice": "Die Rechnung konnte nicht gespeichert werden. Bitte erneut versuchen.",
+    "errorExpense": "Die Ausgabe konnte nicht gespeichert werden. Bitte erneut versuchen.",
+    "errorGenerate": "Das Rechnungs-PDF konnte nicht erstellt werden.",
+    "totals": {
+      "invoiced": "Berechnet",
+      "paid": "Bezahlt",
+      "outstanding": "Offen",
+      "expenses": "Ausgaben",
+      "net": "Netto"
+    },
+    "status": {
+      "draft": "Entwurf",
+      "sent": "Gesendet",
+      "paid": "Bezahlt",
+      "void": "Storniert"
+    },
+    "advanceTo": {
+      "sent": "Als gesendet markieren",
+      "paid": "Als bezahlt markieren"
+    },
+    "field": {
+      "number": "Rechnungsnummer",
+      "amount": "Betrag (EUR)",
+      "status": "Status",
+      "label": "Beschreibung",
+      "labelPlaceholder": "z. B. Luftfracht, Sarg, Konsulatsgebühr",
+      "date": "Datum"
+    }
+  },
+  "moneyPage": {
+    "title": "Finanzen",
+    "subtitle": "{count, plural, =0 {Keine offenen Rechnungen} one {# offene Rechnung} other {# offene Rechnungen}}",
+    "unnamed": "Unbenannter Fall",
+    "emptyTitle": "Noch keine Rechnungen",
+    "emptyBody": "Rechnungen aus allen Fällen erscheinen hier — offene zuerst, dann bezahlte. Fügen Sie eine Rechnung in einem Fall hinzu, um sie hier zu sehen.",
+    "groups": {
+      "outstanding": "Offen",
+      "paid": "Bezahlt",
+      "draft": "Entwurf"
+    }
+  },
+  "comms": {
+    "to": "An",
+    "update": "Familien-Update",
+    "noFamily": "Diesem Fall ist noch kein Familienkontakt zugeordnet. Sie können trotzdem eine Nachricht verfassen und in WhatsApp oder per E-Mail öffnen und dort den Empfänger wählen.",
+    "familyFallback": "die Familie",
+    "niftarFallback": "die/den Verstorbene(n)",
+    "openWhatsApp": "In WhatsApp öffnen",
+    "openEmail": "In E-Mail öffnen",
+    "markSent": "Als gesendet markieren",
+    "logging": "Wird protokolliert…",
+    "logged": "Protokolliert",
+    "handoffNote": "Es wird keine Nachricht automatisch gesendet. Die Schaltfläche öffnet WhatsApp oder Ihre E-Mail mit fertigem Text — senden Sie dort, und markieren Sie sie danach als gesendet, um sie hier zu protokollieren.",
+    "errorLog": "Die Nachricht konnte nicht protokolliert werden. Bitte erneut versuchen.",
+    "subject": "Update zu {niftar}",
+    "field": {
+      "template": "Nachricht",
+      "channel": "Kanal"
+    },
+    "channels": {
+      "whatsapp": "WhatsApp",
+      "email": "E-Mail",
+      "sms": "SMS"
+    },
+    "templateLabels": {
+      "received": "Anfrage erhalten",
+      "documents_ready": "Dokumente bereit",
+      "permit_issued": "Überführungsgenehmigung ausgestellt",
+      "in_transit": "Unterwegs nach Israel",
+      "arrived": "In Israel angekommen",
+      "buried": "Zur letzten Ruhe gebettet"
+    },
+    "templates": {
+      "received": "Liebe/r {family}, hier ist der Bestattungsdienst der IKG Wien. Wir haben Ihre Anfrage bezüglich {niftar} erhalten und mit den Vorbereitungen begonnen. Wir halten Sie bei jedem Schritt auf dem Laufenden. Wir wünschen Ihnen Trost.",
+      "documents_ready": "Liebe/r {family}, die Dokumente für {niftar} sind nun vollständig. Wir bereiten die Überführungsgenehmigung vor und koordinieren die nächsten Schritte. Wir melden uns, sobald die Genehmigung ausgestellt ist.",
+      "permit_issued": "Liebe/r {family}, die israelische Überführungsgenehmigung für {niftar} wurde ausgestellt. Wir organisieren nun den Flug und stimmen uns mit der Chewra Kadischa in Israel ab.",
+      "in_transit": "Liebe/r {family}, {niftar} ist nun auf dem Weg nach Israel. Wir stehen in Kontakt mit der dortigen Chewra Kadischa und informieren Sie nach der Ankunft.",
+      "arrived": "Liebe/r {family}, {niftar} ist in Israel angekommen und wurde von der Chewra Kadischa empfangen. Die Beisetzung wird organisiert; die Einzelheiten senden wir Ihnen in Kürze.",
+      "buried": "Liebe/r {family}, {niftar} wurde zur letzten Ruhe gebettet. Wir nehmen Anteil an Ihrer Trauer. Möge die Familie keinen weiteren Kummer kennen, und möge das Andenken ein Segen sein."
     }
   },
   "documents": {

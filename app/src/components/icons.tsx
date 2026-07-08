@@ -168,6 +168,16 @@ export function IconMoney(p: P) {
   );
 }
 
+/** Chat — a soft speech bubble (family comms). */
+export function IconChat(p: P) {
+  return (
+    <Base {...p}>
+      <path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5V15.5H6.5a2 2 0 0 1-2-2Z" />
+      <path d="M8.5 9h7M8.5 12h4" />
+    </Base>
+  );
+}
+
 /**
  * Brand mark — a monoline "path" (derech = way): a gentle route that opens
  * upward. Used in the sidebar and the first-load splash. The path uses the
