@@ -16,7 +16,8 @@ import type { Case, PipelineStage } from "@/lib/types";
 import type { Task } from "@/lib/types";
 import { PIPELINE_STAGES } from "@/lib/types";
 import { urgencyScore } from "@/lib/planning";
-import { mapCase, mapTask } from "./mapper";
+import { mapCase, mapTask, mapTransportLeg } from "./mapper";
+import type { TransportLeg } from "@/lib/types";
 import type {
   CaseRow,
   TransportLegRow,
@@ -150,6 +151,76 @@ export async function activityForCase(
     detail: (r.detail ?? undefined) as Record<string, unknown> | undefined,
     at: r.at,
   }));
+}
+
+/* ── Transport (ROADMAP M3 — dispatch board) ───────────────────────────── */
+
+/** A transport leg plus the niftar identity, for the cross-case board. */
+export interface TransportLegWithCase {
+  leg: TransportLeg;
+  caseId: string;
+  hebrewName: string;
+  secularName: string;
+  urgent: boolean;
+}
+
+/**
+ * Every non-deleted transport leg across all (non-deleted) cases, joined to the
+ * niftar's name — the dispatch board (ROADMAP M3). RLS-scoped: a non-staff
+ * caller sees nothing. Sorted by scheduled_at (soonest first, undated last).
+ */
+export async function listTransportLegs(): Promise<TransportLegWithCase[]> {
+  const supabase = await createSupabaseServerClient();
+
+  const [legsRes, casesRes] = await Promise.all([
+    supabase
+      .from("transport_legs")
+      .select("*")
+      .is("deleted_at", null),
+    supabase
+      .from("cases")
+      .select("id, hebrew_name, secular_first, secular_last, urgency")
+      .is("deleted_at", null),
+  ]);
+
+  if (legsRes.error) throw new Error(`legs read failed: ${legsRes.error.message}`);
+  if (casesRes.error) throw new Error(`cases read failed: ${casesRes.error.message}`);
+
+  const cases = (casesRes.data ?? []) as unknown as Array<{
+    id: string;
+    hebrew_name: string | null;
+    secular_first: string | null;
+    secular_last: string | null;
+    urgency: number | null;
+  }>;
+  const byId = new Map(cases.map((c) => [c.id, c]));
+
+  const rows = (legsRes.data ?? []) as TransportLegRow[];
+  const out: TransportLegWithCase[] = [];
+  for (const row of rows) {
+    const c = byId.get(row.case_id);
+    if (!c) continue; // orphaned by a soft-deleted case — skip
+    out.push({
+      leg: mapTransportLeg(row),
+      caseId: row.case_id,
+      hebrewName: c.hebrew_name ?? "",
+      secularName: [c.secular_first, c.secular_last]
+        .filter(Boolean)
+        .join(" ")
+        .trim(),
+      urgent: (c.urgency ?? 0) >= 3,
+    });
+  }
+
+  out.sort((a, b) => {
+    const sa = a.leg.scheduledAt;
+    const sb = b.leg.scheduledAt;
+    if (sa && sb) return sa.localeCompare(sb);
+    if (sa) return -1;
+    if (sb) return 1;
+    return 0;
+  });
+  return out;
 }
 
 /** Open + done tasks for one case, due-sorted (for the case-detail Tasks list). */

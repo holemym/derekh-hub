@@ -8,11 +8,10 @@ import CaseActions from "@/components/CaseActions";
 import GeneratePermitButton from "@/components/GeneratePermitButton";
 import CaseDocuments from "@/components/CaseDocuments";
 import CaseTasks from "@/components/CaseTasks";
-import TransitLine from "@/components/TransitLine";
+import CaseTransport from "@/components/CaseTransport";
 import EmptyState from "@/components/EmptyState";
 import {
   IconChevronRight,
-  IconPlane,
   IconContacts,
   IconActivity,
 } from "@/components/icons";
@@ -128,27 +127,7 @@ export default async function CaseDetailPage({
             <h2 className="t-label mb-2 px-1">
               {t("caseDetail.sections.transport")}
             </h2>
-            {c.transportLegs.length > 0 ? (
-              <div className="flex flex-col gap-2.5">
-                {c.transportLegs.map((leg) => (
-                  <div key={leg.id} className="surface px-4 py-3">
-                    <TransitLine leg={leg} />
-                    <p className="mt-1.5 t-meta text-muted">
-                      {leg.carrier}
-                      {leg.scheduledAt
-                        ? ` · ${formatDateTime(leg.scheduledAt, locale)}`
-                        : null}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <EmptyState
-                icon={<IconPlane size={22} />}
-                title={t("caseDetail.sections.transport")}
-                body={t("caseDetail.empty.transport")}
-              />
-            )}
+            <CaseTransport caseId={c.id} legs={c.transportLegs} />
           </section>
 
           <section>

@@ -74,6 +74,42 @@ export type TransportLegStatus =
   | "in_transit"
   | "completed";
 
+/** The four ordered leg states, for advance UI + labels. */
+export const TRANSPORT_LEG_STATUSES: readonly TransportLegStatus[] = [
+  "planned",
+  "booked",
+  "in_transit",
+  "completed",
+] as const;
+
+export function legStatusIndex(s: TransportLegStatus): number {
+  return TRANSPORT_LEG_STATUSES.indexOf(s);
+}
+
+/** Chain-of-custody event kinds (who did what to the niftar, when). */
+export type CustodyEventKind =
+  | "collected"
+  | "handed_over"
+  | "received"
+  | "released";
+
+export const CUSTODY_EVENT_KINDS: readonly CustodyEventKind[] = [
+  "collected",
+  "handed_over",
+  "received",
+  "released",
+] as const;
+
+/** One append-only chain-of-custody entry (app projection of the jsonb row). */
+export interface CustodyEvent {
+  event: CustodyEventKind;
+  /** ISO datetime the event occurred. */
+  at: string;
+  /** Who performed / witnessed it (staff name, carrier agent, …). */
+  by?: string;
+  note?: string;
+}
+
 export interface TransportLeg {
   id: string;
   caseId: string;
@@ -83,11 +119,17 @@ export interface TransportLeg {
   /** IATA code or place name, e.g. "TLV" */
   to: string;
   carrier?: string;
-  /** Flight number or air waybill number. */
+  /** Flight number or air waybill number (the merged display value). */
   flightOrAwb?: string;
+  /** Raw flight number (air legs). */
+  flightNo?: string;
+  /** Raw air-waybill number (air-cargo legs). */
+  awbNo?: string;
   scheduledAt?: string; // ISO datetime
   status: TransportLegStatus;
-  /** Chain-of-custody timestamps. */
+  /** Full append-only chain-of-custody, oldest first. */
+  custodyChain: CustodyEvent[];
+  /** Convenience projection of the chain (first hand-over / completion). */
   custody: { handedOverAt?: string; receivedAt?: string };
 }
 

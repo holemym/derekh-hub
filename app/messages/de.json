@@ -227,10 +227,63 @@
     "other": "Sonstiges Dokument",
     "il-mfa-transfer-permit": "IL-Außenministerium-Überführungsgenehmigung"
   },
+  "transport": {
+    "addLeg": "Transportabschnitt hinzufügen",
+    "edit": "Bearbeiten",
+    "save": "Speichern",
+    "saving": "Wird gespeichert…",
+    "cancel": "Abbrechen",
+    "scheduled": "Geplant",
+    "addCustody": "Übergabeereignis hinzufügen",
+    "addEvent": "Ereignis hinzufügen",
+    "generateManifest": "Manifest erstellen",
+    "generatingManifest": "Wird erstellt…",
+    "errorSave": "Der Abschnitt konnte nicht gespeichert werden. Bitte erneut versuchen.",
+    "errorAdvance": "Der Abschnitt konnte nicht weitergeschaltet werden. Bitte erneut versuchen.",
+    "errorCustody": "Das Übergabeereignis konnte nicht erfasst werden.",
+    "errorManifest": "Das Manifest konnte nicht erstellt werden.",
+    "types": {
+      "ground": "Boden",
+      "air_cargo": "Luftfracht",
+      "domestic_il": "Inland (Israel)"
+    },
+    "status": {
+      "planned": "Geplant",
+      "booked": "Gebucht",
+      "in_transit": "Unterwegs",
+      "completed": "Abgeschlossen"
+    },
+    "advanceTo": {
+      "booked": "Als gebucht markieren",
+      "in_transit": "Als unterwegs markieren",
+      "completed": "Als abgeschlossen markieren"
+    },
+    "custody": {
+      "collected": "Abgeholt",
+      "handed_over": "Übergeben",
+      "received": "Empfangen",
+      "released": "Freigegeben"
+    },
+    "field": {
+      "type": "Art",
+      "from": "Von",
+      "to": "Nach",
+      "carrier": "Transporteur",
+      "flightNo": "Flugnr.",
+      "awbNo": "Luftfrachtbrief (AWB)",
+      "scheduledAt": "Geplant",
+      "event": "Ereignis",
+      "at": "Wann",
+      "by": "Durch",
+      "note": "Notiz"
+    }
+  },
   "transportPage": {
     "title": "Transport",
-    "emptyTitle": "Noch keine Transportübersicht",
-    "emptyBody": "Bodenabschnitte, Luftfracht-Buchungen und Übergabekette folgen in einer späteren Phase."
+    "subtitle": "{count, plural, =0 {Keine aktiven Abschnitte} one {# aktiver Abschnitt über alle Fälle} other {# aktive Abschnitte über alle Fälle}}",
+    "unnamed": "Unbenannter Fall",
+    "emptyTitle": "Noch keine Transportabschnitte",
+    "emptyBody": "Bodenabschnitte und Luftfracht-Buchungen aus allen Fällen erscheinen hier — nach Status gruppiert, früheste zuerst. Fügen Sie einen Abschnitt in einem Fall hinzu, um ihn hier zu sehen."
   },
   "more": {
     "title": "Mehr",

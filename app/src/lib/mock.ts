@@ -98,6 +98,10 @@ export const MOCK_CASES: Case[] = [
         flightOrAwb: "LY 364",
         scheduledAt: iso(3),
         status: "in_transit",
+        custodyChain: [
+          { event: "collected", at: iso(-3), by: "Chevra Kadisha" },
+          { event: "handed_over", at: iso(-2), by: "EL AL Cargo" },
+        ],
         custody: { handedOverAt: iso(-2) },
       },
     ],
@@ -194,6 +198,10 @@ export const MOCK_CASES: Case[] = [
         to: "TLV",
         carrier: "EL AL Cargo",
         flightOrAwb: "LY 358",
+        custodyChain: [
+          { event: "handed_over", at: iso(-12), by: "EL AL Cargo" },
+          { event: "received", at: iso(-6), by: "Chevra Kadisha TLV" },
+        ],
         scheduledAt: iso(-10),
         status: "completed",
         custody: { handedOverAt: iso(-12), receivedAt: iso(-6) },

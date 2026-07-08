@@ -20,10 +20,13 @@ import type {
   CaseContact,
   TransportLeg,
   TransportLegType,
+  CustodyEvent,
+  CustodyEventKind,
   Task,
   ContactRole,
   PipelineStage,
 } from "@/lib/types";
+import { CUSTODY_EVENT_KINDS } from "@/lib/types";
 
 /** urgency (smallint, higher = hotter) → the single boolean red accent. */
 const URGENT_THRESHOLD = 3;
@@ -61,13 +64,41 @@ function mapContactRole(role: CaseContactRow["role"]): ContactRole | null {
   }
 }
 
+/** DB custody jsonb → app CustodyEvent, tolerating legacy `{ at, actor, note }`. */
+function mapCustodyEntry(raw: unknown): CustodyEvent | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  const at = typeof r.at === "string" ? r.at : undefined;
+  if (!at) return null;
+  const event = (
+    typeof r.event === "string" &&
+    (CUSTODY_EVENT_KINDS as readonly string[]).includes(r.event)
+      ? r.event
+      : "handed_over"
+  ) as CustodyEventKind;
+  const by =
+    typeof r.by === "string"
+      ? r.by
+      : typeof r.actor === "string"
+        ? r.actor
+        : undefined;
+  const note = typeof r.note === "string" ? r.note : undefined;
+  return { event, at, by, note };
+}
+
 export function mapTransportLeg(row: TransportLegRow): TransportLeg {
-  // Chain-of-custody is an append-only array in the DB; project the first
-  // hand-over and the completion (if present) into the app's flat shape.
-  const custody = Array.isArray(row.custody) ? row.custody : [];
-  const handedOverAt = custody[0]?.at;
-  const receivedAt =
-    row.status === "completed" ? custody[custody.length - 1]?.at : undefined;
+  // Chain-of-custody is an append-only array in the DB; carry the full chain
+  // (oldest first) and also project a flat pair for compact indicators.
+  const rawCustody = Array.isArray(row.custody) ? row.custody : [];
+  const custodyChain = rawCustody
+    .map(mapCustodyEntry)
+    .filter((c): c is CustodyEvent => c !== null)
+    .sort((a, b) => a.at.localeCompare(b.at));
+
+  const handedOver = custodyChain.find((c) => c.event === "handed_over");
+  const received = [...custodyChain]
+    .reverse()
+    .find((c) => c.event === "received");
 
   return {
     id: row.id,
@@ -76,10 +107,16 @@ export function mapTransportLeg(row: TransportLegRow): TransportLeg {
     from: row.from_location ?? "",
     to: row.to_location ?? "",
     carrier: row.carrier ?? undefined,
+    flightNo: row.flight_no ?? undefined,
+    awbNo: row.awb_no ?? undefined,
     flightOrAwb: row.flight_no ?? row.awb_no ?? undefined,
     scheduledAt: row.scheduled_at ?? undefined,
     status: row.status,
-    custody: { handedOverAt, receivedAt },
+    custodyChain,
+    custody: {
+      handedOverAt: handedOver?.at ?? custodyChain[0]?.at,
+      receivedAt: received?.at,
+    },
   };
 }
 

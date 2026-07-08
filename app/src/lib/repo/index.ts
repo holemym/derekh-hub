@@ -21,10 +21,12 @@ import {
   listOpenTasks as sbListOpenTasks,
   tasksForCase as sbTasksForCase,
   activityForCase as sbActivityForCase,
+  listTransportLegs as sbListTransportLegs,
   type ActivityEntry,
+  type TransportLegWithCase,
 } from "./supabase";
 
-export type { ActivityEntry };
+export type { ActivityEntry, TransportLegWithCase };
 
 /** All cases (unsorted). */
 export function listCases(): Promise<Case[]> {
@@ -59,6 +61,11 @@ export function listOpenTasks(): Promise<Task[]> {
 /** Tasks for one case (open + done), due-sorted. */
 export function tasksForCase(caseId: string): Promise<Task[]> {
   return sbTasksForCase(caseId);
+}
+
+/** Every transport leg across all cases, with niftar identity (dispatch board). */
+export function listTransportLegs(): Promise<TransportLegWithCase[]> {
+  return sbListTransportLegs();
 }
 
 /** Most-recent activity_log entries for one case (newest first). */

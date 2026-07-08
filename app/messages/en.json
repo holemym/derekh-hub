@@ -227,10 +227,63 @@
     "other": "Other document",
     "il-mfa-transfer-permit": "IL MFA transfer permit"
   },
+  "transport": {
+    "addLeg": "Add a transport leg",
+    "edit": "Edit",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "scheduled": "Scheduled",
+    "addCustody": "Add custody event",
+    "addEvent": "Add event",
+    "generateManifest": "Generate manifest",
+    "generatingManifest": "Generating…",
+    "errorSave": "Could not save the leg. Please try again.",
+    "errorAdvance": "Could not advance the leg. Please try again.",
+    "errorCustody": "Could not record the custody event.",
+    "errorManifest": "Could not generate the manifest.",
+    "types": {
+      "ground": "Ground",
+      "air_cargo": "Air cargo",
+      "domestic_il": "Domestic (Israel)"
+    },
+    "status": {
+      "planned": "Planned",
+      "booked": "Booked",
+      "in_transit": "In transit",
+      "completed": "Completed"
+    },
+    "advanceTo": {
+      "booked": "Mark booked",
+      "in_transit": "Mark in transit",
+      "completed": "Mark completed"
+    },
+    "custody": {
+      "collected": "Collected",
+      "handed_over": "Handed over",
+      "received": "Received",
+      "released": "Released"
+    },
+    "field": {
+      "type": "Type",
+      "from": "From",
+      "to": "To",
+      "carrier": "Carrier",
+      "flightNo": "Flight No.",
+      "awbNo": "Air waybill (AWB)",
+      "scheduledAt": "Scheduled",
+      "event": "Event",
+      "at": "When",
+      "by": "By",
+      "note": "Note"
+    }
+  },
   "transportPage": {
     "title": "Transport",
-    "emptyTitle": "No transport board yet",
-    "emptyBody": "Ground legs, air-cargo bookings and chain-of-custody tracking will live here in a later phase."
+    "subtitle": "{count, plural, =0 {No active legs} one {# active leg across cases} other {# active legs across cases}}",
+    "unnamed": "Unnamed case",
+    "emptyTitle": "No transport legs yet",
+    "emptyBody": "Ground legs and air-cargo bookings from every case appear here — grouped by status, soonest first. Add a leg from a case to see it on the board."
   },
   "more": {
     "title": "More",
