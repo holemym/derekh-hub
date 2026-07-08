@@ -54,12 +54,12 @@ The core loop. This is where the current tool's capabilities move in.
 - ✅ `planning.ts` urgency model (stage + kevod-hames time pressure + Shabbos proximity); unit-tested (23 assertions)
 - Note: case-detail "Advance stage" buttons still M1 stubs (stage transitions → a later pass).
 
-### M3 · Transport & repatriation ⬜ 🔗 M1
+### M3 · Transport & repatriation ✅ COMPLETE 🔗 M1
 - Transport legs (ground / air-cargo / domestic), chain-of-custody timeline
 - Airline cargo + known-shipper forms as **new FormTemplates** (proves the "new form = config, zero code" thesis)
 - **Done when:** a case's physical journey is trackable and its transport paperwork generates like the permit.
 
-### M4 · Money + comms ⬜ 🔗 M1
+### M4 · Money + comms ✅ COMPLETE 🔗 M1
 - Invoices / expenses per case; Stripe
 - Templated family status updates via WhatsApp / email (calendar-aware timing)
 - **Done when:** a case can be invoiced and the family gets status updates.
