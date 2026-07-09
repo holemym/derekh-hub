@@ -6,6 +6,8 @@ import { formatWeekdayTime } from "@/lib/format";
 import Link from "next/link";
 import CaseCard from "@/components/CaseCard";
 import DueSoonTasks from "@/components/DueSoonTasks";
+import DailyBrief from "@/components/DailyBrief";
+import { aiConfigured } from "@/lib/ai/copilot";
 import { IconCandles, IconPlus } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -98,6 +100,13 @@ export default async function TodayPage() {
                 {t("today.newPermit")}
               </Link>
             </div>
+
+            {/* AI morning brief — on demand, only when a key is configured. */}
+            {aiConfigured() ? (
+              <section className="mb-6">
+                <DailyBrief />
+              </section>
+            ) : null}
 
             {/* Due soon — mobile only in-flow; desktop shows it in the rail. */}
             {dueSoon.length > 0 ? (

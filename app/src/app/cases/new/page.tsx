@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import NewPermitForm from "@/components/NewPermitForm";
+import { aiConfigured } from "@/lib/ai/copilot";
 import { IconChevronRight } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -26,7 +27,7 @@ export default async function NewPermitPage() {
       <h1 className="mb-1 text-2xl font-semibold tracking-tight">{t("title")}</h1>
       <p className="mb-5 text-sm text-muted">{t("subtitle")}</p>
 
-      <NewPermitForm />
+      <NewPermitForm aiEnabled={aiConfigured()} />
     </div>
   );
 }

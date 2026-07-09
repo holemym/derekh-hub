@@ -186,7 +186,8 @@
       "money": "Finanzen",
       "comms": "Familien-Updates",
       "contacts": "Kontakte",
-      "activity": "Verlauf"
+      "activity": "Verlauf",
+      "copilot": "Copilot"
     },
     "empty": {
       "documents": "Noch keine Dokumente. Die Dokumentenmappe für diese Stufe erscheint hier.",
@@ -580,5 +581,21 @@
       "hearse_operator": "Bestattungsfahrer",
       "other": "Sonstige"
     }
+  },
+  "copilot": {
+    "consulateEmail": "Konsulats-E-Mail entwerfen",
+    "summarize": "Fall zusammenfassen",
+    "drafting": "Denkt nach…",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "openEmail": "In E-Mail öffnen",
+    "reviewNote": "Von KI aus den Falldaten entworfen — vor dem Senden jedes Detail prüfen.",
+    "dailyBrief": "Tagesübersicht erstellen",
+    "error": "Die KI-Anfrage ist fehlgeschlagen. Bitte erneut versuchen.",
+    "certTitle": "Aus Sterbeurkunde ausfüllen",
+    "certFill": "Lesen & ausfüllen",
+    "reading": "Liest…",
+    "filled": "Ausgefüllt",
+    "certNote": "Foto oder PDF der Urkunde hochladen — lesbare Felder werden unten ausgefüllt. Alles mit dem Original abgleichen."
   }
 }

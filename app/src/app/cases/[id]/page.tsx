@@ -21,6 +21,8 @@ import CaseComms from "@/components/CaseComms";
 import CaseContacts from "@/components/CaseContacts";
 import { sendCapabilities } from "@/lib/send";
 import { stripeConfigured } from "@/lib/stripe";
+import { aiConfigured } from "@/lib/ai/copilot";
+import CaseCopilot from "@/components/CaseCopilot";
 import EmptyState from "@/components/EmptyState";
 import { IconChevronRight, IconActivity } from "@/components/icons";
 
@@ -178,6 +180,15 @@ export default async function CaseDetailPage({
               can={sendCapabilities()}
             />
           </section>
+
+          {aiConfigured() ? (
+            <section>
+              <h2 className="t-label mb-2 px-1">
+                {t("caseDetail.sections.copilot")}
+              </h2>
+              <CaseCopilot caseId={c.id} />
+            </section>
+          ) : null}
 
           <section>
             <h2 className="t-label mb-2 px-1">

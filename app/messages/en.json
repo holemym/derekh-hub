@@ -186,7 +186,8 @@
       "money": "Money",
       "comms": "Family updates",
       "contacts": "Contacts",
-      "activity": "Activity"
+      "activity": "Activity",
+      "copilot": "Copilot"
     },
     "empty": {
       "documents": "No documents yet. The document packet for this stage will appear here.",
@@ -580,5 +581,21 @@
       "hearse_operator": "Hearse operator",
       "other": "Other"
     }
+  },
+  "copilot": {
+    "consulateEmail": "Draft consulate email",
+    "summarize": "Summarize case",
+    "drafting": "Thinking…",
+    "copy": "Copy",
+    "copied": "Copied",
+    "openEmail": "Open in email",
+    "reviewNote": "Drafted by AI from the case data — review every detail before sending.",
+    "dailyBrief": "Generate today’s brief",
+    "error": "The AI request failed. Please try again.",
+    "certTitle": "Fill from death certificate",
+    "certFill": "Read & fill",
+    "reading": "Reading…",
+    "filled": "Filled",
+    "certNote": "Upload a photo or PDF of the certificate — legible fields are filled in below. Check everything against the original."
   }
 }

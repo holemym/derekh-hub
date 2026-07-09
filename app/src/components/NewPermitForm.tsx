@@ -30,7 +30,8 @@ import {
   type PermitFormDocuments,
 } from "@/lib/documents/form";
 import { saveCaseFromForm } from "@/app/cases/new/actions";
-import { IconCheck } from "@/components/icons";
+import { aiExtractCertificate } from "@/app/cases/new/ai-actions";
+import { IconCheck, IconDoc } from "@/components/icons";
 
 const FORM_URL = "/forms/il-mfa-transfer-permit.pdf";
 
@@ -98,7 +99,12 @@ function Field({
 const inputCls =
   "min-h-11 w-full rounded-xl border border-line bg-bg px-3 py-2.5 text-[15px] text-ink outline-none focus:border-ink";
 
-export default function NewPermitForm() {
+export default function NewPermitForm({
+  aiEnabled = false,
+}: {
+  /** ANTHROPIC_API_KEY present → offer certificate-OCR autofill (M5). */
+  aiEnabled?: boolean;
+}) {
   const t = useTranslations("newPermit");
   const [form, setForm] = useState<PermitForm>(() => emptyPermitForm(todayIso()));
   const [review, setReview] = useState(false);
@@ -108,6 +114,30 @@ export default function NewPermitForm() {
 
   function set<K extends keyof PermitForm>(key: K, value: PermitForm[K]) {
     setForm((f) => ({ ...f, [key]: value }));
+    setDone(false);
+  }
+
+  /** Merge OCR'd certificate fields into the form (only non-empty values). */
+  function applyExtracted(fields: Record<string, string | undefined>) {
+    setForm((f) => {
+      const next = { ...f };
+      for (const key of [
+        "surname",
+        "firstname",
+        "dob",
+        "pob",
+        "address",
+        "nationality",
+        "dod",
+        "pod",
+        "cause",
+        "icd",
+      ] as const) {
+        const v = fields[key];
+        if (v) next[key] = v;
+      }
+      return next;
+    });
     setDone(false);
   }
   function toggleDoc(key: keyof PermitFormDocuments) {
@@ -203,6 +233,9 @@ export default function NewPermitForm() {
 
   return (
     <div className="rise-in">
+      {/* AI autofill from a death certificate (M5, env-gated). */}
+      {aiEnabled ? <CertificateAutofill onExtracted={applyExtracted} /> : null}
+
       {/* 1 · Deceased */}
       <Section num={1} title={t("s.deceased")} he="פרטי המנוח/ה">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -563,6 +596,73 @@ function Section({
         </span>
       </h2>
       {children}
+    </section>
+  );
+}
+
+/* ── Certificate OCR autofill (M5, env-gated) ────────────────────────────── */
+
+function CertificateAutofill({
+  onExtracted,
+}: {
+  onExtracted: (fields: Record<string, string | undefined>) => void;
+}) {
+  const t = useTranslations("copilot");
+  const [file, setFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [filled, setFilled] = useState(false);
+
+  async function onFill() {
+    if (!file) return;
+    setBusy(true);
+    setError(null);
+    setFilled(false);
+    try {
+      const fd = new FormData();
+      fd.set("certificate", file);
+      const res = await aiExtractCertificate(fd);
+      if (!res.ok || !res.fields) {
+        setError(res.error ?? t("error"));
+        return;
+      }
+      onExtracted(res.fields as Record<string, string | undefined>);
+      setFilled(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="mb-4 rounded-card border border-dashed border-line bg-card p-4">
+      <h2 className="mb-2 flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-wider text-muted">
+        <IconDoc size={14} />
+        {t("certTitle")}
+      </h2>
+      <div className="flex flex-wrap items-center gap-2">
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp,application/pdf"
+          onChange={(e) => {
+            setFile(e.target.files?.[0] ?? null);
+            setFilled(false);
+          }}
+          className="min-h-11 flex-1 rounded-xl border border-line bg-bg px-3 py-2 text-[13px] text-muted file:mr-2 file:rounded-lg file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-[12px] file:font-medium file:text-bg"
+        />
+        <button
+          type="button"
+          onClick={onFill}
+          disabled={!file || busy}
+          className="pressable flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg disabled:opacity-60"
+        >
+          {filled ? <IconCheck size={14} /> : null}
+          {busy ? t("reading") : filled ? t("filled") : t("certFill")}
+        </button>
+      </div>
+      <p className="mt-2 text-[12px] text-muted">{t("certNote")}</p>
+      {error ? (
+        <p className="mt-2 text-[13px] font-medium text-urgent">{error}</p>
+      ) : null}
     </section>
   );
 }
