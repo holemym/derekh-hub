@@ -273,9 +273,8 @@ export function mapCase(bundle: CaseRowBundle): Case {
     dod: r.dod ?? "",
     placeOfDeath: r.place_of_death ?? "",
     placeOfBirth: r.place_of_birth ?? undefined,
-    // ROADMAP reconciliation: standardize on ONE address for the permit —
-    // prefer last_address (0004), fall back to the original address (0001).
-    lastAddress: r.last_address ?? r.address ?? undefined,
+    // One address column (0006 dropped last_address); the permit binds it.
+    lastAddress: r.address ?? undefined,
     idOrPassport: r.id_number ?? undefined,
     nationality: r.nationality ?? "",
     causeOfDeath: r.cause_of_death ?? undefined,

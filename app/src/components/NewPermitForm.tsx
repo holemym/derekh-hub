@@ -80,13 +80,13 @@ function Field({
 }) {
   return (
     <div className={span2 ? "sm:col-span-2" : undefined}>
-      <label className="mb-1.5 flex items-baseline justify-between gap-2 text-[13px] font-medium">
+      <label className="mb-1.5 flex items-baseline justify-between gap-2 t-meta font-medium text-ink">
         <span>
           {label}
           {required ? <span className="text-urgent"> *</span> : null}
         </span>
         {he ? (
-          <span dir="rtl" lang="he" className="text-[12px] font-normal text-muted">
+          <span dir="rtl" lang="he" className="t-meta font-normal text-muted">
             {he}
           </span>
         ) : null}
@@ -323,7 +323,7 @@ export default function NewPermitForm({
                 mono={form.natType === "israeli"}
                 placeholder={form.natType === "israeli" ? "0000000000" : "A0000000"}
               />
-              <p className="mt-1.5 text-[12px] text-muted">{t("hint.id")}</p>
+              <p className="mt-1.5 t-meta text-muted">{t("hint.id")}</p>
             </Field>
           </div>
         </div>
@@ -425,7 +425,7 @@ export default function NewPermitForm({
               mono
               placeholder="000000000"
             />
-            <p className="mt-1.5 text-[12px] text-muted">{t("hint.fs")}</p>
+            <p className="mt-1.5 t-meta text-muted">{t("hint.fs")}</p>
           </Field>
           <Field label={t("f.license")} he="תאריך תפוגת הרישיון">
             <input
@@ -456,7 +456,7 @@ export default function NewPermitForm({
               />
               <span className="text-[14px]">
                 {t(`doc.${key}`)}
-                <span dir="rtl" lang="he" className="block text-[12px] text-muted">
+                <span dir="rtl" lang="he" className="block t-meta text-muted">
                   {t(`docHe.${key}`)}
                 </span>
               </span>
@@ -481,7 +481,7 @@ export default function NewPermitForm({
       </Section>
 
       {error ? (
-        <p className="mb-3 rounded-card border border-urgent/40 px-4 py-2.5 text-[13px] font-medium text-urgent">
+        <p className="mb-3 rounded-card border border-urgent/40 px-4 py-2.5 t-meta font-medium text-urgent">
           {error}
         </p>
       ) : null}
@@ -535,7 +535,7 @@ export default function NewPermitForm({
               </button>
             </div>
             {missing.length ? (
-              <p className="mb-3 text-[13px] font-medium text-urgent">
+              <p className="mb-3 t-meta font-medium text-urgent">
                 {t("review.missing", { fields: missing.join(", ") })}
               </p>
             ) : null}
@@ -588,7 +588,7 @@ function Section({
 }) {
   return (
     <section className="mb-4 rounded-card border border-line bg-card p-4">
-      <h2 className="mb-3.5 flex items-baseline gap-2 text-[13px] font-semibold uppercase tracking-wider text-muted">
+      <h2 className="mb-3.5 flex items-baseline gap-2 t-label">
         <span className="text-ink">{num}</span>
         <span>{title}</span>
         <span dir="rtl" lang="he" className="font-normal">
@@ -635,7 +635,7 @@ function CertificateAutofill({
 
   return (
     <section className="mb-4 rounded-card border border-dashed border-line bg-card p-4">
-      <h2 className="mb-2 flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-wider text-muted">
+      <h2 className="mb-2 flex items-center gap-1.5 t-label">
         <IconDoc size={14} />
         {t("certTitle")}
       </h2>
@@ -659,9 +659,9 @@ function CertificateAutofill({
           {busy ? t("reading") : filled ? t("filled") : t("certFill")}
         </button>
       </div>
-      <p className="mt-2 text-[12px] text-muted">{t("certNote")}</p>
+      <p className="mt-2 t-meta text-muted">{t("certNote")}</p>
       {error ? (
-        <p className="mt-2 text-[13px] font-medium text-urgent">{error}</p>
+        <p className="mt-2 t-meta font-medium text-urgent">{error}</p>
       ) : null}
     </section>
   );

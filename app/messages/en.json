@@ -407,8 +407,8 @@
     "intakeLinkBody": "Share this link with a family. They can fill in the details and attach documents — their submission arrives in the Intake inbox.",
     "copyLink": "Copy link",
     "copied": "Copied",
-    "about": "Offline-first operations hub for burial and repatriation. Phase 0 shell — local mock data only.",
-    "version": "Phase 0 · app shell"
+    "about": "Operations hub for burial and repatriation — cases, permits, transport, money and family updates on live data.",
+    "version": "Live · M1–M5"
   },
   "intake": {
     "title": "Family information",

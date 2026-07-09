@@ -407,8 +407,8 @@
     "intakeLinkBody": "Teilen Sie diesen Link mit einer Familie. Sie kann die Angaben eintragen und Dokumente anhängen — die Übermittlung erscheint im Eingang „Angaben der Familie“.",
     "copyLink": "Link kopieren",
     "copied": "Kopiert",
-    "about": "Offline-first Einsatzzentrale für Bestattung und Überführung. Phase 0 — nur lokale Mock-Daten.",
-    "version": "Phase 0 · App-Shell"
+    "about": "Einsatzzentrale für Bestattung und Überführung — Fälle, Genehmigungen, Transport, Finanzen und Familien-Updates auf Live-Daten.",
+    "version": "Live · M1–M5"
   },
   "intake": {
     "title": "Angaben der Familie",

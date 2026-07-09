@@ -45,7 +45,6 @@ const CASE_COLUMNS = [
   "dod",
   "place_of_death",
   "place_of_birth",
-  "last_address",
   "address",
   "id_number",
   "nationality",
@@ -123,14 +122,13 @@ async function main() {
       ok(!!row.id_number, `  id_number: ${JSON.stringify(row.id_number)}`);
       ok(!!row.nationality, `  nationality: ${JSON.stringify(row.nationality)}`);
       ok(row.status === "documents", `  status: ${row.status}`);
-      // place_of_birth / last_address are 0004 columns the mapper reads.
+      // place_of_birth is a 0004 column; 0006 dropped last_address (address is canonical).
       ok("place_of_birth" in row, `  place_of_birth column exists (val: ${JSON.stringify(row.place_of_birth)})`);
-      ok("last_address" in row, `  last_address column exists (val: ${JSON.stringify(row.last_address)})`);
       ok("cause_of_death" in row, `  cause_of_death column exists (val: ${JSON.stringify(row.cause_of_death)})`);
       ok("icd_code" in row, `  icd_code column exists (val: ${JSON.stringify(row.icd_code)})`);
-      // For the permit's address binding: last_address ?? address must resolve.
-      const resolvedAddress = row.last_address ?? row.address;
-      ok(!!resolvedAddress, `  resolved permit address (last_address ?? address): ${JSON.stringify(resolvedAddress)}`);
+      // For the permit's address binding: cases.address must resolve.
+      const resolvedAddress = row.address;
+      ok(!!resolvedAddress, `  resolved permit address (address): ${JSON.stringify(resolvedAddress)}`);
 
       // 3. Linked children the getCase() bundle reads.
       const legs = await client.query(

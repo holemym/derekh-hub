@@ -76,7 +76,7 @@ export async function importSubmission(id: string): Promise<ActionResult> {
     dod: nn(p.dod),
     place_of_death: nn(p.pod),
     place_of_birth: nn(p.pob),
-    last_address: nn(p.address),
+    address: nn(p.address),
     nationality: nn(p.nationality),
     country: nn(p.country),
     id_number: nn(p.id_number),

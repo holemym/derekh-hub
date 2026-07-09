@@ -171,7 +171,6 @@ export interface CaseRow {
   nationality: string | null;
   country: string | null;
   address: string | null;
-  last_address: string | null; // 0004: binds permit field `address` (case.last_address)
   cause_of_death: string | null; // GDPR: medical data — handle with care
   icd_code: string | null;
   burial_place: string | null;

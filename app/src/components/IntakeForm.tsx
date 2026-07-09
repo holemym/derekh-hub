@@ -9,7 +9,7 @@
  * Faithful to burial-permit-v2/intake.html's field set + gentle tone, rebuilt in
  * the hub's monoline design (tokens: card/line/ink/muted), mobile-first, EN/DE via
  * next-intl. Input `name`s match submitIntake exactly. Basic bot deterrence via a
- * hidden honeypot (`company`); full rate-limiting is a documented follow-up.
+ * hidden honeypot (`company`), a time-trap stamp (`startedAt`) and a per-IP throttle server-side.
  */
 
 import { useRef, useState } from "react";
@@ -42,7 +42,7 @@ function Field({
 }) {
   return (
     <div className={span2 ? "sm:col-span-2" : undefined}>
-      <label className="mb-1.5 flex items-baseline justify-between gap-2 text-[13px] font-medium">
+      <label className="mb-1.5 flex items-baseline justify-between gap-2 t-meta font-medium text-ink">
         <span>
           {label}
           {required ? <span className="text-urgent"> *</span> : null}
@@ -59,6 +59,8 @@ export default function IntakeForm({ locale }: { locale: string }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [natType, setNatType] = useState<"israeli" | "foreigner">("israeli");
   const [busy, setBusy] = useState(false);
+  // Time-trap stamp: when the form mounted (bots submit instantly; humans don't).
+  const [startedAt] = useState(() => Date.now());
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -96,9 +98,10 @@ export default function IntakeForm({ locale }: { locale: string }) {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} noValidate>
-      {/* Hidden: submission language + honeypot. */}
+      {/* Hidden: submission language + honeypot + time-trap stamp. */}
       <input type="hidden" name="lang" value={locale} />
       <input type="hidden" name="natType" value={natType} />
+      <input type="hidden" name="startedAt" value={startedAt} />
       <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden">
         <label>
           Company
@@ -244,7 +247,7 @@ export default function IntakeForm({ locale }: { locale: string }) {
       </section>
 
       {error ? (
-        <p className="mb-3 rounded-card border border-urgent/40 px-4 py-2.5 text-[13px] font-medium text-urgent">
+        <p className="mb-3 rounded-card border border-urgent/40 px-4 py-2.5 t-meta font-medium text-urgent">
           {error}
         </p>
       ) : null}
@@ -270,7 +273,7 @@ function Section({
 }) {
   return (
     <section className="mb-4 rounded-card border border-line bg-card p-4">
-      <h2 className="mb-3.5 text-[13px] font-semibold uppercase tracking-wider text-muted">
+      <h2 className="mb-3.5 t-label">
         {title}
       </h2>
       {children}

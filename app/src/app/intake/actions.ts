@@ -18,13 +18,37 @@
  * so nothing is orphaned, then surface an error. On success the CLIENT redirects
  * to /intake/thanks (anon cannot read the row back, which is fine).
  *
- * Honeypot: a hidden `company` field. Real families never fill it; a bot that
- * does gets a silent success (we drop the payload). Full rate-limiting is a
- * documented follow-up (see report) — this is only basic deterrence.
+ * Abuse deterrence (M4.5 hardening) — three cheap layers, no captcha:
+ *   1. Honeypot: a hidden `company` field. A bot that fills it gets a silent
+ *      success (we drop the payload).
+ *   2. Time trap: the form stamps when it was opened (`startedAt`); a submit
+ *      arriving faster than a human could type gets the same silent success.
+ *   3. Per-IP throttle: an in-memory sliding window (per serverless instance —
+ *      imperfect on Vercel but blunts naive loops; a durable limiter is a
+ *      documented follow-up).
  */
 
+import { headers } from "next/headers";
 import { createSupabaseAnonClient } from "@/lib/supabase/anon";
 import type { IntakeFile, IntakeSubmissionInsert } from "../../../../db/types";
+
+const MIN_FILL_MS = 4000; // faster than any grieving family fills this form
+const RATE_WINDOW_MS = 60 * 60 * 1000;
+const RATE_MAX_PER_WINDOW = 10;
+
+/** In-memory per-IP submit timestamps (per instance; pruned on access). */
+const ipHits = new Map<string, number[]>();
+
+function rateLimited(ip: string, now: number): boolean {
+  const hits = (ipHits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (hits.length >= RATE_MAX_PER_WINDOW) {
+    ipHits.set(ip, hits);
+    return true;
+  }
+  hits.push(now);
+  ipHits.set(ip, hits);
+  return false;
+}
 
 const BUCKET = "case-docs";
 const MAX_FILE_BYTES = 12 * 1024 * 1024; // 12 MB per file (matches the form hint)
@@ -65,6 +89,26 @@ export async function submitIntake(formData: FormData): Promise<IntakeResult> {
   // Honeypot — a hidden field no human fills. If set, pretend success + drop it.
   if (str(formData, "company")) {
     return { ok: true };
+  }
+
+  // Time trap — the form stamps Date.now() when it mounts. Too fast = bot.
+  const startedAt = Number(str(formData, "startedAt"));
+  const now = Date.now();
+  if (Number.isFinite(startedAt) && startedAt > 0 && now - startedAt < MIN_FILL_MS) {
+    return { ok: true }; // silent drop
+  }
+
+  // Per-IP throttle (best-effort; see header note).
+  const h = await headers();
+  const ip =
+    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    h.get("x-real-ip") ||
+    "unknown";
+  if (rateLimited(ip, now)) {
+    return {
+      ok: false,
+      error: "Too many submissions from this connection. Please try again later.",
+    };
   }
 
   const natType = str(formData, "natType") === "foreigner" ? "foreigner" : "israeli";

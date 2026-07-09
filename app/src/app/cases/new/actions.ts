@@ -47,7 +47,7 @@ export async function saveCaseFromForm(raw: PermitForm): Promise<SaveCaseResult>
     dod: nn(form.dod),
     place_of_death: nn(form.pod),
     place_of_birth: nn(form.pob),
-    last_address: nn(form.address),
+    address: nn(form.address),
     nationality: nn(form.nationality),
     id_number: nn(form.id_number),
     id_type: form.natType === "foreigner" ? "passport" : "israeli_id",

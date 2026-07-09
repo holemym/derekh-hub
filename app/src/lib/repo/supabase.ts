@@ -6,8 +6,8 @@
  * nothing. Rows are mapped to the app `Case` shape via ./mapper so callers
  * (pages/components) never touch DB shapes.
  *
- * Pure helpers (urgencyScore / stageIndex) come from @/lib/mock and @/lib/types
- * — they operate on already-mapped `Case` objects, no mock rows involved.
+ * Pure helpers (urgencyScore / stageIndex) come from @/lib/planning and
+ * @/lib/types — they operate on already-mapped `Case` objects.
  */
 
 import "server-only";

@@ -275,7 +275,7 @@ export interface Case {
   placeOfDeath: string;
   /** Where the niftar was born — permit field `pob` (DB place_of_birth). */
   placeOfBirth?: string;
-  /** Last permanent address — permit field `address` (DB last_address ?? address). */
+  /** Last permanent address — permit field `address` (DB cases.address). */
   lastAddress?: string;
   idOrPassport?: string;
   nationality: string;

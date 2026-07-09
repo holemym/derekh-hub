@@ -8,7 +8,7 @@
  * never see DB rows or Supabase.
  *
  * All reads are async (they hit the network / DB). The pure urgency + next-
- * action helpers remain in @/lib/mock (they operate on mapped `Case` objects).
+ * action helpers live in @/lib/planning (they operate on mapped `Case` objects).
  */
 
 import type { Case, PipelineStage, Task } from "@/lib/types";
