@@ -18,7 +18,11 @@ against canonical docs in this folder. Gradual build, verify each milestone befo
 | **App** (`app`) | ✅ | **LIVE at https://derekh-hub.vercel.app** on live Supabase (RLS-scoped SSR). M1–M4 + stage transitions + design v2 done: auth, cases/pipeline, permits, vault, intake, Today/tasks, transport/custody, money/comms. EN/DE, mobile + desktop. |
 | **Data layer** (`db`) | ✅ | Schema applied to live Supabase `ucsoecwcvyxpdydhclnp` (eu-west-1); migrations 0001–0005; 51 RLS policies verified (anon=0, owner sees data). |
 
-Known soft spots (this drives M4.5 below): contacts have schema + read path but **no write UI**; comms/invoices are hand-off only (no provider); public intake unprotected; magic-link email on Supabase's rate-limited default sender; small debt (address/last_address dupe, dead `TransitLine.tsx`, two forms off the type scale).
+The July 2026 review session closed the known soft spots: contacts editor shipped (M4.5),
+sending seams + Stripe + AI copilot shipped env-gated (M4.5/M5), intake hardened, address
+dedupe migrated (0006), dead code removed, forms on the type scale. What remains is
+**configuration, not code**: provider keys (DEPLOY.md §6) and Supabase custom SMTP — then
+M6 offline and the M7 cutover.
 
 ---
 
@@ -64,7 +68,7 @@ The core loop. This is where the current tool's capabilities move in.
 - Templated family status updates via WhatsApp / email (calendar-aware timing)
 - **Done when:** a case can be invoiced and the family gets status updates.
 
-### M4.5 · Operational completeness ⬜ 🔗 M4 *(added by the July 2026 review)*
+### M4.5 · Operational completeness ✅ 🔗 M4 *(added + completed by the July 2026 review session)*
 Close the gap between "feature exists" and "Motty can actually run a case with it."
 - **Contacts editor** — global address book (`/contacts`: list, create, edit, soft-delete) + per-case
   link/create/unlink in a role. The linked `family` contact is what makes comms recipients and
@@ -78,10 +82,18 @@ Close the gap between "feature exists" and "Motty can actually run a case with i
 - **Intake hardening** — honeypot + minimum-fill-time + per-IP rate limit on the public form.
 - **Done when:** with keys present a family update actually sends and an invoice can be paid online;
   without keys everything still works as hand-off.
+- **Status:** all code shipped + verified (build, RLS live-tests, webhook signature unit test,
+  curl gating). Providers are NOT yet configured — adding the env keys (DEPLOY.md §6) is the
+  remaining, code-free step. Also done here: contacts editor live; intake honeypot + time-trap +
+  per-IP throttle; address dedupe migration 0006 applied.
 
-### M5 · AI copilot ⬜ 🔗 M1
-- Behind `ANTHROPIC_API_KEY` (feature hidden without it). Claude API server-side.
-- Draft the consulate email; **OCR a death certificate → auto-fill a case**; case summaries; daily "urgent before Shabbos" brief
+### M5 · AI copilot ✅ (code) 🔗 M1 — awaiting `ANTHROPIC_API_KEY`
+- Behind `ANTHROPIC_API_KEY` (features hidden without it). Claude API server-side
+  (`claude-opus-4-8`, adaptive thinking; OCR via structured outputs).
+- ✅ Consulate-email draft + case summary (case detail "Copilot"), daily pre-Shabbos brief
+  (Today, on demand), **death-cert OCR → New-permit autofill** (photo or PDF).
+- Honest status: implementation + build verified; the first LIVE Claude call happens when the
+  key is added (Vercel + `.env.local`) — smoke-test each of the four features then.
 - **Done when:** the copilot removes real typing from the intake + correspondence loop.
 
 ### M6 · Offline hardening ⬜ 🔗 M1
