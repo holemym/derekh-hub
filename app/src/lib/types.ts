@@ -30,7 +30,20 @@ export type ContactRole =
   | "airline_cargo"
   | "hospital_morgue"
   | "cemetery"
-  | "hearse_operator";
+  | "hearse_operator"
+  | "other";
+
+/** All roles, in picker order (family first — the most common link). */
+export const CONTACT_ROLES: readonly ContactRole[] = [
+  "family",
+  "chevra_kadisha",
+  "consulate",
+  "airline_cargo",
+  "hospital_morgue",
+  "cemetery",
+  "hearse_operator",
+  "other",
+] as const;
 
 export interface Contact {
   id: string;
@@ -45,6 +58,19 @@ export interface Contact {
 export interface CaseContact {
   contactId: string;
   role: ContactRole;
+}
+
+/** A shared address-book entry (the /contacts book; DB `contacts` row). */
+export interface ContactBookEntry {
+  id: string;
+  name: string;
+  organization?: string;
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+  notes?: string;
+  /** Which roles this contact usually plays (tags on the book entry). */
+  roles: ContactRole[];
 }
 
 /* ── Documents ──────────────────────────────────────────────────────────── */

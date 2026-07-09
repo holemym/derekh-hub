@@ -36,7 +36,6 @@ export default async function MorePage() {
   const placeholders = [
     { key: "settings", Icon: IconMore },
     { key: "templates", Icon: IconDoc },
-    { key: "contacts", Icon: IconContacts },
   ] as const;
 
   return (
@@ -70,6 +69,18 @@ export default async function MorePage() {
         <span className="flex items-center gap-2.5 t-body font-medium">
           <IconCheck size={18} className="text-muted" />
           {t("tasks")}
+        </span>
+        <IconChevronRight size={18} className="text-muted" />
+      </Link>
+
+      {/* Contact book — the shared address book (ROADMAP M4.5). */}
+      <Link
+        href="/contacts"
+        className="pressable surface mt-3 flex min-h-[52px] items-center justify-between gap-3 px-4 py-3"
+      >
+        <span className="flex items-center gap-2.5 t-body font-medium">
+          <IconContacts size={18} className="text-muted" />
+          {t("contacts")}
         </span>
         <IconChevronRight size={18} className="text-muted" />
       </Link>

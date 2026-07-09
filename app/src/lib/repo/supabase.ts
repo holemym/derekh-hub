@@ -24,6 +24,7 @@ import {
   mapExpense,
   mapMessage,
   mapCaseContactCard,
+  mapContactBookEntry,
 } from "./mapper";
 import type {
   TransportLeg,
@@ -32,6 +33,7 @@ import type {
   Message,
   MoneySummary,
   CaseContactCard,
+  ContactBookEntry,
 } from "@/lib/types";
 import { computeMoneySummary } from "@/lib/money";
 import type {
@@ -379,6 +381,18 @@ export async function contactCardsForCase(
   return cards.sort((a, b) =>
     a.role === "family" ? -1 : b.role === "family" ? 1 : 0,
   );
+}
+
+/** The whole shared address book (non-deleted), name-sorted — /contacts. */
+export async function listContactBook(): Promise<ContactBookEntry[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("contacts")
+    .select("*")
+    .is("deleted_at", null)
+    .order("name", { ascending: true });
+  if (error) throw new Error(`contacts read failed: ${error.message}`);
+  return ((data ?? []) as ContactRow[]).map(mapContactBookEntry);
 }
 
 /** Logged messages for one case (newest first) — the comms history. */

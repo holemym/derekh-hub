@@ -10,15 +10,15 @@ against canonical docs in this folder. Gradual build, verify each milestone befo
 
 ---
 
-## Where we are today (verified)
+## Where we are today (verified — July 2026 review)
 
 | Track | Status | Evidence |
 |---|---|---|
-| **Doc-engine** (`packages/doc-engine`) | ✅ | Generic template engine; Israeli permit ported (29 positions); generates from the real blank PDF in ~65ms; both pages render-verified (X marks inside boxes). |
-| **App shell** (`app`) | 🟡 | Next.js 16 builds clean; 6 routes; monoline design system; Hebcal zmanim; EN/DE (next-intl); PWA manifest + SW. **Runs on mock data — buttons are stubs, nothing persists.** |
-| **Data layer** (`db`) | 🟡 | 13 tables, 51 RLS policies, storage buckets, seeds, GDPR notes, strict-typed. **SQL is reviewed, not executed — no Supabase project exists yet.** |
+| **Doc-engine** | ✅ | Generic template engine (vendored into `app/src/lib/doc-engine` for Vercel); Israeli permit render-verified; invoice + transport-manifest PDFs direct-drawn. |
+| **App** (`app`) | ✅ | **LIVE at https://derekh-hub.vercel.app** on live Supabase (RLS-scoped SSR). M1–M4 + stage transitions + design v2 done: auth, cases/pipeline, permits, vault, intake, Today/tasks, transport/custody, money/comms. EN/DE, mobile + desktop. |
+| **Data layer** (`db`) | ✅ | Schema applied to live Supabase `ucsoecwcvyxpdydhclnp` (eu-west-1); migrations 0001–0005; 51 RLS policies verified (anon=0, owner sees data). |
 
-Not started: real backend, engine↔app integration, auth, intake-in-hub, offline sync, transport/money/comms/AI, cutover.
+Known soft spots (this drives M4.5 below): contacts have schema + read path but **no write UI**; comms/invoices are hand-off only (no provider); public intake unprotected; magic-link email on Supabase's rate-limited default sender; small debt (address/last_address dupe, dead `TransitLine.tsx`, two forms off the type scale).
 
 ---
 
@@ -52,7 +52,7 @@ The core loop. This is where the current tool's capabilities move in.
 - ✅ Today dashboard on live data (urgency-sorted; red only pre-candle-lighting; Shabbos/chag countdown chip)
 - ✅ Tasks (create/complete/cancel, per-case + /tasks; "falls on Shabbos" flag); Due-soon on Today
 - ✅ `planning.ts` urgency model (stage + kevod-hames time pressure + Shabbos proximity); unit-tested (23 assertions)
-- Note: case-detail "Advance stage" buttons still M1 stubs (stage transitions → a later pass).
+- ✅ Stage transitions (forward-only, timestamped, audit-logged) — done in a follow-up pass.
 
 ### M3 · Transport & repatriation ✅ COMPLETE 🔗 M1
 - Transport legs (ground / air-cargo / domestic), chain-of-custody timeline
@@ -64,7 +64,23 @@ The core loop. This is where the current tool's capabilities move in.
 - Templated family status updates via WhatsApp / email (calendar-aware timing)
 - **Done when:** a case can be invoiced and the family gets status updates.
 
+### M4.5 · Operational completeness ⬜ 🔗 M4 *(added by the July 2026 review)*
+Close the gap between "feature exists" and "Motty can actually run a case with it."
+- **Contacts editor** — global address book (`/contacts`: list, create, edit, soft-delete) + per-case
+  link/create/unlink in a role. The linked `family` contact is what makes comms recipients and
+  invoice bill-to real (both consumers are already wired to it).
+- **Real sending seams, env-gated** (hand-off links stay as the fallback when keys are absent):
+  - Email via **SMTP** (`SMTP_HOST/PORT/USER/PASS/FROM`) — "Send email" in comms sends server-side + logs.
+  - **WhatsApp Cloud API** (`WHATSAPP_TOKEN` + `WHATSAPP_PHONE_ID`) — same for WhatsApp.
+  - **Stripe** (`STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`) — "Payment link" on a sent invoice
+    (stored in `invoices.stripe_ref`) + webhook reconcile → auto-mark paid.
+  - Supabase **custom SMTP** for magic-link mail = dashboard config, documented in DEPLOY.md.
+- **Intake hardening** — honeypot + minimum-fill-time + per-IP rate limit on the public form.
+- **Done when:** with keys present a family update actually sends and an invoice can be paid online;
+  without keys everything still works as hand-off.
+
 ### M5 · AI copilot ⬜ 🔗 M1
+- Behind `ANTHROPIC_API_KEY` (feature hidden without it). Claude API server-side.
 - Draft the consulate email; **OCR a death certificate → auto-fill a case**; case summaries; daily "urgent before Shabbos" brief
 - **Done when:** the copilot removes real typing from the intake + correspondence loop.
 

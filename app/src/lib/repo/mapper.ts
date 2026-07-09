@@ -23,6 +23,7 @@ import type {
   CaseDocument,
   CaseContact,
   CaseContactCard,
+  ContactBookEntry,
   TransportLeg,
   TransportLegType,
   CustodyEvent,
@@ -67,9 +68,32 @@ function mapContactRole(role: CaseContactRow["role"]): ContactRole | null {
       return "cemetery";
     case "hearse_operator":
       return "hearse_operator";
+    case "other":
+      return "other";
     default:
-      return null; // 'other' has no app-side card yet
+      return null; // unknown future enum value — skip rather than crash
   }
+}
+
+/** App contact role → DB enum value (the only divergent slug is hospital). */
+export function dbContactRole(role: ContactRole): CaseContactRow["role"] {
+  return role === "hospital_morgue" ? "hospital" : role;
+}
+
+/** DB contacts row → the /contacts address-book entry. */
+export function mapContactBookEntry(row: ContactRow): ContactBookEntry {
+  return {
+    id: row.id,
+    name: row.name,
+    organization: row.org ?? undefined,
+    phone: row.phone ?? undefined,
+    whatsapp: row.whatsapp ?? undefined,
+    email: row.email ?? undefined,
+    notes: row.notes ?? undefined,
+    roles: (row.roles ?? [])
+      .map(mapContactRole)
+      .filter((r): r is ContactRole => r !== null),
+  };
 }
 
 /** DB custody jsonb → app CustodyEvent, tolerating legacy `{ at, actor, note }`. */

@@ -10,7 +10,8 @@
     "money": "Money",
     "tasks": "Tasks",
     "intake": "Family intake",
-    "more": "More"
+    "more": "More",
+    "contacts": "Contacts"
   },
   "today": {
     "title": "Today",
@@ -507,7 +508,8 @@
     "nextAction": "Next action",
     "urgent": "Urgent",
     "inTransit": "In transit",
-    "done": "Done"
+    "done": "Done",
+    "cancel": "Cancel"
   },
   "auth": {
     "appName": "Derech",
@@ -529,5 +531,47 @@
     "account": "Account",
     "signOut": "Sign out",
     "signingOut": "Signing out…"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "subtitle": "The shared address book — families, chevra kadisha, consulates, airlines. Link a contact to a case to use it for updates and invoices.",
+    "search": "Search contacts…",
+    "new": "New contact",
+    "save": "Save",
+    "saving": "Saving…",
+    "remove": "Remove contact",
+    "confirmRemove": "Remove {name} from the contact book?",
+    "confirmUnlink": "Unlink {name} from this case?",
+    "unlink": "Unlink",
+    "add": "Link contact",
+    "addFirst": "Link a contact",
+    "link": "Link",
+    "createNew": "+ New contact…",
+    "pickExisting": "Choose from the book…",
+    "familyHint": "Link a family contact so status updates and invoices know who to reach.",
+    "emptyTitle": "No contacts yet",
+    "emptyBody": "Add the people and organizations you work with — they become one tap away on every case.",
+    "errorSave": "Something went wrong. Please try again.",
+    "field": {
+      "role": "Role",
+      "who": "Contact",
+      "name": "Name",
+      "organization": "Organization",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "notes": "Notes",
+      "roles": "Usual roles"
+    },
+    "roles": {
+      "family": "Family",
+      "chevra_kadisha": "Chevra kadisha",
+      "consulate": "Consulate",
+      "airline_cargo": "Airline cargo",
+      "hospital_morgue": "Hospital / morgue",
+      "cemetery": "Cemetery",
+      "hearse_operator": "Hearse operator",
+      "other": "Other"
+    }
   }
 }

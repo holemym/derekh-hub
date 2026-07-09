@@ -10,7 +10,8 @@
     "money": "Geld",
     "tasks": "Aufgaben",
     "intake": "Angaben der Familie",
-    "more": "Mehr"
+    "more": "Mehr",
+    "contacts": "Kontakte"
   },
   "today": {
     "title": "Heute",
@@ -507,7 +508,8 @@
     "nextAction": "Nächste Aktion",
     "urgent": "Dringend",
     "inTransit": "Unterwegs",
-    "done": "Erledigt"
+    "done": "Erledigt",
+    "cancel": "Abbrechen"
   },
   "auth": {
     "appName": "Derech",
@@ -529,5 +531,47 @@
     "account": "Konto",
     "signOut": "Abmelden",
     "signingOut": "Abmelden…"
+  },
+  "contacts": {
+    "title": "Kontakte",
+    "subtitle": "Das gemeinsame Adressbuch — Familien, Chewra Kadischa, Konsulate, Fluglinien. Verknüpfen Sie einen Kontakt mit einem Fall für Updates und Rechnungen.",
+    "search": "Kontakte durchsuchen…",
+    "new": "Neuer Kontakt",
+    "save": "Speichern",
+    "saving": "Wird gespeichert…",
+    "remove": "Kontakt entfernen",
+    "confirmRemove": "{name} aus dem Adressbuch entfernen?",
+    "confirmUnlink": "{name} von diesem Fall lösen?",
+    "unlink": "Lösen",
+    "add": "Kontakt verknüpfen",
+    "addFirst": "Kontakt verknüpfen",
+    "link": "Verknüpfen",
+    "createNew": "+ Neuer Kontakt…",
+    "pickExisting": "Aus dem Adressbuch wählen…",
+    "familyHint": "Verknüpfen Sie einen Familienkontakt, damit Statusmeldungen und Rechnungen wissen, wen sie erreichen.",
+    "emptyTitle": "Noch keine Kontakte",
+    "emptyBody": "Fügen Sie die Menschen und Organisationen hinzu, mit denen Sie arbeiten — bei jedem Fall sofort zur Hand.",
+    "errorSave": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
+    "field": {
+      "role": "Rolle",
+      "who": "Kontakt",
+      "name": "Name",
+      "organization": "Organisation",
+      "phone": "Telefon",
+      "whatsapp": "WhatsApp",
+      "email": "E-Mail",
+      "notes": "Notizen",
+      "roles": "Übliche Rollen"
+    },
+    "roles": {
+      "family": "Familie",
+      "chevra_kadisha": "Chewra Kadischa",
+      "consulate": "Konsulat",
+      "airline_cargo": "Luftfracht",
+      "hospital_morgue": "Krankenhaus / Prosektur",
+      "cemetery": "Friedhof",
+      "hearse_operator": "Bestattungsfahrer",
+      "other": "Sonstige"
+    }
   }
 }

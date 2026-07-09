@@ -6,6 +6,7 @@ import {
   activityForCase,
   moneyForCase,
   contactCardsForCase,
+  listContactBook,
   messagesForCase,
 } from "@/lib/repo";
 import { formatDate, formatDateTime } from "@/lib/format";
@@ -17,6 +18,7 @@ import CaseTasks from "@/components/CaseTasks";
 import CaseTransport from "@/components/CaseTransport";
 import CaseMoney from "@/components/CaseMoney";
 import CaseComms from "@/components/CaseComms";
+import CaseContacts from "@/components/CaseContacts";
 import EmptyState from "@/components/EmptyState";
 import { IconChevronRight, IconActivity } from "@/components/icons";
 
@@ -33,12 +35,14 @@ export default async function CaseDetailPage({
 
   const t = await getTranslations();
   const locale = await getLocale();
-  const [activity, money, contactCards, messages] = await Promise.all([
-    activityForCase(c.id),
-    moneyForCase(c.id),
-    contactCardsForCase(c.id),
-    messagesForCase(c.id),
-  ]);
+  const [activity, money, contactCards, contactBook, messages] =
+    await Promise.all([
+      activityForCase(c.id),
+      moneyForCase(c.id),
+      contactCardsForCase(c.id),
+      listContactBook(),
+      messagesForCase(c.id),
+    ]);
   const family = contactCards.find((cc) => cc.role === "family");
 
   const fields: Array<[string, string | undefined]> = [
@@ -138,6 +142,13 @@ export default async function CaseDetailPage({
               {t("caseDetail.sections.transport")}
             </h2>
             <CaseTransport caseId={c.id} legs={c.transportLegs} />
+          </section>
+
+          <section>
+            <h2 className="t-label mb-2 px-1">
+              {t("caseDetail.sections.contacts")}
+            </h2>
+            <CaseContacts caseId={c.id} cards={contactCards} book={contactBook} />
           </section>
 
           <section>

@@ -25,6 +25,7 @@ import {
   moneyForCase as sbMoneyForCase,
   moneyOverview as sbMoneyOverview,
   contactCardsForCase as sbContactCardsForCase,
+  listContactBook as sbListContactBook,
   messagesForCase as sbMessagesForCase,
   type ActivityEntry,
   type TransportLegWithCase,
@@ -32,7 +33,7 @@ import {
   type MoneyOverview,
   type InvoiceWithCase,
 } from "./supabase";
-import type { CaseContactCard, Message } from "@/lib/types";
+import type { CaseContactCard, ContactBookEntry, Message } from "@/lib/types";
 
 export type {
   ActivityEntry,
@@ -103,6 +104,11 @@ export function moneyOverview(): Promise<MoneyOverview> {
 /** Comms-ready contact cards for one case (family first). */
 export function contactCardsForCase(caseId: string): Promise<CaseContactCard[]> {
   return sbContactCardsForCase(caseId);
+}
+
+/** The shared address book (non-deleted), name-sorted — /contacts + pickers. */
+export function listContactBook(): Promise<ContactBookEntry[]> {
+  return sbListContactBook();
 }
 
 /** Logged messages for one case, newest first (comms history). */

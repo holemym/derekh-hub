@@ -4,14 +4,14 @@ import {
   IconPlane,
   IconMoney,
   IconTasks,
+  IconContacts,
   IconMore,
 } from "./icons";
 
 /**
  * Shared navigation model — one source of truth for both shells.
- * Mobile bottom TabNav shows a compact subset; the desktop sidebar shows the
- * full operational nav. Transport & Money routes land in M3/M4; they render as
- * "soon" and don't navigate yet (kept in the structure per DESIGN.md).
+ * Mobile bottom TabNav shows a compact subset (everything else lives under
+ * More); the desktop sidebar shows the full operational nav.
  */
 export type NavItem = {
   href: string;
@@ -27,6 +27,7 @@ export const SIDEBAR_ITEMS: NavItem[] = [
   { href: "/transport", key: "transport", Icon: IconPlane },
   { href: "/money", key: "money", Icon: IconMoney },
   { href: "/tasks", key: "tasks", Icon: IconTasks },
+  { href: "/contacts", key: "contacts", Icon: IconContacts },
   { href: "/intake-inbox", key: "intake", Icon: IconMore },
 ];
 
