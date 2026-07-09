@@ -237,7 +237,9 @@
       "label": "Beschreibung",
       "labelPlaceholder": "z. B. Luftfracht, Sarg, Konsulatsgebühr",
       "date": "Datum"
-    }
+    },
+    "paymentLink": "Zahlungslink",
+    "paymentLinkLive": "Zahlungslink (öffnet Stripe):"
   },
   "moneyPage": {
     "title": "Finanzen",
@@ -289,7 +291,12 @@
       "in_transit": "Liebe/r {family}, {niftar} ist nun auf dem Weg nach Israel. Wir stehen in Kontakt mit der dortigen Chewra Kadischa und informieren Sie nach der Ankunft.",
       "arrived": "Liebe/r {family}, {niftar} ist in Israel angekommen und wurde von der Chewra Kadischa empfangen. Die Beisetzung wird organisiert; die Einzelheiten senden wir Ihnen in Kürze.",
       "buried": "Liebe/r {family}, {niftar} wurde zur letzten Ruhe gebettet. Wir nehmen Anteil an Ihrer Trauer. Möge die Familie keinen weiteren Kummer kennen, und möge das Andenken ein Segen sein."
-    }
+    },
+    "sendNow": "Jetzt senden",
+    "sending": "Wird gesendet…",
+    "sent": "Gesendet",
+    "errorSend": "Senden fehlgeschlagen. Bitte den manuellen Link verwenden.",
+    "sendNote": "Sendet direkt aus Derech und protokolliert unten. Die App-Buttons bleiben als manueller Weg erhalten."
   },
   "documents": {
     "upload": "Hochladen",

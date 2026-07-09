@@ -20,6 +20,7 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { buildInvoicePdf } from "@/lib/documents/invoice";
+import { createPaymentLink, stripeConfigured } from "@/lib/stripe";
 import type { InvoiceStatus } from "@/lib/types";
 import type {
   InvoiceInsert,
@@ -204,6 +205,79 @@ export async function advanceInvoice(input: {
   revalidatePath(`/cases/${caseId}`);
   revalidatePath("/money");
   return { ok: true };
+}
+
+/**
+ * Create (or return the existing) Stripe payment link for an invoice (M4.5).
+ * Env-gated on STRIPE_SECRET_KEY. The permanent URL is stored in stripe_ref;
+ * the /api/stripe/webhook reconcile marks the invoice paid on checkout.
+ */
+export async function createInvoicePaymentLink(input: {
+  caseId: string;
+  invoiceId: string;
+}): Promise<MoneyResult & { url?: string }> {
+  const { caseId, invoiceId } = input;
+  if (!caseId || !invoiceId) return { ok: false, error: "Missing invoice." };
+  if (!stripeConfigured()) return { ok: false, error: "Stripe is not configured." };
+
+  const supabase = await createSupabaseServerClient();
+  const [{ data: inv, error: invErr }, { data: kase }] = await Promise.all([
+    supabase
+      .from("invoices")
+      .select("number, amount_cents, currency, status, stripe_ref")
+      .eq("id", invoiceId)
+      .eq("case_id", caseId)
+      .is("deleted_at", null)
+      .maybeSingle(),
+    supabase
+      .from("cases")
+      .select("secular_first, secular_last")
+      .eq("id", caseId)
+      .maybeSingle(),
+  ]);
+  if (invErr) return { ok: false, error: `Could not read invoice: ${invErr.message}` };
+  if (!inv) return { ok: false, error: "Invoice not found." };
+
+  const row = inv as Pick<
+    InvoiceRow,
+    "number" | "amount_cents" | "currency" | "status" | "stripe_ref"
+  >;
+  if (row.status === "paid") return { ok: false, error: "Invoice is already paid." };
+  if (row.status === "void") return { ok: false, error: "Invoice is void." };
+  if (row.stripe_ref) return { ok: true, url: row.stripe_ref };
+
+  const c = (kase ?? {}) as Partial<Pick<CaseRow, "secular_first" | "secular_last">>;
+  const who = [c.secular_first, c.secular_last].filter(Boolean).join(" ").trim();
+  const description = `Invoice ${row.number ?? invoiceId.slice(0, 8)} — burial & repatriation service${who ? ` (${who})` : ""}`;
+
+  const link = await createPaymentLink({
+    invoiceId,
+    caseId,
+    amountCents: row.amount_cents ?? 0,
+    currency: row.currency ?? "EUR",
+    description,
+  });
+  if (!link.ok || !link.url) return { ok: false, error: link.error };
+
+  const { error: updErr } = await supabase
+    .from("invoices")
+    .update({ stripe_ref: link.url } as never)
+    .eq("id", invoiceId)
+    .eq("case_id", caseId);
+  if (updErr) return { ok: false, error: `Could not save the link: ${updErr.message}` };
+
+  const a = await actor(supabase);
+  const log: ActivityLogInsert = {
+    case_id: caseId,
+    actor: a.id,
+    actor_label: a.label,
+    action: "payment_link_created",
+    detail: { invoiceId },
+  };
+  await supabase.from("activity_log").insert(log as never);
+
+  revalidatePath(`/cases/${caseId}`);
+  return { ok: true, url: link.url };
 }
 
 /** Mark an invoice void (terminal). */

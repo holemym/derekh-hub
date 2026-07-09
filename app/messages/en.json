@@ -237,7 +237,9 @@
       "label": "Description",
       "labelPlaceholder": "e.g. Air-cargo charge, coffin, consular fee",
       "date": "Date"
-    }
+    },
+    "paymentLink": "Payment link",
+    "paymentLinkLive": "Payment link (opens Stripe):"
   },
   "moneyPage": {
     "title": "Money",
@@ -289,7 +291,12 @@
       "in_transit": "Dear {family}, {niftar} is now on the way to Israel. We are in contact with the chevra kadisha there and will inform you once he/she has arrived.",
       "arrived": "Dear {family}, {niftar} has arrived in Israel and has been received by the chevra kadisha. The burial is being arranged and we will send you the details shortly.",
       "buried": "Dear {family}, {niftar} has been laid to rest. We share in your sorrow. May the family know no more sorrow, and may his/her memory be a blessing."
-    }
+    },
+    "sendNow": "Send now",
+    "sending": "Sending…",
+    "sent": "Sent",
+    "errorSend": "Could not send. Try the hand-off link instead.",
+    "sendNote": "Sends directly from Derech and logs it below. The open-in-app buttons remain as a manual fallback."
   },
   "documents": {
     "upload": "Upload",

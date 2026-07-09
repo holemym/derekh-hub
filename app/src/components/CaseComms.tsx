@@ -26,7 +26,7 @@ import type {
 import { MESSAGE_TEMPLATE_KEYS } from "@/lib/types";
 import { buildWhatsAppLink, buildMailtoLink } from "@/lib/comms";
 import { formatDateTime } from "@/lib/format";
-import { logMessageSent } from "@/app/cases/[id]/comms/actions";
+import { logMessageSent, sendMessageNow } from "@/app/cases/[id]/comms/actions";
 import { IconChat, IconCheck } from "@/components/icons";
 
 export default function CaseComms({
@@ -34,6 +34,7 @@ export default function CaseComms({
   niftarName,
   family,
   messages,
+  can = { email: false, whatsapp: false },
 }: {
   caseId: string;
   /** Display name of the niftar (secular preferred). */
@@ -41,6 +42,8 @@ export default function CaseComms({
   /** The linked family contact, if any (recipient for comms). */
   family?: CaseContactCard;
   messages: Message[];
+  /** Which channels can really send server-side (env keys present; M4.5). */
+  can?: { email: boolean; whatsapp: boolean };
 }) {
   const t = useTranslations();
   const locale = useLocale();
@@ -75,6 +78,10 @@ export default function CaseComms({
       ? buildWhatsAppLink(waPhone, body)
       : buildMailtoLink(family?.email, subject, body);
 
+  const canSendNow =
+    (channel === "email" && can.email && !!family?.email) ||
+    (channel === "whatsapp" && can.whatsapp && !!waPhone);
+
   function onMarkSent() {
     setError(null);
     startTransition(async () => {
@@ -87,6 +94,27 @@ export default function CaseComms({
       });
       if (!res.ok) {
         setError(res.error ?? t("comms.errorLog"));
+        return;
+      }
+      setSentKey((k) => k + 1);
+      router.refresh();
+    });
+  }
+
+  /** Real server-side send (M4.5) — only offered when the channel has keys. */
+  function onSendNow() {
+    setError(null);
+    startTransition(async () => {
+      const res = await sendMessageNow({
+        caseId,
+        channel,
+        templateKey,
+        recipient: recipient ?? undefined,
+        subject,
+        body,
+      });
+      if (!res.ok) {
+        setError(res.error ?? t("comms.errorSend"));
         return;
       }
       setSentKey((k) => k + 1);
@@ -150,13 +178,32 @@ export default function CaseComms({
           <p className="whitespace-pre-wrap t-meta text-ink">{body}</p>
         </div>
 
-        {/* Actions — open the hand-off link, then mark sent */}
+        {/* Actions — real send when configured; hand-off link always works. */}
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          {canSendNow ? (
+            <button
+              type="button"
+              onClick={onSendNow}
+              disabled={pending}
+              className="pressable flex min-h-10 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg disabled:opacity-60"
+            >
+              {sentKey > 0 ? <IconCheck size={14} /> : <IconChat size={15} />}
+              {pending
+                ? t("comms.sending")
+                : sentKey > 0
+                  ? t("comms.sent")
+                  : t("comms.sendNow")}
+            </button>
+          ) : null}
           <a
             href={handoffLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="pressable flex min-h-10 items-center gap-1.5 rounded-xl bg-ink px-3.5 text-[13px] font-semibold text-bg"
+            className={`pressable flex min-h-10 items-center gap-1.5 rounded-xl px-3.5 text-[13px] ${
+              canSendNow
+                ? "border border-line font-medium text-ink"
+                : "bg-ink font-semibold text-bg"
+            }`}
           >
             <IconChat size={15} />
             {channel === "whatsapp"
@@ -177,7 +224,9 @@ export default function CaseComms({
                 : t("comms.markSent")}
           </button>
         </div>
-        <p className="mt-2 t-meta text-muted">{t("comms.handoffNote")}</p>
+        <p className="mt-2 t-meta text-muted">
+          {canSendNow ? t("comms.sendNote") : t("comms.handoffNote")}
+        </p>
       </div>
 
       {/* History */}

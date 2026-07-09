@@ -203,6 +203,7 @@ export function mapInvoice(row: InvoiceRow): Invoice {
     status: row.status,
     issuedAt: row.issued_at ?? undefined,
     paidAt: row.paid_at ?? undefined,
+    stripeRef: row.stripe_ref ?? undefined,
   };
 }
 

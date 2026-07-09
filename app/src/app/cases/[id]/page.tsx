@@ -19,6 +19,8 @@ import CaseTransport from "@/components/CaseTransport";
 import CaseMoney from "@/components/CaseMoney";
 import CaseComms from "@/components/CaseComms";
 import CaseContacts from "@/components/CaseContacts";
+import { sendCapabilities } from "@/lib/send";
+import { stripeConfigured } from "@/lib/stripe";
 import EmptyState from "@/components/EmptyState";
 import { IconChevronRight, IconActivity } from "@/components/icons";
 
@@ -160,6 +162,7 @@ export default async function CaseDetailPage({
               invoices={money.invoices}
               expenses={money.expenses}
               summary={money.summary}
+              canPaymentLink={stripeConfigured()}
             />
           </section>
 
@@ -172,6 +175,7 @@ export default async function CaseDetailPage({
               niftarName={c.secularName || c.hebrewName}
               family={family}
               messages={messages}
+              can={sendCapabilities()}
             />
           </section>
 

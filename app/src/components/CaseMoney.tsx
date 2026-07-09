@@ -23,8 +23,9 @@ import {
   addExpense,
   generateInvoicePdf,
   suggestInvoiceNumber,
+  createInvoicePaymentLink,
 } from "@/app/cases/[id]/money/actions";
-import { IconPlus, IconDoc, IconCheck } from "@/components/icons";
+import { IconPlus, IconDoc, IconCheck, IconChat } from "@/components/icons";
 
 const INVOICE_NEXT: Record<"draft" | "sent", InvoiceStatus> = {
   draft: "sent",
@@ -51,11 +52,14 @@ export default function CaseMoney({
   invoices,
   expenses,
   summary,
+  canPaymentLink = false,
 }: {
   caseId: string;
   invoices: Invoice[];
   expenses: Expense[];
   summary: MoneySummary;
+  /** Stripe key present → "Payment link" on unpaid invoices (M4.5). */
+  canPaymentLink?: boolean;
 }) {
   const t = useTranslations();
   const locale = useLocale();
@@ -133,6 +137,26 @@ export default function CaseMoney({
       if (!res.ok) {
         setError(res.error ?? t("money.errorInvoice"));
         return;
+      }
+      router.refresh();
+    });
+  }
+
+  /** Create (or reuse) the Stripe payment link, then copy it (M4.5). */
+  function onPaymentLink(inv: Invoice) {
+    setError(null);
+    setBusyId(inv.id);
+    startTransition(async () => {
+      const res = await createInvoicePaymentLink({ caseId, invoiceId: inv.id });
+      setBusyId(null);
+      if (!res.ok || !res.url) {
+        setError(res.error ?? t("money.errorInvoice"));
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(res.url);
+      } catch {
+        // Clipboard denied — the link is still shown on the invoice row.
       }
       router.refresh();
     });
@@ -246,6 +270,20 @@ export default function CaseMoney({
                     <IconDoc size={14} />
                     {generatingId === inv.id ? t("money.generating") : t("money.generateInvoice")}
                   </button>
+                  {canPaymentLink &&
+                  inv.status !== "paid" &&
+                  inv.status !== "void" &&
+                  !inv.stripeRef ? (
+                    <button
+                      type="button"
+                      onClick={() => onPaymentLink(inv)}
+                      disabled={busyId === inv.id || pending}
+                      className="pressable flex min-h-9 items-center gap-1 rounded-xl border border-line px-3 text-[13px] font-medium text-ink disabled:opacity-50"
+                    >
+                      <IconChat size={14} />
+                      {t("money.paymentLink")}
+                    </button>
+                  ) : null}
                   {inv.status !== "paid" && inv.status !== "void" ? (
                     <button
                       type="button"
@@ -257,6 +295,19 @@ export default function CaseMoney({
                     </button>
                   ) : null}
                 </div>
+                {inv.stripeRef ? (
+                  <p className="mt-2 truncate t-meta text-muted">
+                    <a
+                      href={inv.stripeRef}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-line underline-offset-2"
+                    >
+                      {t("money.paymentLinkLive")}
+                    </a>
+                    <span className="ml-1.5">{inv.stripeRef}</span>
+                  </p>
+                ) : null}
               </div>
             ))}
           </div>

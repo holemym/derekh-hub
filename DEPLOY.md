@@ -42,8 +42,32 @@ Migrations are applied from a laptop, not from Vercel:
 new migration file, run it directly (the runner replays the full list; only re-run it
 if every migration is idempotent). Current live schema = migrations 0001–0005.
 
+## 6. Optional provider keys (M4.5 sending seams)
+Every feature below is **env-gated**: without its keys the app silently falls back to
+the manual hand-off flow (wa.me / mailto links, no payment links). Add keys in Vercel
+(Production + Preview) *and* `app/.env.local` for local testing; redeploy after adding.
+
+**Email (family updates, sent from the app via SMTP — any provider):**
+- `SMTP_HOST` · `SMTP_USER` · `SMTP_PASS` · `SMTP_FROM` (e.g. `Derech <ops@ikg.example>`)
+- `SMTP_PORT` optional (default 587; 465 = implicit TLS)
+- Shows a **Send now** button in the case's Family updates section.
+
+**WhatsApp (Meta WhatsApp Business Cloud API):**
+- `WHATSAPP_TOKEN` (permanent system-user token) + `WHATSAPP_PHONE_ID` (phone-number **id**)
+- Free-form text only delivers inside the 24h service window; outside it Meta requires a
+  pre-approved template — the wa.me hand-off remains the fallback.
+
+**Stripe (payment links on invoices + auto-reconcile):**
+- `STRIPE_SECRET_KEY` → "Payment link" button on unpaid invoices (link saved to
+  `invoices.stripe_ref`, copied to clipboard).
+- `STRIPE_WEBHOOK_SECRET` → create a webhook endpoint in the Stripe dashboard pointing at
+  `https://derekh-hub.vercel.app/api/stripe/webhook`, event `checkout.session.completed`;
+  paying the link then flips the invoice to **paid** automatically (audit row "Stripe").
+
+**Magic-link login email** is separate from all of the above: it is sent by Supabase
+Auth. Configure custom SMTP in **Supabase → Project Settings → Authentication → SMTP**
+(same credentials work) to lift the default sender's rate limit.
+
 ## Known follow-ups (not blockers)
-- **Magic-link email** uses Supabase's default sender (rate-limited). Configure custom
-  **SMTP** in Supabase → Authentication → Emails before real-world use.
 - **Public intake** has a honeypot but no rate-limit/captcha yet.
-- Both are on the roadmap; neither blocks a first deploy.
+- Neither blocks a first deploy.

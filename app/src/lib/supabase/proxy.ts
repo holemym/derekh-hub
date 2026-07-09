@@ -19,7 +19,8 @@ import type { Database } from '../../../../db/types';
  *   - Active staff -> pass through.
  */
 
-const PUBLIC_PATHS = ['/login', '/auth/callback', '/no-access', '/intake'];
+// /api/stripe = the webhook (self-authenticating via signature verification).
+const PUBLIC_PATHS = ['/login', '/auth/callback', '/no-access', '/intake', '/api/stripe'];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));

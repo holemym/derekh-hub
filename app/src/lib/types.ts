@@ -194,6 +194,8 @@ export interface Invoice {
   status: InvoiceStatus;
   issuedAt?: string;
   paidAt?: string;
+  /** Stripe payment-link URL once created (M4.5). */
+  stripeRef?: string;
 }
 
 export interface Expense {
