@@ -9,11 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
     "@hebcal/core": "^6.6.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.1",
     "next": "16.2.10",
     "next-intl": "^4.13.1",
+    "nodemailer": "^9.0.3",
     "pdf-lib": "^1.17.1",
     "pg": "^8.22.0",
     "react": "19.2.4",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
