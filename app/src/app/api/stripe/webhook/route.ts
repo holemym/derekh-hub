@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyStripeSignature } from "@/lib/stripe";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import type { ActivityLogInsert, InvoiceRow } from "../../../../../../db/types";
 
 /**
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   const caseId = metadata.case_id;
   if (!invoiceId) return NextResponse.json({ received: true });
 
-  const admin = supabaseAdmin;
+  const admin = getSupabaseAdmin();
 
   // Only flip an invoice that is still awaiting payment (idempotent on retry).
   const { data: inv } = await admin

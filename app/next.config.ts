@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "15mb",
     },
+    // Cap build parallelism: the default (one worker per core — 19 on the dev
+    // machine) can OOM-abort "Collecting page data" under memory pressure.
+    // Four is plenty for ~20 routes and keeps builds green everywhere.
+    cpus: 4,
   },
 };
 
